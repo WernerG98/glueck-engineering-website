@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   const contactEmail = "info@glueckengineering.com";
   const contactLink = `mailto:${contactEmail}`;
@@ -25,6 +27,12 @@ export default function Footer() {
               {contactEmail}
             </a>
           </div>
+        </div>
+
+        <div className="mt-8 flex justify-center border-t border-neutral-900 pt-6 md:justify-start">
+          <Link to="/impressum" className="text-xs text-neutral-500 transition hover:text-white">
+            Impressum
+          </Link>
         </div>
       </div>
     </footer>
