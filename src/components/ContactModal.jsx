@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { ACCEPTING_REQUESTS } from "../data/siteStatus";
 
 export default function ContactModal({
   contactModalOpen,
@@ -26,6 +27,32 @@ export default function ContactModal({
   }, [contactModalOpen, closeContactModal]);
 
   if (!contactModalOpen) return null;
+
+  if (!ACCEPTING_REQUESTS) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/80 px-4 py-6 backdrop-blur-sm sm:items-center sm:py-8"
+        onClick={closeContactModal}
+      >
+        <div
+          className="w-full max-w-md rounded-2xl border border-neutral-800 bg-neutral-900 p-6 shadow-2xl shadow-black/50"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2 className="text-xl font-semibold tracking-tight">Anfragen pausiert</h2>
+          <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+            Wir nehmen aktuell keine neuen Anfragen an, weil wir gerade die vorhandenen abarbeiten.
+            Schau in Kürze wieder vorbei oder schreib uns direkt eine E-Mail.
+          </p>
+          <button
+            onClick={closeContactModal}
+            className="mt-6 rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200"
+          >
+            Verstanden
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

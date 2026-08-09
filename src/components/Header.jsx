@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import StatusBanner from "./StatusBanner";
 
 function navClassName({ isActive }) {
   return [
@@ -11,8 +12,9 @@ function navClassName({ isActive }) {
 
 export default function Header({ onOpenContactModal }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-neutral-800/80 bg-neutral-950/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 md:flex-row md:items-center md:justify-between md:py-5">
+    <header className="sticky top-0 z-40 bg-neutral-950/80 backdrop-blur-md">
+      <StatusBanner />
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 border-b border-neutral-800/80 px-4 py-4 sm:px-6 md:flex-row md:items-center md:justify-between md:py-5">
         <Link to="/" className="flex items-center gap-3 sm:gap-4">
           <img
             src="/logo.png"
