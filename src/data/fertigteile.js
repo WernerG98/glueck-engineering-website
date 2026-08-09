@@ -6,7 +6,7 @@ const fertigteile = [
     text: "Passgenaue Führung für den unteren Kühlergrill des VW T4 mit langem Vorderwagen für originale Kotflügel. Bei Nachbau-Kotflügeln sind die Laschen oft höher, die Öffnung im Halter kann einfach angepasst werden.",
   },
   {
-    name: "VW T5 Clip Verstellung Kopfstütze (4 Stück)",
+    name: "VW T5 Clip Verstellung Kopfstütze (8 Stück)",
     image: "/VW_T5_Clip_Verstellung_Kopfstuetze.jpg",
     price: "9,99 €",
     text: "Ersatzclip für die Verstellung der Kopfstütze. Standardmäßig in Schwarz, andere Wunschfarbe bitte bei der Bestellung angeben.",
