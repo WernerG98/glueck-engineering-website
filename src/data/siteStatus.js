@@ -7,4 +7,4 @@
 export const ACCEPTING_REQUESTS = true;
 
 // Wird im Banner oben auf jeder Seite angezeigt, solange ACCEPTING_REQUESTS true ist.
-export const LEAD_TIME = "2–3 Wochen";
+export const LEAD_TIME = "1 Woche";
