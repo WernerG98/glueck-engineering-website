@@ -1,7 +1,9 @@
+import Reveal from "../Reveal";
+
 export default function ServiceSection({ onRequest }) {
   return (
     <section className="mt-16 sm:mt-20">
-      <div className="grid gap-6 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:gap-8 sm:p-8 md:grid-cols-2 md:items-center md:p-10">
+      <Reveal className="grid gap-6 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:gap-8 sm:p-8 md:grid-cols-2 md:items-center md:p-10">
         <div className="text-left">
           <span className="eyebrow">Dienstleistung</span>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">3D-Druck und Dienstleistungen</h2>
@@ -37,14 +39,14 @@ export default function ServiceSection({ onRequest }) {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-neutral-800">
+        <div className="group overflow-hidden rounded-2xl border border-neutral-800">
           <img
             src="/3D-Druck_S54_Ergebnis.jpg"
             alt="3D-Druck Dienstleistung"
-            className="h-64 w-full object-cover sm:h-80 md:h-full"
+            className="h-64 w-full object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-80 md:h-full"
           />
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

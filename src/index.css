@@ -9,7 +9,8 @@ html {
 body {
   margin: 0;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #09090a;
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 255, 255, 0.06), transparent 60%), #09090a;
+  background-attachment: fixed;
   color: white;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;

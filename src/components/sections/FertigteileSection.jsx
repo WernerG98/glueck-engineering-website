@@ -1,9 +1,15 @@
+import Reveal from "../Reveal";
+
 function FertigteilCard({ item, onRequest }) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 transition hover:border-neutral-700 sm:p-6">
-      <div className="aspect-square overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950">
+    <div className="flex h-full flex-col rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 transition hover:-translate-y-1 hover:border-neutral-700 sm:p-6">
+      <div className="group aspect-square overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950">
         {item.image ? (
-          <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+          <img
+            src={item.image}
+            alt={item.name}
+            className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+          />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-neutral-950">
             <span className="text-base font-semibold uppercase tracking-[0.2em] text-neutral-500 sm:text-lg">
@@ -34,16 +40,16 @@ function FertigteilCard({ item, onRequest }) {
 export default function FertigteileSection({ items, onRequest }) {
   return (
     <section className="mt-16 sm:mt-20 md:mt-24">
-      <span className="eyebrow">Produkte</span>
-      <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">Fertigteile</h2>
+      <Reveal>
+        <span className="eyebrow">Produkte</span>
+        <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">Fertigteile</h2>
+      </Reveal>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item, index) => (
-          <FertigteilCard
-            key={`${item.name}-${index}`}
-            item={item}
-            onRequest={onRequest}
-          />
+          <Reveal key={`${item.name}-${index}`} delay={index * 100} className="h-full">
+            <FertigteilCard item={item} onRequest={onRequest} />
+          </Reveal>
         ))}
       </div>
     </section>
