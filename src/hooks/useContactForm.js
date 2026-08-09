@@ -153,7 +153,7 @@ export default function useContactForm() {
         throw new Error(result?.error || "Versand fehlgeschlagen.");
       }
 
-      alert("Deine Anfrage wurde erfolgreich gesendet.");
+      alert("Die Anfrage wurde erfolgreich gesendet.");
       setContactModalOpen(false);
       setFormData(initialFormData);
       setAttachment(null);

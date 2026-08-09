@@ -8,16 +8,16 @@ export default function ServiceSection({ onRequest }) {
           <span className="eyebrow">Dienstleistung</span>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">3D-Druck und Dienstleistungen</h2>
 
-          <p className="mt-3 text-lg text-neutral-200">Deine Datei. Dein Bauteil. Wir übernehmen den Rest.</p>
+          <p className="mt-3 text-lg text-neutral-200">Datei einreichen. Bauteil erhalten. Den Rest übernehmen wir.</p>
 
           <p className="mt-4 text-sm leading-relaxed text-neutral-400 sm:text-base">
             Wir bieten individuelle 3D-Drucklösungen für funktionale Bauteile, Prototypen und Kleinserien.
             <br />
             <br />
-            Du hast bereits eine fertige Datei? Dann sende uns einfach dein Modell, wir übernehmen den Druck und liefern das Bauteil direkt zu dir.
+            Bei einer bereits fertigen Datei genügt die Übermittlung des Modells – Druck und Lieferung des Bauteils übernehmen wir.
             <br />
             <br />
-            Alternativ unterstützen wir dich von der Idee bis zum fertigen Produkt: von der technischen Beratung über Konstruktion und Optimierung bis hin zur fertigen Bauteilproduktion.
+            Alternativ wird von der Idee bis zum fertigen Produkt unterstützt: von der technischen Beratung über Konstruktion und Optimierung bis hin zur fertigen Bauteilproduktion.
             <br />
             <br />
             Neben der reinen Fertigung unterstützen wir bei der Auslegung von Bauteilen hinsichtlich mechanischer Belastung, Temperaturbeständigkeit und Umgebungsbedingungen wie UV-Einwirkung oder Feuchtigkeit.

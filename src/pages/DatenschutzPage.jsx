@@ -70,18 +70,18 @@ export default function DatenschutzPage() {
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">3. Kontaktformular</h2>
             <p>
-              Wenn du über das Kontaktformular eine Anfrage stellst, verarbeiten wir die von dir
-              eingegebenen Daten (Name, E-Mail-Adresse, optional Telefonnummer, deine Nachricht bzw.
-              Angaben zur Anfrage sowie eine optional hochgeladene Datei) ausschließlich zur Bearbeitung
-              deiner Anfrage und für den Fall von Anschlussfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b
-              DSGVO (Vertragsanbahnung) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der
+              Bei einer Anfrage über das Kontaktformular werden die eingegebenen Daten (Name,
+              E-Mail-Adresse, optional Telefonnummer, Nachricht bzw. Angaben zur Anfrage sowie eine
+              optional hochgeladene Datei) ausschließlich zur Bearbeitung der Anfrage und für den Fall von
+              Anschlussfragen verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO
+              (Vertragsanbahnung) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der
               Beantwortung von Anfragen), sofern kein Vertrag zustande kommt.
             </p>
             <p className="mt-3">
-              Kommt aus deiner Anfrage ein Auftrag zustande, verarbeiten und speichern wir die Daten
-              zusätzlich zur Vertragserfüllung sowie so lange, wie es handels- und steuerrechtliche
-              Aufbewahrungspflichten verlangen (insbesondere Rechnungen: 10 Jahre gemäß § 147 AO,
-              § 257 HGB).
+              Kommt aus einer Anfrage ein Auftrag zustande, werden die Daten zusätzlich zur
+              Vertragserfüllung verarbeitet und gespeichert, und zwar so lange, wie es handels- und
+              steuerrechtliche Aufbewahrungspflichten verlangen (insbesondere Rechnungen: 10 Jahre gemäß
+              § 147 AO, § 257 HGB).
             </p>
           </section>
 
@@ -109,29 +109,29 @@ export default function DatenschutzPage() {
             <h2 className="mb-2 text-lg font-semibold text-white">5. Keine Cookies, kein Tracking</h2>
             <p>
               Diese Website setzt keine Cookies zu Analyse- oder Marketingzwecken ein und verwendet keine
-              Tracking- oder Analyse-Tools (z. B. Google Analytics). Es findet keine Auswertung deines
+              Tracking- oder Analyse-Tools (z. B. Google Analytics). Es findet keine Auswertung des
               Nutzungsverhaltens statt.
             </p>
           </section>
 
           <section>
-            <h2 className="mb-2 text-lg font-semibold text-white">6. Deine Rechte</h2>
-            <p>Du hast jederzeit das Recht auf:</p>
+            <h2 className="mb-2 text-lg font-semibold text-white">6. Betroffenenrechte</h2>
+            <p>Es besteht jederzeit ein Recht auf:</p>
             <ul className="mt-2 list-disc space-y-1 pl-5">
-              <li>Auskunft über die zu deiner Person gespeicherten Daten (Art. 15 DSGVO)</li>
+              <li>Auskunft über die gespeicherten personenbezogenen Daten (Art. 15 DSGVO)</li>
               <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO)</li>
-              <li>Löschung deiner Daten, soweit keine Aufbewahrungspflicht entgegensteht (Art. 17 DSGVO)</li>
+              <li>Löschung der Daten, soweit keine Aufbewahrungspflicht entgegensteht (Art. 17 DSGVO)</li>
               <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
               <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
               <li>Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
             </ul>
             <p className="mt-3">
-              Wende dich dazu einfach an{" "}
+              Anfragen dazu können gerichtet werden an{" "}
               <a href="mailto:info@glueckengineering.com" className="text-neutral-300 hover:text-white">
                 info@glueckengineering.com
               </a>
-              . Außerdem hast du das Recht, dich bei einer Datenschutzaufsichtsbehörde zu beschweren, z. B.
-              beim Bayerischen Landesamt für Datenschutzaufsicht (BayLDA).
+              . Außerdem besteht das Recht auf Beschwerde bei einer Datenschutzaufsichtsbehörde, z. B. beim
+              Bayerischen Landesamt für Datenschutzaufsicht (BayLDA).
             </p>
           </section>
 

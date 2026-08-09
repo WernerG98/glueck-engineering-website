@@ -31,9 +31,9 @@ export default function AGBPage() {
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">1. Geltungsbereich</h2>
             <p>
-              Diese Allgemeinen Geschäftsbedingungen gelten für alle Bestellungen, die du als Verbraucher
-              über glueck-engineering.com bei M.Eng. Werner Glück, Glück Engineering, Rebenstr. 16, 94424
-              Arnstorf (nachfolgend „Verkäufer“) aufgibst.
+              Diese Allgemeinen Geschäftsbedingungen gelten für alle Bestellungen, die als Verbraucher über
+              glueck-engineering.com bei M.Eng. Werner Glück, Glück Engineering, Rebenstr. 16, 94424
+              Arnstorf (nachfolgend „Verkäufer“) aufgegeben werden.
             </p>
           </section>
 
@@ -42,8 +42,8 @@ export default function AGBPage() {
             <p>
               Die Darstellung von Produkten auf der Website stellt kein bindendes Angebot des Verkäufers
               dar. Eine über das Kontaktformular gesendete Anfrage ist unverbindlich. Der Verkäufer sendet
-              dir daraufhin ein individuelles Angebot inklusive Preis. Der Vertrag kommt erst zustande,
-              wenn du dieses Angebot ausdrücklich (per E-Mail oder auf sonstigem Wege) bestätigst.
+              daraufhin ein individuelles Angebot inklusive Preis. Der Vertrag kommt erst zustande, sobald
+              dieses Angebot ausdrücklich (per E-Mail oder auf sonstigem Wege) bestätigt wird.
             </p>
           </section>
 
@@ -51,7 +51,7 @@ export default function AGBPage() {
             <h2 className="mb-2 text-lg font-semibold text-white">3. Preise und Versandkosten</h2>
             <p>
               Alle angegebenen Preise sind Endpreise inklusive der gesetzlichen Umsatzsteuer. Zusätzlich
-              anfallende Versandkosten werden im Angebot separat ausgewiesen und dir vor Vertragsschluss
+              anfallende Versandkosten werden im Angebot separat ausgewiesen und vor Vertragsschluss
               mitgeteilt.
             </p>
           </section>
@@ -67,16 +67,16 @@ export default function AGBPage() {
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">5. Lieferung und Eigentumsvorbehalt</h2>
             <p>
-              Die Lieferung erfolgt nach vollständiger Fertigung an die von dir angegebene Lieferadresse.
-              Die Ware bleibt bis zur vollständigen Bezahlung Eigentum des Verkäufers.
+              Die Lieferung erfolgt nach vollständiger Fertigung an die angegebene Lieferadresse. Die Ware
+              bleibt bis zur vollständigen Bezahlung Eigentum des Verkäufers.
             </p>
           </section>
 
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">6. Gewährleistung</h2>
             <p>
-              Es gilt das gesetzliche Mängelhaftungsrecht. Solltest du einen Mangel feststellen, kontaktiere
-              uns bitte unter{" "}
+              Es gilt das gesetzliche Mängelhaftungsrecht. Bei Feststellung eines Mangels genügt eine
+              Nachricht an{" "}
               <a href="mailto:info@glueckengineering.com" className="text-neutral-300 hover:text-white">
                 info@glueckengineering.com
               </a>
@@ -89,66 +89,66 @@ export default function AGBPage() {
 
             <h3 className="mt-4 text-base font-semibold text-white">Widerrufsrecht</h3>
             <p className="mt-2">
-              Du hast das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu
-              widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag, an dem du oder ein von dir
-              benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen hast bzw. hat.
+              Verbraucher haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu
+              widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag, an dem der Verbraucher oder
+              ein von ihm benannter Dritter, der nicht der Beförderer ist, die Waren in Besitz genommen hat.
             </p>
             <p className="mt-2">
-              Um dein Widerrufsrecht auszuüben, musst du uns (M.Eng. Werner Glück, Glück Engineering,
+              Um das Widerrufsrecht auszuüben, ist der Verkäufer (M.Eng. Werner Glück, Glück Engineering,
               Rebenstr. 16, 94424 Arnstorf, E-Mail: info@glueckengineering.com) mittels einer eindeutigen
-              Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über deinen Entschluss,
-              diesen Vertrag zu widerrufen, informieren. Du kannst dafür das unten stehende
-              Muster-Widerrufsformular verwenden, das ist aber nicht vorgeschrieben.
+              Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über den Entschluss,
+              diesen Vertrag zu widerrufen, zu informieren. Dafür kann das unten stehende
+              Muster-Widerrufsformular verwendet werden, vorgeschrieben ist das aber nicht.
             </p>
             <p className="mt-2">
-              Zur Wahrung der Widerrufsfrist reicht es aus, dass du die Mitteilung über die Ausübung des
-              Widerrufsrechts vor Ablauf der Widerrufsfrist absendest.
+              Zur Wahrung der Widerrufsfrist reicht es aus, dass die Mitteilung über die Ausübung des
+              Widerrufsrechts vor Ablauf der Widerrufsfrist abgesendet wird.
             </p>
 
             <h3 className="mt-5 text-base font-semibold text-white">Folgen des Widerrufs</h3>
             <p className="mt-2">
-              Wenn du diesen Vertrag widerrufst, haben wir dir alle Zahlungen, die wir von dir erhalten
-              haben, einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus
-              ergeben, dass du eine andere Art der Lieferung als die von uns angebotene, günstigste
-              Standardlieferung gewählt hast), unverzüglich und spätestens binnen vierzehn Tagen ab dem
-              Tag zurückzuzahlen, an dem die Mitteilung über deinen Widerruf dieses Vertrags bei uns
-              eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das du bei der
-              ursprünglichen Transaktion eingesetzt hast, es sei denn, mit dir wurde ausdrücklich etwas
-              anderes vereinbart; in keinem Fall werden dir wegen dieser Rückzahlung Entgelte berechnet.
+              Im Falle eines wirksamen Widerrufs sind alle Zahlungen, die vom Verbraucher eingegangen sind,
+              einschließlich der Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus
+              ergeben, dass eine andere Art der Lieferung als die angebotene, günstigste Standardlieferung
+              gewählt wurde), unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen,
+              an dem die Mitteilung über den Widerruf dieses Vertrags eingegangen ist. Für diese
+              Rückzahlung wird dasselbe Zahlungsmittel verwendet, das bei der ursprünglichen Transaktion
+              eingesetzt wurde, es sei denn, es wurde ausdrücklich etwas anderes vereinbart; in keinem Fall
+              werden für diese Rückzahlung Entgelte berechnet.
             </p>
             <p className="mt-2">
-              Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis
-              du den Nachweis erbracht hast, dass du die Waren zurückgesandt hast, je nachdem, welches der
+              Die Rückzahlung kann verweigert werden, bis die Waren wieder zurückerhalten wurden oder bis
+              der Nachweis erbracht wurde, dass die Waren zurückgesandt wurden, je nachdem, welches der
               frühere Zeitpunkt ist.
             </p>
             <p className="mt-2">
-              Du hast die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag,
-              an dem du uns über den Widerruf dieses Vertrags unterrichtest, an uns zurückzusenden. Die
-              Frist ist gewahrt, wenn du die Waren vor Ablauf der Frist von vierzehn Tagen absendest. Du
-              trägst die unmittelbaren Kosten der Rücksendung der Waren.
+              Die Waren sind unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an
+              dem der Verkäufer über den Widerruf dieses Vertrags unterrichtet wird, an den Verkäufer
+              zurückzusenden. Die Frist ist gewahrt, wenn die Waren vor Ablauf der Frist von vierzehn Tagen
+              abgesendet werden. Die unmittelbaren Kosten der Rücksendung der Waren trägt der Verbraucher.
             </p>
             <p className="mt-2">
-              Du musst für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf
-              einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht
-              notwendigen Umgang mit ihnen zurückzuführen ist.
+              Für einen etwaigen Wertverlust der Waren muss nur aufgekommen werden, wenn dieser
+              Wertverlust auf einen zur Prüfung der Beschaffenheit, Eigenschaften und Funktionsweise der
+              Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.
             </p>
 
             <h3 className="mt-5 text-base font-semibold text-white">Ausschluss des Widerrufsrechts</h3>
             <p className="mt-2">
               Das Widerrufsrecht besteht nicht bzw. erlischt vorzeitig bei Verträgen zur Lieferung von Waren,
               die nicht vorgefertigt sind und für deren Herstellung eine individuelle Auswahl oder
-              Bestimmung durch dich maßgeblich ist oder die eindeutig auf deine persönlichen Bedürfnisse
-              zugeschnitten sind (§ 312g Abs. 2 Nr. 1 BGB). Dies betrifft insbesondere individuell nach
-              deinem Motiv, deinen Maßen und Farbwünschen angefertigte 3D-Artworks sowie nach deinen
-              Vorgaben konstruierte oder gedruckte Sonderbauteile.
+              Bestimmung durch den Verbraucher maßgeblich ist oder die eindeutig auf die persönlichen
+              Bedürfnisse des Verbrauchers zugeschnitten sind (§ 312g Abs. 2 Nr. 1 BGB). Dies betrifft
+              insbesondere individuell nach Motiv, Maßen und Farbwünschen des Bestellers angefertigte
+              3D-Artworks sowie nach dessen Vorgaben konstruierte oder gedruckte Sonderbauteile.
             </p>
           </section>
 
           <section className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:p-8">
             <h2 className="mb-3 text-lg font-semibold text-white">Muster-Widerrufsformular</h2>
             <p>
-              (Wenn du den Vertrag widerrufen willst, fülle bitte dieses Formular aus und sende es an
-              info@glueckengineering.com zurück.)
+              (Zum Widerruf des Vertrags kann dieses Formular ausgefüllt und an
+              info@glueckengineering.com zurückgesendet werden.)
             </p>
             <div className="mt-4 space-y-2">
               <p>An: M.Eng. Werner Glück, Glück Engineering, Rebenstr. 16, 94424 Arnstorf, info@glueckengineering.com</p>

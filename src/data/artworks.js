@@ -8,10 +8,10 @@ export const artworkGalleryImages = [
 ];
 
 export const artworkIntroText =
-  "Wir verwandeln dein Motiv in ein mehrschichtiges 3D-Artwork mit ausgeprägter Tiefenwirkung. Durch den schichtweisen Druck mit variierender Materialstärke entsteht eine plastische, dreidimensionale Oberfläche. Realisierbar sind sowohl schwarz-weiße Ausführungen als auch mehrfarbige Varianten mit bis zu sechs Farben.";
+  "Jedes Motiv wird in ein mehrschichtiges 3D-Artwork mit ausgeprägter Tiefenwirkung verwandelt. Durch den schichtweisen Druck mit variierender Materialstärke entsteht eine plastische, dreidimensionale Oberfläche. Realisierbar sind sowohl schwarz-weiße Ausführungen als auch mehrfarbige Varianten mit bis zu sechs Farben.";
 
 export const artworkInfoText = `Maximale Abmessungen: 30 × 30 cm.
 
 Preise ab 19,99 € für Schwarz-Weiß beziehungsweise ab 29,99 € zzgl. Versand für mehrfarbige Ausführungen.
 
-Sende uns dein Bild einfach per Anfrage. Mit der Übermittlung bestätigst du, dass du über die erforderlichen Nutzungsrechte am Motiv verfügst.`;
+Die Übermittlung des Bildes erfolgt per Anfrage. Mit der Übermittlung wird bestätigt, dass die erforderlichen Nutzungsrechte am Motiv vorliegen.`;

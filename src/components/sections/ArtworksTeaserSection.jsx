@@ -19,10 +19,10 @@ export default function ArtworksTeaserSection({ onRequest, onPreview }) {
           <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Individuelle 3D-Artworks</h2>
 
           <p className="mt-4 text-sm leading-relaxed text-neutral-400 sm:text-base">
-            Wir verwandeln dein Motiv in ein mehrschichtiges 3D-Artwork mit ausgeprägter Tiefenwirkung. Möglich sind schwarz-weiße und mehrfarbige Ausführungen mit bis zu sechs Farben.
+            Jedes Motiv wird in ein mehrschichtiges 3D-Artwork mit ausgeprägter Tiefenwirkung verwandelt. Möglich sind schwarz-weiße und mehrfarbige Ausführungen mit bis zu sechs Farben.
             <br />
             <br />
-            Auf der eigenen Artwork-Seite findest du Beispiele, den Ablauf und alle wichtigen Informationen auf einen Blick.
+            Auf der eigenen Artwork-Seite gibt es Beispiele, den Ablauf und alle wichtigen Informationen auf einen Blick.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">

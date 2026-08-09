@@ -109,7 +109,7 @@ export default function ContactModal({
               value={formData.notes}
               onChange={handleInputChange}
               rows={6}
-              placeholder="Deine Nachricht *"
+              placeholder="Nachricht *"
               className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
             />
           )}
@@ -313,8 +313,8 @@ export default function ContactModal({
         </div>
 
         <p className="mt-6 text-xs text-neutral-500">
-          Mit dem Absenden stimmst du der Verarbeitung deiner Daten zur Bearbeitung dieser Anfrage zu.
-          Mehr dazu in unserer{" "}
+          Mit dem Absenden wird der Verarbeitung der Daten zur Bearbeitung dieser Anfrage zugestimmt.
+          Mehr dazu in der{" "}
           <Link to="/datenschutz" className="text-neutral-300 underline hover:text-white">
             Datenschutzerklärung
           </Link>

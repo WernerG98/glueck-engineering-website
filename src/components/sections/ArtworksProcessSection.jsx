@@ -11,9 +11,9 @@ export default function ArtworksProcessSection() {
       <div className="space-y-6 sm:space-y-8">
         <Reveal className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:p-8">
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 bg-neutral-950 text-lg font-semibold text-neutral-200">1</div>
-          <h3 className="text-lg font-semibold sm:text-xl">Du sendest uns dein Bild und deine Wünsche</h3>
+          <h3 className="text-lg font-semibold sm:text-xl">Übermittlung von Bild und Wünschen</h3>
           <p className="mt-3 text-sm text-neutral-400 sm:text-base">
-            Sende uns dein Motiv als JPG, PNG, WEBP oder SVG und teile uns folgende Informationen mit:
+            Das Motiv wird als JPG, PNG, WEBP oder SVG übermittelt, zusammen mit folgenden Angaben:
           </p>
           <div className="mt-4 space-y-2 text-sm text-neutral-300 sm:text-base">
             <p>• Schwarz-Weiß oder Farbe</p>
@@ -26,9 +26,10 @@ export default function ArtworksProcessSection() {
 
         <Reveal delay={100} className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:p-8">
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 bg-neutral-950 text-lg font-semibold text-neutral-200">2</div>
-          <h3 className="text-lg font-semibold sm:text-xl">Wir prüfen deine Angaben und erstellen einen Vorabentwurf</h3>
+          <h3 className="text-lg font-semibold sm:text-xl">Prüfung der Angaben und Vorabentwurf</h3>
           <p className="mt-3 text-sm text-neutral-400 sm:text-base">
-            Auf Basis deiner Angaben prüfen wir die Umsetzbarkeit und senden dir vor dem Druck einen Vorabentwurf inklusive Preis zu. So siehst du bereits vorab, wie das spätere Artwork aussehen wird.
+            Auf Basis der Angaben wird die Umsetzbarkeit geprüft; vor dem Druck wird ein Vorabentwurf
+            inklusive Preis zugesendet. So ist bereits vorab erkennbar, wie das spätere Artwork aussehen wird.
           </p>
 
           <div className="mt-6 flex justify-center">
@@ -44,17 +45,17 @@ export default function ArtworksProcessSection() {
 
         <Reveal delay={200} className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:p-8">
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 bg-neutral-950 text-lg font-semibold text-neutral-200">3</div>
-          <h3 className="text-lg font-semibold sm:text-xl">Du gibst das Angebot frei</h3>
+          <h3 className="text-lg font-semibold sm:text-xl">Freigabe des Angebots</h3>
           <p className="mt-3 text-sm text-neutral-400 sm:text-base">
-            Erst wenn du mit Entwurf und Preis einverstanden bist, bestätigst du das Angebot. Vorher wird nichts produziert.
+            Erst nach Zustimmung zu Entwurf und Preis wird das Angebot bestätigt. Vorher wird nichts produziert.
           </p>
         </Reveal>
 
         <Reveal delay={300} className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:p-8">
           <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 bg-neutral-950 text-lg font-semibold text-neutral-200">4</div>
-          <h3 className="text-lg font-semibold sm:text-xl">Wir fertigen dein Artwork und verschicken es</h3>
+          <h3 className="text-lg font-semibold sm:text-xl">Fertigung und Versand</h3>
           <p className="mt-3 text-sm text-neutral-400 sm:text-base">
-            Nach deiner Freigabe fertigen wir das Produkt und versenden es anschließend sorgfältig verpackt an dich.
+            Nach erfolgter Freigabe wird das Produkt gefertigt und anschließend sorgfältig verpackt versendet.
           </p>
 
           <div className="mt-6 flex justify-center">
