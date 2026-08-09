@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ArtworksPage from "./pages/ArtworksPage";
 import ImpressumPage from "./pages/ImpressumPage";
+import DatenschutzPage from "./pages/DatenschutzPage";
+import AGBPage from "./pages/AGBPage";
 
 export default function App() {
   return (
@@ -9,6 +11,8 @@ export default function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/artworks" element={<ArtworksPage />} />
       <Route path="/impressum" element={<ImpressumPage />} />
+      <Route path="/datenschutz" element={<DatenschutzPage />} />
+      <Route path="/agb" element={<AGBPage />} />
     </Routes>
   );
 }

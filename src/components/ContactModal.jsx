@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ACCEPTING_REQUESTS } from "../data/siteStatus";
 
 export default function ContactModal({
@@ -311,7 +312,16 @@ export default function ContactModal({
           )}
         </div>
 
-        <div className="mt-6 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:flex-wrap sm:justify-end">
+        <p className="mt-6 text-xs text-neutral-500">
+          Mit dem Absenden stimmst du der Verarbeitung deiner Daten zur Bearbeitung dieser Anfrage zu.
+          Mehr dazu in unserer{" "}
+          <Link to="/datenschutz" className="text-neutral-300 underline hover:text-white">
+            Datenschutzerklärung
+          </Link>
+          .
+        </p>
+
+        <div className="mt-4 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:flex-wrap sm:justify-end">
           <button
             onClick={closeContactModal}
             className="rounded-lg border border-neutral-700 px-6 py-3 transition hover:border-neutral-500 hover:bg-neutral-800"
