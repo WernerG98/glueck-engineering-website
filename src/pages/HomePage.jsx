@@ -64,7 +64,7 @@ export default function HomePage() {
           </Reveal>
         </section>
 
-        <FertigteileTeaserSection onRequest={openContactModal} />
+        <FertigteileTeaserSection />
         <ServiceSection onRequest={openContactModal} />
         <ArtworksTeaserSection onRequest={openContactModal} onPreview={setSelectedImage} />
       </main>

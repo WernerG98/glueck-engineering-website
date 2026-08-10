@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Reveal from "../Reveal";
 
-export default function FertigteileTeaserSection({ onRequest }) {
+export default function FertigteileTeaserSection() {
   return (
     <section className="mt-16 sm:mt-20 md:mt-24">
       <Reveal className="grid gap-6 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:gap-8 sm:p-8 md:grid-cols-2 md:items-center md:p-10">
@@ -17,20 +17,13 @@ export default function FertigteileTeaserSection({ onRequest }) {
             verfügbaren Teilen.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <div className="mt-8">
             <Link
               to="/fertigteile"
               className="inline-block rounded-lg bg-white px-6 py-3 text-center font-medium text-neutral-950 transition hover:bg-neutral-200"
             >
               Alle Fertigteile ansehen
             </Link>
-
-            <button
-              onClick={() => onRequest("Allgemeine Anfrage", "general")}
-              className="inline-block rounded-lg border border-neutral-700 px-6 py-3 text-center transition hover:border-neutral-500 hover:bg-neutral-900"
-            >
-              Direkt anfragen
-            </button>
           </div>
         </div>
 
