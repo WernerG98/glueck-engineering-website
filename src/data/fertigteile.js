@@ -17,6 +17,12 @@ const fertigteile = [
     price: "24,99 €",
     text: "Robuster Spritzschutz für die hintere Schwinge. Steifer als das Originalbauteil, dabei aber weiterhin ausreichend flexibel, um Belastungen und Vibrationen im Fahrbetrieb zuverlässig aufzunehmen.",
   },
+  {
+    name: "VW T4/T5/T6 Heckklappenaussteller",
+    image: "/Heckklappenaussteller_T4_T5_T6.png",
+    price: "9,99 €",
+    text: "Erzeugt einen Spalt und hält die Heckklappe leicht geöffnet für Durchzug im Fahrzeug.",
+  },
 ];
 
 export default fertigteile;

@@ -37,13 +37,15 @@ function FertigteilCard({ item, onRequest }) {
   );
 }
 
-export default function FertigteileSection({ items, onRequest }) {
+export default function FertigteileSection({ items, onRequest, showHeading = true }) {
   return (
     <section className="mt-16 sm:mt-20 md:mt-24">
-      <Reveal>
-        <span className="eyebrow">Produkte</span>
-        <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">Fertigteile</h2>
-      </Reveal>
+      {showHeading && (
+        <Reveal>
+          <span className="eyebrow">Produkte</span>
+          <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">Fertigteile</h2>
+        </Reveal>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item, index) => (

@@ -1,17 +1,12 @@
-import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
-import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
-import FertigteileTeaserSection from "../components/sections/FertigteileTeaserSection";
-import ServiceSection from "../components/sections/ServiceSection";
-import ArtworksTeaserSection from "../components/sections/ArtworksTeaserSection";
+import FertigteileSection from "../components/sections/FertigteileSection";
 import useContactForm from "../hooks/useContactForm";
+import fertigteile from "../data/fertigteile";
 
-export default function HomePage() {
-  const [selectedImage, setSelectedImage] = useState(null);
-
+export default function FertigteilePage() {
   const {
     contactModalOpen,
     requestSubject,
@@ -31,18 +26,17 @@ export default function HomePage() {
       <Header onOpenContactModal={openContactModal} />
 
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
-        <section className="grid items-center gap-10 md:grid-cols-2 md:gap-12">
+        <section>
           <Reveal>
-            <span className="eyebrow">Fertigteile · 3D-Druck · Artworks</span>
+            <span className="eyebrow">Produkte</span>
 
             <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl">
-              Teile, die funktionieren.
-              <br />
-              <span className="text-neutral-400">Designs, die auffallen.</span>
+              Fertigteile
             </h1>
 
             <p className="mt-6 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
-              Individuelle Fertigteile, technische 3D-Drucklösungen und mehrschichtige 3D-Artworks aus einer Hand.
+              Passgenaue Ersatz- und Zubehörteile für ausgewählte Fahrzeuge, direkt ab Lager fertigbar.
+              Bei Bedarf an anderen Farben oder Stückzahlen einfach in der Anfrage angeben.
             </p>
 
             <div className="mt-8">
@@ -50,28 +44,16 @@ export default function HomePage() {
                 onClick={() => openContactModal("Allgemeine Anfrage", "general")}
                 className="inline-block rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200"
               >
-                Jetzt anfragen
+                Allgemeine Anfrage senden
               </button>
             </div>
           </Reveal>
-
-          <Reveal delay={150} className="group overflow-hidden rounded-2xl border border-neutral-800">
-            <img
-              src="/Artwork_Stanced_E46.png"
-              alt="3D Artwork BMW E46"
-              className="h-72 w-full object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-96 md:h-[30rem]"
-            />
-          </Reveal>
         </section>
 
-        <FertigteileTeaserSection onRequest={openContactModal} />
-        <ServiceSection onRequest={openContactModal} />
-        <ArtworksTeaserSection onRequest={openContactModal} onPreview={setSelectedImage} />
+        <FertigteileSection items={fertigteile} onRequest={openContactModal} showHeading={false} />
       </main>
 
       <Footer />
-
-      <ImageModal selectedImage={selectedImage} onClose={() => setSelectedImage(null)} />
 
       <ContactModal
         contactModalOpen={contactModalOpen}

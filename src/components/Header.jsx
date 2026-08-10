@@ -31,6 +31,10 @@ export default function Header({ onOpenContactModal }) {
             Startseite
           </NavLink>
 
+          <NavLink to="/fertigteile" className={navClassName}>
+            Fertigteile
+          </NavLink>
+
           <NavLink to="/artworks" className={navClassName}>
             3D-Artworks
           </NavLink>
