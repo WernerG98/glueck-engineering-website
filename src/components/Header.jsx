@@ -1,4 +1,5 @@
-import { Link, NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import StatusBanner from "./StatusBanner";
 
 function navClassName({ isActive }) {
@@ -11,11 +12,23 @@ function navClassName({ isActive }) {
 }
 
 export default function Header({ onOpenContactModal }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  const handleContactClick = () => {
+    setMenuOpen(false);
+    onOpenContactModal("Allgemeine Anfrage", "general");
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-neutral-950/80 backdrop-blur-md">
       <StatusBanner />
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 border-b border-neutral-800/80 px-4 py-4 sm:px-6 md:flex-row md:items-center md:justify-between md:py-5">
-        <Link to="/" className="flex items-center gap-3 sm:gap-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-b border-neutral-800/80 px-4 py-4 sm:px-6 md:py-5">
+        <Link to="/" className="flex items-center gap-3 sm:gap-4" onClick={() => setMenuOpen(false)}>
           <img
             src="/logo.png"
             alt="Glück Engineering Logo"
@@ -26,7 +39,7 @@ export default function Header({ onOpenContactModal }) {
           </span>
         </Link>
 
-        <div className="flex flex-col gap-2 md:flex-row md:items-center">
+        <div className="hidden items-center gap-2 md:flex">
           <NavLink to="/" className={navClassName} end>
             Startseite
           </NavLink>
@@ -40,13 +53,56 @@ export default function Header({ onOpenContactModal }) {
           </NavLink>
 
           <button
-            onClick={() => onOpenContactModal("Allgemeine Anfrage", "general")}
-            className="w-full rounded-lg bg-white px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-neutral-200 md:ml-2 md:w-auto"
+            onClick={handleContactClick}
+            className="ml-2 rounded-lg bg-white px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-neutral-200"
           >
             Kontakt
           </button>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label={menuOpen ? "Menü schließen" : "Menü öffnen"}
+          aria-expanded={menuOpen}
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-800 text-neutral-300 transition hover:bg-neutral-900 md:hidden"
+        >
+          {menuOpen ? (
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          )}
+        </button>
       </div>
+
+      {menuOpen && (
+        <div className="border-b border-neutral-800/80 px-4 pb-4 md:hidden">
+          <div className="flex flex-col gap-2 pt-1">
+            <NavLink to="/" className={navClassName} end onClick={() => setMenuOpen(false)}>
+              Startseite
+            </NavLink>
+
+            <NavLink to="/fertigteile" className={navClassName} onClick={() => setMenuOpen(false)}>
+              Fertigteile
+            </NavLink>
+
+            <NavLink to="/artworks" className={navClassName} onClick={() => setMenuOpen(false)}>
+              3D-Artworks
+            </NavLink>
+
+            <button
+              onClick={handleContactClick}
+              className="w-full rounded-lg bg-white px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-neutral-200"
+            >
+              Kontakt
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
