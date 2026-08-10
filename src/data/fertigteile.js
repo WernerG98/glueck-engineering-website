@@ -23,6 +23,12 @@ const fertigteile = [
     price: "9,99 €",
     text: "Erzeugt einen Spalt und hält die Heckklappe leicht geöffnet für Durchzug im Fahrzeug.",
   },
+  {
+    name: "VW T5.2 Stellmotor Klimaturm hinten",
+    image: "/Stellmotor_Klimaturm_T5.png",
+    price: "34,99 €",
+    text: "Stellmotor für den Klimaturm hinten, zuständig für die Warm-/Kaltverstellung sowie die Klappe zur Luftführung in den Dachhimmel oder Fußraum. 1 Stück, passend für VW T5.2.",
+  },
 ];
 
 export default fertigteile;
