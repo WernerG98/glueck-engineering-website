@@ -24,6 +24,12 @@ const fertigteile = [
     text: "Erzeugt einen Spalt und hält die Heckklappe leicht geöffnet für Durchzug im Fahrzeug.",
   },
   {
+    name: "VW T3 Heckklappenaussteller",
+    image: "/Heckklappenaussteller_T3.png",
+    price: "9,99 €",
+    text: "Erzeugt einen Spalt und hält die Heckklappe leicht geöffnet für Durchzug im Fahrzeug.",
+  },
+  {
     name: "VW T5.2 Stellmotor Klimaturm hinten",
     image: "/Stellmotor_Klimaturm_T5.png",
     price: "34,99 €",
