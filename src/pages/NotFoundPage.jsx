@@ -30,18 +30,12 @@ export default function NotFoundPage() {
           Die aufgerufene Seite existiert nicht oder wurde verschoben.
         </p>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-8">
           <Link
             to="/"
             className="inline-block rounded-lg bg-white px-6 py-3 text-center font-medium text-neutral-950 transition hover:bg-neutral-200"
           >
             Zur Startseite
-          </Link>
-          <Link
-            to="/artworks"
-            className="inline-block rounded-lg border border-neutral-700 px-6 py-3 text-center transition hover:border-neutral-500 hover:bg-neutral-900"
-          >
-            Zu den 3D-Artworks
           </Link>
         </div>
       </main>
