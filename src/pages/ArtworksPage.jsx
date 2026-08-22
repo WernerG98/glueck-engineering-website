@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
+import FloatingContactButton from "../components/FloatingContactButton";
 import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
 import GallerySection from "../components/sections/GallerySection";
@@ -109,6 +110,8 @@ export default function ArtworksPage() {
       <Footer />
 
       <ImageModal selectedImage={selectedImage} onClose={() => setSelectedImage(null)} />
+
+      <FloatingContactButton onOpen={openContactModal} />
 
       <ContactModal
         contactModalOpen={contactModalOpen}

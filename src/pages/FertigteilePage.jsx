@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
+import FloatingContactButton from "../components/FloatingContactButton";
 import Reveal from "../components/Reveal";
 import FertigteileSection from "../components/sections/FertigteileSection";
 import useContactForm from "../hooks/useContactForm";
@@ -87,6 +88,8 @@ export default function FertigteilePage() {
       </main>
 
       <Footer />
+
+      <FloatingContactButton onOpen={openContactModal} />
 
       <ContactModal
         contactModalOpen={contactModalOpen}

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
+import FloatingContactButton from "../components/FloatingContactButton";
 import Reveal from "../components/Reveal";
 import useContactForm from "../hooks/useContactForm";
 import materials, { materialCategories, materialFilters } from "../data/materials";
@@ -163,6 +164,8 @@ export default function MaterialienPage() {
       </main>
 
       <Footer />
+
+      <FloatingContactButton onOpen={openContactModal} />
 
       <ContactModal
         contactModalOpen={contactModalOpen}

@@ -1,6 +1,7 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
+import FloatingContactButton from "../components/FloatingContactButton";
 import useContactForm from "../hooks/useContactForm";
 
 export default function ImpressumPage() {
@@ -112,6 +113,8 @@ export default function ImpressumPage() {
       </main>
 
       <Footer />
+
+      <FloatingContactButton onOpen={openContactModal} />
 
       <ContactModal
         contactModalOpen={contactModalOpen}

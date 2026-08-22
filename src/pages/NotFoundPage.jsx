@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
+import FloatingContactButton from "../components/FloatingContactButton";
 import useContactForm from "../hooks/useContactForm";
 
 export default function NotFoundPage() {
@@ -41,6 +42,8 @@ export default function NotFoundPage() {
       </main>
 
       <Footer />
+
+      <FloatingContactButton onOpen={openContactModal} />
 
       <ContactModal
         contactModalOpen={contactModalOpen}
