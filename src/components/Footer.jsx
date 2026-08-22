@@ -30,6 +30,9 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-2 border-t border-neutral-900 pt-6 md:justify-start">
+          <Link to="/faq" className="text-xs text-neutral-500 transition hover:text-white">
+            FAQ
+          </Link>
           <Link to="/impressum" className="text-xs text-neutral-500 transition hover:text-white">
             Impressum
           </Link>
