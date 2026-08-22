@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
@@ -7,6 +8,8 @@ import useContactForm from "../hooks/useContactForm";
 import fertigteile from "../data/fertigteile";
 
 export default function FertigteilePage() {
+  const [activeVehicle, setActiveVehicle] = useState("alle");
+
   const {
     contactModalOpen,
     requestSubject,
@@ -20,6 +23,17 @@ export default function FertigteilePage() {
     handleFileChange,
     submitContactForm,
   } = useContactForm();
+
+  const vehicleOptions = useMemo(() => {
+    const unique = new Set();
+    fertigteile.forEach((item) => item.vehicles.forEach((vehicle) => unique.add(vehicle)));
+    return ["alle", ...Array.from(unique).sort()];
+  }, []);
+
+  const filteredFertigteile = useMemo(() => {
+    if (activeVehicle === "alle") return fertigteile;
+    return fertigteile.filter((item) => item.vehicles.includes(activeVehicle));
+  }, [activeVehicle]);
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
@@ -50,7 +64,26 @@ export default function FertigteilePage() {
           </Reveal>
         </section>
 
-        <FertigteileSection items={fertigteile} onRequest={openContactModal} showHeading={false} />
+        <section className="mt-10 sm:mt-12">
+          <Reveal className="flex flex-wrap gap-2">
+            {vehicleOptions.map((vehicle) => (
+              <button
+                key={vehicle}
+                onClick={() => setActiveVehicle(vehicle)}
+                className={[
+                  "rounded-lg border px-4 py-2 text-sm font-medium transition",
+                  activeVehicle === vehicle
+                    ? "border-neutral-700 bg-neutral-800/80 text-white"
+                    : "border-neutral-800 text-neutral-400 hover:border-neutral-700 hover:text-white",
+                ].join(" ")}
+              >
+                {vehicle === "alle" ? "Alle Fahrzeuge" : vehicle}
+              </button>
+            ))}
+          </Reveal>
+        </section>
+
+        <FertigteileSection items={filteredFertigteile} onRequest={openContactModal} showHeading={false} />
       </main>
 
       <Footer />
