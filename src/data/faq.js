@@ -1,5 +1,3 @@
-import { LEAD_TIME } from "./siteStatus";
-
 const faq = [
   {
     question: "Welche Dateiformate werden akzeptiert?",
@@ -20,7 +18,8 @@ const faq = [
   },
   {
     question: "Wie lange dauert die Lieferung?",
-    answer: `Die aktuelle Lieferzeit beträgt ca. ${LEAD_TIME} ab Auftragsbestätigung. Der aktuelle Stand wird auch oben auf jeder Seite im Banner angezeigt.`,
+    answer:
+      "Das ist je nach Bauteil unterschiedlich, abhängig von Komplexität, Material und aktueller Auslastung. Eine genaue Einschätzung gibt es im individuellen Angebot nach der Anfrage.",
   },
   {
     question: "Wie läuft eine Anfrage ab?",
