@@ -116,7 +116,7 @@ export default function MaterialienPage() {
                 className={[
                   "rounded-lg border px-4 py-2 text-sm font-medium transition",
                   activeFilter === filter.id
-                    ? "border-neutral-700 bg-neutral-800/80 text-white"
+                    ? "border-accent bg-neutral-800/80 text-white"
                     : "border-neutral-800 text-neutral-400 hover:border-neutral-700 hover:text-white",
                 ].join(" ")}
               >

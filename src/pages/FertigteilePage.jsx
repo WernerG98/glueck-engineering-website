@@ -57,7 +57,7 @@ export default function FertigteilePage() {
             <div className="mt-8">
               <button
                 onClick={() => openContactModal("Allgemeine Anfrage", "general")}
-                className="inline-block rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200"
+                className="inline-block rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
               >
                 Allgemeine Anfrage senden
               </button>
@@ -74,7 +74,7 @@ export default function FertigteilePage() {
                 className={[
                   "rounded-lg border px-4 py-2 text-sm font-medium transition",
                   activeVehicle === vehicle
-                    ? "border-neutral-700 bg-neutral-800/80 text-white"
+                    ? "border-accent bg-neutral-800/80 text-white"
                     : "border-neutral-800 text-neutral-400 hover:border-neutral-700 hover:text-white",
                 ].join(" ")}
               >

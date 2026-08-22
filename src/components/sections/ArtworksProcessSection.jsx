@@ -54,14 +54,14 @@ export default function ArtworksProcessSection() {
               className={[
                 "flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition sm:px-4",
                 index === activeStep
-                  ? "border-neutral-700 bg-neutral-800/80 text-white"
+                  ? "border-accent bg-neutral-800/80 text-white"
                   : "border-neutral-800 text-neutral-400 hover:border-neutral-700 hover:text-white",
               ].join(" ")}
             >
               <span
                 className={[
                   "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs",
-                  index === activeStep ? "border-white" : "border-neutral-600",
+                  index === activeStep ? "border-accent text-accent" : "border-neutral-600",
                 ].join(" ")}
               >
                 {index + 1}

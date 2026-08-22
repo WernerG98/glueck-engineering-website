@@ -51,7 +51,7 @@ export default function ArtworksPage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <button
                 onClick={() => openContactModal("Individuelles 3D-Artwork", "custom")}
-                className="inline-block rounded-lg bg-white px-6 py-3 text-center font-medium text-neutral-950 transition hover:bg-neutral-200"
+                className="inline-block rounded-lg bg-accent px-6 py-3 text-center font-medium text-neutral-950 transition hover:bg-accent-light"
               >
                 Anfrage senden
               </button>

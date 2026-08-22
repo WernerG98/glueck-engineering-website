@@ -46,7 +46,7 @@ export default function ContactModal({
           </p>
           <button
             onClick={closeContactModal}
-            className="mt-6 rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200"
+            className="mt-6 rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
           >
             Verstanden
           </button>
@@ -82,7 +82,7 @@ export default function ContactModal({
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Name *"
-            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
           />
 
           <input
@@ -91,7 +91,7 @@ export default function ContactModal({
             value={formData.email}
             onChange={handleInputChange}
             placeholder="E-Mail *"
-            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
           />
 
           <input
@@ -100,7 +100,7 @@ export default function ContactModal({
             value={formData.phone}
             onChange={handleInputChange}
             placeholder="Telefon (optional)"
-            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
           />
 
           {requestType === "general" && (
@@ -110,7 +110,7 @@ export default function ContactModal({
               onChange={handleInputChange}
               rows={6}
               placeholder="Nachricht *"
-              className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+              className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
             />
           )}
 
@@ -127,7 +127,7 @@ export default function ContactModal({
                   value={formData.quantity}
                   onChange={handleInputChange}
                   placeholder="z. B. 1"
-                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
                 />
               </div>
 
@@ -137,7 +137,7 @@ export default function ContactModal({
                 onChange={handleInputChange}
                 rows={6}
                 placeholder="Weitere Informationen"
-                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
               />
             </>
           )}
@@ -151,7 +151,7 @@ export default function ContactModal({
                     name="artworkColorMode"
                     value={formData.artworkColorMode}
                     onChange={handleInputChange}
-                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none"
+                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none"
                   >
                     <option value="">Bitte auswählen</option>
                     <option value="Schwarz-Weiß">Schwarz-Weiß</option>
@@ -168,7 +168,7 @@ export default function ContactModal({
                     value={formData.artworkQuantity}
                     onChange={handleInputChange}
                     placeholder="z. B. 1"
-                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
                   />
                 </div>
               </div>
@@ -184,7 +184,7 @@ export default function ContactModal({
                     value={formData.artworkWidth}
                     onChange={handleInputChange}
                     placeholder="Breite"
-                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
                   />
                   <span className="text-neutral-400">×</span>
                   <input
@@ -195,7 +195,7 @@ export default function ContactModal({
                     value={formData.artworkHeight}
                     onChange={handleInputChange}
                     placeholder="Höhe"
-                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
                   />
                 </div>
               </div>
@@ -207,7 +207,7 @@ export default function ContactModal({
                     name="artworkFrame"
                     value={formData.artworkFrame}
                     onChange={handleInputChange}
-                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none"
+                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none"
                   >
                     <option value="">Bitte auswählen</option>
                     <option value="Ja">Ja</option>
@@ -224,7 +224,7 @@ export default function ContactModal({
                     value={formData.artworkFrameColor}
                     onChange={handleInputChange}
                     disabled={formData.artworkFrame !== "Ja"}
-                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option value="">Bitte auswählen</option>
                     <option value="Schwarz">Schwarz</option>
@@ -239,7 +239,7 @@ export default function ContactModal({
                 onChange={handleInputChange}
                 rows={6}
                 placeholder="Motiv / Hinweise"
-                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
               />
             </>
           )}
@@ -254,7 +254,7 @@ export default function ContactModal({
                   value={formData.serviceMaterial}
                   onChange={handleInputChange}
                   placeholder="Nach Empfehlung"
-                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
                 />
               </div>
 
@@ -266,7 +266,7 @@ export default function ContactModal({
                   value={formData.serviceApplication}
                   onChange={handleInputChange}
                   placeholder="z. B. Innenraum, Motorraum, Prototyp, Dekoration"
-                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
                 />
               </div>
 
@@ -279,7 +279,7 @@ export default function ContactModal({
                   value={formData.serviceQuantity}
                   onChange={handleInputChange}
                   placeholder="z. B. 1"
-                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
                 />
               </div>
 
@@ -289,7 +289,7 @@ export default function ContactModal({
                 onChange={handleInputChange}
                 rows={6}
                 placeholder="Weitere Informationen"
-                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-neutral-500 px-4 py-3 outline-none placeholder:text-neutral-500"
+                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
               />
             </>
           )}
@@ -332,7 +332,7 @@ export default function ContactModal({
 
           <button
             onClick={submitContactForm}
-            className="rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200 disabled:opacity-50"
+            className="rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light disabled:opacity-50"
             disabled={isSending}
           >
             {isSending ? "Wird gesendet..." : "Anfrage senden"}

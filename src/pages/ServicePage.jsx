@@ -47,7 +47,7 @@ export default function ServicePage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <button
                 onClick={() => openContactModal("3D-Druck Dienstleistung", "service")}
-                className="inline-block rounded-lg bg-white px-6 py-3 text-center font-medium text-neutral-950 transition hover:bg-neutral-200"
+                className="inline-block rounded-lg bg-accent px-6 py-3 text-center font-medium text-neutral-950 transition hover:bg-accent-light"
               >
                 Datei hochladen &amp; Angebot erhalten
               </button>
@@ -90,7 +90,7 @@ export default function ServicePage() {
               </p>
               <Link
                 to="/materialien"
-                className="mt-3 inline-block text-sm text-neutral-300 underline hover:text-white"
+                className="mt-3 inline-block text-sm text-accent underline hover:text-accent-light"
               >
                 Materialübersicht ansehen
               </Link>
@@ -115,7 +115,7 @@ export default function ServicePage() {
           <div className="mt-6">
             <button
               onClick={() => openContactModal("3D-Druck Dienstleistung", "service")}
-              className="inline-block rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200"
+              className="inline-block rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
             >
               Jetzt anfragen
             </button>

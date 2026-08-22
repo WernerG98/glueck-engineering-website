@@ -6,7 +6,7 @@ function navClassName({ isActive }) {
   return [
     "w-full rounded-lg border px-5 py-2.5 text-center text-sm font-medium transition md:w-auto",
     isActive
-      ? "border-neutral-700 bg-neutral-800/80 text-white"
+      ? "border-accent bg-neutral-800/80 text-white"
       : "border-transparent text-neutral-400 hover:border-neutral-800 hover:bg-neutral-900 hover:text-white",
   ].join(" ");
 }
@@ -62,7 +62,7 @@ export default function Header({ onOpenContactModal }) {
 
           <button
             onClick={handleContactClick}
-            className="ml-2 rounded-lg bg-white px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-neutral-200"
+            className="ml-2 rounded-lg bg-accent px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-accent-light"
           >
             Kontakt
           </button>
@@ -112,7 +112,7 @@ export default function Header({ onOpenContactModal }) {
 
             <button
               onClick={handleContactClick}
-              className="w-full rounded-lg bg-white px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-neutral-200"
+              className="w-full rounded-lg bg-accent px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-accent-light"
             >
               Kontakt
             </button>

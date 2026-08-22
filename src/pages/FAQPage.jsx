@@ -34,7 +34,7 @@ function FAQItem({ item, isOpen, onToggle }) {
         <div className="px-5 pb-5 text-sm leading-relaxed text-neutral-400 sm:px-6 sm:pb-6 sm:text-base">
           <p>{item.answer}</p>
           {item.linkTo && (
-            <Link to={item.linkTo} className="mt-2 inline-block text-neutral-300 underline hover:text-white">
+            <Link to={item.linkTo} className="mt-2 inline-block text-accent underline hover:text-accent-light">
               {item.linkLabel}
             </Link>
           )}
@@ -97,7 +97,7 @@ export default function FAQPage() {
           <div className="mt-5">
             <button
               onClick={() => openContactModal("Allgemeine Anfrage", "general")}
-              className="inline-block rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200"
+              className="inline-block rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
             >
               Frage stellen
             </button>

@@ -3,7 +3,7 @@ export default function FloatingContactButton({ onOpen }) {
     <button
       onClick={() => onOpen("Allgemeine Anfrage", "general")}
       aria-label="Kontakt aufnehmen"
-      className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-white px-5 py-3 font-medium text-neutral-950 shadow-lg shadow-black/40 transition hover:bg-neutral-200 sm:bottom-6 sm:right-6"
+      className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-accent px-5 py-3 font-medium text-neutral-950 shadow-lg shadow-black/40 transition hover:bg-accent-light sm:bottom-6 sm:right-6"
     >
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
         <path

@@ -49,7 +49,7 @@ export default function HomePage() {
             <div className="mt-8">
               <button
                 onClick={() => openContactModal("3D-Druck Dienstleistung", "service")}
-                className="inline-block rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200"
+                className="inline-block rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
               >
                 Datei hochladen &amp; Angebot erhalten
               </button>
