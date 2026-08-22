@@ -52,6 +52,10 @@ export default function Header({ onOpenContactModal }) {
             3D-Artworks
           </NavLink>
 
+          <NavLink to="/materialien" className={navClassName}>
+            Materialien
+          </NavLink>
+
           <button
             onClick={handleContactClick}
             className="ml-2 rounded-lg bg-white px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-neutral-200"
@@ -92,6 +96,10 @@ export default function Header({ onOpenContactModal }) {
 
             <NavLink to="/artworks" className={navClassName} onClick={() => setMenuOpen(false)}>
               3D-Artworks
+            </NavLink>
+
+            <NavLink to="/materialien" className={navClassName} onClick={() => setMenuOpen(false)}>
+              Materialien
             </NavLink>
 
             <button

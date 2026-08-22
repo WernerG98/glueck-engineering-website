@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Reveal from "../Reveal";
 
 export default function ServiceSection({ onRequest }) {
@@ -29,13 +30,20 @@ export default function ServiceSection({ onRequest }) {
             Maximale Bauteilgröße: 33 × 32,5 × 32 cm.
           </p>
 
-          <div className="mt-8">
+          <div className="mt-8 flex flex-wrap gap-3">
             <button
               onClick={() => onRequest("3D-Druck Dienstleistung", "service")}
               className="rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200"
             >
               Anfrage senden
             </button>
+
+            <Link
+              to="/materialien"
+              className="rounded-lg border border-neutral-700 px-6 py-3 font-medium transition hover:border-neutral-500 hover:bg-neutral-800"
+            >
+              Materialvergleich ansehen
+            </Link>
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import FertigteilePage from "./pages/FertigteilePage";
 import ArtworksPage from "./pages/ArtworksPage";
+import MaterialienPage from "./pages/MaterialienPage";
 import ImpressumPage from "./pages/ImpressumPage";
 import DatenschutzPage from "./pages/DatenschutzPage";
 import AGBPage from "./pages/AGBPage";
@@ -13,6 +14,7 @@ export default function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/fertigteile" element={<FertigteilePage />} />
       <Route path="/artworks" element={<ArtworksPage />} />
+      <Route path="/materialien" element={<MaterialienPage />} />
       <Route path="/impressum" element={<ImpressumPage />} />
       <Route path="/datenschutz" element={<DatenschutzPage />} />
       <Route path="/agb" element={<AGBPage />} />
