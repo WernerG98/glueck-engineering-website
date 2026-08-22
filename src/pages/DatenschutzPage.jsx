@@ -107,11 +107,28 @@ export default function DatenschutzPage() {
           </section>
 
           <section>
-            <h2 className="mb-2 text-lg font-semibold text-white">5. Keine Cookies, kein Tracking</h2>
+            <h2 className="mb-2 text-lg font-semibold text-white">5. Web-Analyse (Vercel Web Analytics)</h2>
             <p>
-              Diese Website setzt keine Cookies zu Analyse- oder Marketingzwecken ein und verwendet keine
-              Tracking- oder Analyse-Tools (z. B. Google Analytics). Es findet keine Auswertung des
-              Nutzungsverhaltens statt.
+              Zur anonymisierten statistischen Auswertung der Websitenutzung wird der Dienst Vercel Web
+              Analytics des Hosting-Anbieters Vercel Inc. (siehe Ziffer 2) eingesetzt. Dabei werden keine
+              Cookies gesetzt; Besucher werden über einen aus der Anfrage gebildeten Hash-Wert erkannt, der
+              nach 24 Stunden automatisch verworfen wird. Erfasst werden ausschließlich aggregierte, nicht
+              personenbezogene Daten wie aufgerufene Seite, Referrer, grobe Standortangabe (Land/Region),
+              Gerätetyp und Browser – eine Zusammenführung mit anderen Datenquellen oder eine individuelle
+              Identifizierung von Besuchern findet nicht statt.
+            </p>
+            <p className="mt-3">
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Analyse und
+              Verbesserung des Webangebots). Weitere Informationen:{" "}
+              <a
+                href="https://vercel.com/docs/analytics/privacy-policy"
+                target="_blank"
+                rel="noreferrer"
+                className="text-neutral-300 hover:text-white"
+              >
+                vercel.com/docs/analytics/privacy-policy
+              </a>
+              .
             </p>
           </section>
 
