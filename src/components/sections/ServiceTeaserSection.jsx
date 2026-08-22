@@ -10,7 +10,7 @@ export default function ServiceTeaserSection({ onRequest }) {
           <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">3D-Druck Dienstleistung</h2>
 
           <p className="mt-4 text-sm leading-relaxed text-neutral-400 sm:text-base">
-            Datei einreichen, Bauteil erhalten – oder von der Idee bis zum fertigen Produkt: technische
+            Datei einreichen, Bauteil erhalten, oder von der Idee bis zum fertigen Produkt: technische
             Beratung, Werkstoffauswahl und Fertigung aus einer Hand, für funktionale Bauteile, Prototypen und
             Kleinserien.
           </p>

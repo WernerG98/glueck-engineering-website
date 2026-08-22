@@ -4,7 +4,7 @@ export default function StatusBanner() {
   if (!ACCEPTING_REQUESTS) {
     return (
       <div className="border-b border-neutral-800 bg-neutral-900 px-4 py-2 text-center text-xs text-neutral-100 sm:text-sm">
-        <span className="font-semibold">Aktuell pausiert:</span> Wir nehmen momentan keine neuen Anfragen an — schau bald wieder vorbei.
+        <span className="font-semibold">Aktuell pausiert:</span> Wir nehmen momentan keine neuen Anfragen an. Schau bald wieder vorbei.
       </div>
     );
   }

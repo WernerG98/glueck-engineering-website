@@ -9,12 +9,12 @@ const faq = [
   {
     question: "Wie groß darf ein Bauteil sein?",
     answer:
-      "Für Fertigteile und die 3D-Druck Dienstleistung maximal 33 × 32,5 × 32 cm. Für 3D-Artworks maximal 30 × 30 cm. Größere Bauteile können bei Bedarf in Segmenten gedruckt werden – einfach in der Anfrage angeben.",
+      "Für Fertigteile und die 3D-Druck Dienstleistung maximal 33 × 32,5 × 32 cm. Für 3D-Artworks maximal 30 × 30 cm. Größere Bauteile können bei Bedarf in Segmenten gedruckt werden, einfach in der Anfrage angeben.",
   },
   {
     question: "Mit welchen Materialien wird gedruckt?",
     answer:
-      "Ausschließlich mit Filamenten von Bambu Lab – darunter PLA, PETG, ABS, ASA, TPU, PC sowie faserverstärkte Varianten. Eine vollständige Übersicht mit allen Eigenschaften gibt es im Material-Guide.",
+      "Ausschließlich mit Filamenten von Bambu Lab, darunter PLA, PETG, ABS, ASA, TPU, PC sowie faserverstärkte Varianten. Eine vollständige Übersicht mit allen Eigenschaften gibt es im Material-Guide.",
     linkTo: "/materialien",
     linkLabel: "Zum Material-Guide",
   },
@@ -25,7 +25,7 @@ const faq = [
   {
     question: "Wie läuft eine Anfrage ab?",
     answer:
-      "Eine Anfrage über das Kontaktformular ist unverbindlich. Danach gibt es ein individuelles Angebot inklusive Preis. Ein Vertrag kommt erst zustande, wenn dieses Angebot ausdrücklich bestätigt wird – vorher wird nichts produziert.",
+      "Eine Anfrage über das Kontaktformular ist unverbindlich. Danach gibt es ein individuelles Angebot inklusive Preis. Ein Vertrag kommt erst zustande, wenn dieses Angebot ausdrücklich bestätigt wird. Vorher wird nichts produziert.",
   },
   {
     question: "Wie erfolgt die Zahlung?",
@@ -42,7 +42,7 @@ const faq = [
   {
     question: "Sind individuelle Anfragen möglich, auch ohne fertige Datei?",
     answer:
-      "Ja. Auch ohne fertiges 3D-Modell wird gemeinsam erarbeitet, was gebraucht wird – von der technischen Beratung über die Konstruktion bis zur Optimierung.",
+      "Ja. Auch ohne fertiges 3D-Modell wird gemeinsam erarbeitet, was gebraucht wird, von der technischen Beratung über die Konstruktion bis zur Optimierung.",
     linkTo: "/service",
     linkLabel: "Mehr zur 3D-Druck Dienstleistung",
   },

@@ -92,7 +92,7 @@ export default function FAQPage() {
         <Reveal className="mt-10 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 text-center sm:mt-12 sm:p-8">
           <h2 className="text-lg font-semibold sm:text-xl">Frage nicht dabei?</h2>
           <p className="mt-2 text-sm leading-relaxed text-neutral-400 sm:text-base">
-            Einfach direkt melden – Antwort kommt persönlich.
+            Einfach direkt melden, die Antwort kommt persönlich.
           </p>
           <div className="mt-5">
             <button

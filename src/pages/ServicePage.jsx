@@ -40,7 +40,7 @@ export default function ServicePage() {
             </p>
 
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
-              Individuelle 3D-Drucklösungen für funktionale Bauteile, Prototypen und Kleinserien – vom fertigen
+              Individuelle 3D-Drucklösungen für funktionale Bauteile, Prototypen und Kleinserien, vom fertigen
               Modell bis zur Idee, die erst gemeinsam zum druckbaren Bauteil wird.
             </p>
 
@@ -79,7 +79,7 @@ export default function ServicePage() {
             <Reveal className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6">
               <h3 className="text-lg font-semibold">Von der Idee zum Produkt</h3>
               <p className="mt-2 text-sm leading-relaxed text-neutral-400">
-                Technische Beratung, Konstruktion und Optimierung – auch ohne fertige Datei.
+                Technische Beratung, Konstruktion und Optimierung, auch ohne fertige Datei.
               </p>
             </Reveal>
 
@@ -110,7 +110,7 @@ export default function ServicePage() {
         <Reveal className="mt-16 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 text-center sm:mt-20 sm:p-10 md:mt-24">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Bereit für dein Projekt?</h2>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-neutral-400 sm:text-base">
-            Datei einreichen oder Idee schildern – der Rest wird gemeinsam geklärt.
+            Datei einreichen oder Idee schildern. Der Rest wird gemeinsam geklärt.
           </p>
           <div className="mt-6">
             <button

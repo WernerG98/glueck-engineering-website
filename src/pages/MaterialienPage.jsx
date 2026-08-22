@@ -47,7 +47,7 @@ function MaterialCard({ material, onRequest }) {
 
       <div className="mt-6">
         <button
-          onClick={() => onRequest(`3D-Druck Dienstleistung – ${material.name}`, "service")}
+          onClick={() => onRequest(`3D-Druck Dienstleistung: ${material.name}`, "service")}
           className="w-full rounded-lg border border-neutral-700 py-3 text-center text-sm font-medium transition hover:border-neutral-500 hover:bg-neutral-800"
         >
           Anfrage mit {material.name}
@@ -157,7 +157,7 @@ export default function MaterialienPage() {
             </a>
             . Die UV-Beständigkeit wird dort nicht als Kennzahl veröffentlicht und basiert auf allgemein
             anerkannten materialwissenschaftlichen Einschätzungen des jeweiligen Kunststofftyps. Alle Angaben ohne
-            Gewähr und abhängig von Bauteilgeometrie, Druckausrichtung und Einsatzbedingungen – bei besonderen
+            Gewähr und abhängig von Bauteilgeometrie, Druckausrichtung und Einsatzbedingungen. Bei besonderen
             Anforderungen sprich uns direkt an.
           </p>
         </Reveal>

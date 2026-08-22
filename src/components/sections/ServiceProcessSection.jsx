@@ -5,7 +5,7 @@ const steps = [
   {
     title: "Datei einreichen oder Idee schildern",
     description:
-      "Bei einer bereits fertigen Datei genügt die Übermittlung des Modells. Sonst reicht eine Beschreibung der Idee – von der Konstruktion bis zur Optimierung wird gemeinsam erarbeitet, was gebraucht wird.",
+      "Bei einer bereits fertigen Datei genügt die Übermittlung des Modells. Sonst reicht eine Beschreibung der Idee, von der Konstruktion bis zur Optimierung wird gemeinsam erarbeitet, was gebraucht wird.",
   },
   {
     title: "Technische Beratung & Angebot",

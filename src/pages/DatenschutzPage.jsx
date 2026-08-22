@@ -114,7 +114,7 @@ export default function DatenschutzPage() {
               Cookies gesetzt; Besucher werden über einen aus der Anfrage gebildeten Hash-Wert erkannt, der
               nach 24 Stunden automatisch verworfen wird. Erfasst werden ausschließlich aggregierte, nicht
               personenbezogene Daten wie aufgerufene Seite, Referrer, grobe Standortangabe (Land/Region),
-              Gerätetyp und Browser – eine Zusammenführung mit anderen Datenquellen oder eine individuelle
+              Gerätetyp und Browser. Eine Zusammenführung mit anderen Datenquellen oder eine individuelle
               Identifizierung von Besuchern findet nicht statt.
             </p>
             <p className="mt-3">
