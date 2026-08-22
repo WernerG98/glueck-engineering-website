@@ -27,6 +27,7 @@ function MaterialCard({ material, onRequest }) {
         <PropertyRow label="Hitzebeständigkeit" value={material.heat} />
         <PropertyRow label="Festigkeit" value={material.strength} />
         <PropertyRow label="Flexibilität" value={material.flex} />
+        <PropertyRow label="UV-Beständigkeit" value={material.uv} />
         <PropertyRow label="Außentauglichkeit" value={material.weather} />
         <PropertyRow label="Druckschwierigkeit" value={material.difficulty} />
       </div>
@@ -153,8 +154,10 @@ export default function MaterialienPage() {
             >
               Herstellerangaben von Bambu Lab
             </a>
-            . Alle Angaben ohne Gewähr und abhängig von Bauteilgeometrie, Druckausrichtung und Einsatzbedingungen –
-            bei besonderen Anforderungen sprich uns direkt an.
+            . Die UV-Beständigkeit wird dort nicht als Kennzahl veröffentlicht und basiert auf allgemein
+            anerkannten materialwissenschaftlichen Einschätzungen des jeweiligen Kunststofftyps. Alle Angaben ohne
+            Gewähr und abhängig von Bauteilgeometrie, Druckausrichtung und Einsatzbedingungen – bei besonderen
+            Anforderungen sprich uns direkt an.
           </p>
         </Reveal>
       </main>
