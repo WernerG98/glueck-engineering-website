@@ -11,8 +11,8 @@ export default function ServiceTeaserSection({ onRequest }) {
 
           <p className="mt-4 text-sm leading-relaxed text-neutral-400 sm:text-base">
             Datei einreichen, Bauteil erhalten, oder von der Idee bis zum fertigen Produkt: technische
-            Beratung, Werkstoffauswahl und Fertigung aus einer Hand, für funktionale Bauteile, Prototypen und
-            Kleinserien.
+            Beratung, Werkstoffauswahl und Fertigung aus einer Hand. Egal ob Ersatzteil für zuhause,
+            individuelles Bauteil oder technischer Prototyp.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">

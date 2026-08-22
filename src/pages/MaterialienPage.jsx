@@ -4,13 +4,32 @@ import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
 import Reveal from "../components/Reveal";
+import InfoTooltip from "../components/InfoTooltip";
 import useContactForm from "../hooks/useContactForm";
 import materials, { materialCategories, materialFilters } from "../data/materials";
+
+const PROPERTY_GLOSSARY = {
+  Hitzebeständigkeit:
+    "Zeigt, bis zu welcher Temperatur ein Bauteil seine Form behält, bevor es weich wird. Wichtig z. B. bei praller Sonne im Auto oder in Wärmenähe.",
+  Festigkeit:
+    "Wie stabil sich das Material unter Belastung verhält, bevor es bricht oder sich verformt. Höher heißt: hält mehr aus.",
+  Flexibilität:
+    "Wie stark sich das Material biegen lässt, ohne zu brechen. Starre Materialien sind formstabil, flexible geben nach.",
+  "UV-Beständigkeit":
+    "Wie gut das Material Sonnenlicht über längere Zeit verträgt, ohne spröde zu werden oder zu verblassen. Wichtig für Teile, die draußen bleiben.",
+  Außentauglichkeit:
+    "Ob sich das Material für den dauerhaften Einsatz im Freien eignet, zusammengefasst aus UV- und Witterungsbeständigkeit.",
+  Druckschwierigkeit:
+    "Wie anspruchsvoll der 3D-Druck mit diesem Material ist, z. B. wegen nötiger Trocknung. Betrifft die Fertigung, nicht die Qualität des fertigen Teils.",
+};
 
 function PropertyRow({ label, value }) {
   return (
     <div className="flex items-start justify-between gap-4 py-2.5">
-      <span className="text-xs uppercase tracking-wide text-neutral-500">{label}</span>
+      <span className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-neutral-500">
+        {label}
+        {PROPERTY_GLOSSARY[label] && <InfoTooltip text={PROPERTY_GLOSSARY[label]} />}
+      </span>
       <span className="text-right text-sm text-neutral-200">{value.label}</span>
     </div>
   );

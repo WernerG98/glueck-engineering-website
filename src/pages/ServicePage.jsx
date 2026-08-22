@@ -41,7 +41,9 @@ export default function ServicePage() {
 
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
               Individuelle 3D-Drucklösungen für funktionale Bauteile, Prototypen und Kleinserien, vom fertigen
-              Modell bis zur Idee, die erst gemeinsam zum druckbaren Bauteil wird.
+              Modell bis zur Idee, die erst gemeinsam zum druckbaren Bauteil wird. Nicht nur für Technik-Profis:
+              genauso gefragt sind Ersatzteile für Haushaltsgeräte, individuelle Halterungen oder ausgefallene
+              Geschenke.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -79,7 +81,8 @@ export default function ServicePage() {
             <Reveal className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6">
               <h3 className="text-lg font-semibold">Von der Idee zum Produkt</h3>
               <p className="mt-2 text-sm leading-relaxed text-neutral-400">
-                Technische Beratung, Konstruktion und Optimierung, auch ohne fertige Datei.
+                Technische Beratung, Konstruktion und Optimierung, auch ohne fertige Datei. Egal ob defektes
+                Haushaltsteil, spontane Geschenkidee oder technisches Bauteil.
               </p>
             </Reveal>
 
