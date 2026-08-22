@@ -5,7 +5,7 @@ import ContactModal from "../components/ContactModal";
 import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
 import FertigteileTeaserSection from "../components/sections/FertigteileTeaserSection";
-import ServiceSection from "../components/sections/ServiceSection";
+import ServiceTeaserSection from "../components/sections/ServiceTeaserSection";
 import ArtworksTeaserSection from "../components/sections/ArtworksTeaserSection";
 import useContactForm from "../hooks/useContactForm";
 
@@ -47,10 +47,10 @@ export default function HomePage() {
 
             <div className="mt-8">
               <button
-                onClick={() => openContactModal("Allgemeine Anfrage", "general")}
+                onClick={() => openContactModal("3D-Druck Dienstleistung", "service")}
                 className="inline-block rounded-lg bg-white px-6 py-3 font-medium text-neutral-950 transition hover:bg-neutral-200"
               >
-                Jetzt anfragen
+                Datei hochladen &amp; Angebot erhalten
               </button>
             </div>
           </Reveal>
@@ -64,8 +64,8 @@ export default function HomePage() {
           </Reveal>
         </section>
 
+        <ServiceTeaserSection onRequest={openContactModal} />
         <FertigteileTeaserSection />
-        <ServiceSection onRequest={openContactModal} />
         <ArtworksTeaserSection onRequest={openContactModal} onPreview={setSelectedImage} />
       </main>
 

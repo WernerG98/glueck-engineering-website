@@ -44,6 +44,10 @@ export default function Header({ onOpenContactModal }) {
             Startseite
           </NavLink>
 
+          <NavLink to="/service" className={navClassName}>
+            3D-Druck
+          </NavLink>
+
           <NavLink to="/fertigteile" className={navClassName}>
             Fertigteile
           </NavLink>
@@ -88,6 +92,10 @@ export default function Header({ onOpenContactModal }) {
           <div className="flex flex-col gap-2 pt-1">
             <NavLink to="/" className={navClassName} end onClick={() => setMenuOpen(false)}>
               Startseite
+            </NavLink>
+
+            <NavLink to="/service" className={navClassName} onClick={() => setMenuOpen(false)}>
+              3D-Druck
             </NavLink>
 
             <NavLink to="/fertigteile" className={navClassName} onClick={() => setMenuOpen(false)}>
