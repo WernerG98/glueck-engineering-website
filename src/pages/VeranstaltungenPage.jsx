@@ -209,6 +209,10 @@ function EventContent({ password }) {
             <p className="mt-2 text-sm leading-relaxed text-neutral-400">
               Bitte überweise {PRICE_PER_PERSON_LABEL} pro Person per PayPal.
             </p>
+            <p className="mt-2 text-sm leading-relaxed text-neutral-400">
+              Sobald der Geldeingang bei uns bestätigt ist, bekommst du eine E-Mail mit der Bestätigung. Erst
+              dann ist dein Platz sicher.
+            </p>
             {PAYPAL_LINK ? (
               <a
                 href={PAYPAL_LINK}

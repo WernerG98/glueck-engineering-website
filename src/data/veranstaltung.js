@@ -5,7 +5,7 @@ export const EVENT_TITLE = "Ausflug Haslinger Hof 2026";
 export const PRICE_PER_PERSON_LABEL = "30 €";
 
 export const BUS_OPTIONS = [
-  { id: "bus1", label: "Bus 1", capacity: 67 },
+  { id: "bus1", label: "Bus 1", capacity: 69 },
   { id: "bus2", label: "Bus 2", capacity: 50 },
 ];
 

@@ -1,8 +1,10 @@
 import { Redis } from "@upstash/redis";
-import { BUS_OPTIONS, MAX_PARTICIPANTS, REGISTRATION_DEADLINE } from "../src/data/veranstaltung.js";
+import { Resend } from "resend";
+import { BUS_OPTIONS, EVENT_TITLE, MAX_PARTICIPANTS, PRICE_PER_PERSON_LABEL, REGISTRATION_DEADLINE } from "../src/data/veranstaltung.js";
 
 const SIGNUPS_KEY = "veranstaltung:haslinger-hof-2026:signups";
 const ADMIN_PASSWORD = process.env.EVENT_ADMIN_PASSWORD || "admin";
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Vercels Marketplace-Integrationen für Upstash Redis setzen die
 // Umgebungsvariablen je nach Anbindung unter unterschiedlichen Namen.
@@ -28,6 +30,23 @@ function busCounts(signups) {
     acc[bus.id] = signups.filter((entry) => entry.bus === bus.id && entry.paid).length;
     return acc;
   }, {});
+}
+
+function buildConfirmationHtml(entry, busOption) {
+  return `
+    <h2>Zahlung bestätigt – dein Platz ist gesichert!</h2>
+    <p>Hallo ${entry.firstName},</p>
+    <p>deine Zahlung für <strong>${EVENT_TITLE}</strong> ist bei uns eingegangen. Dein Platz ist damit gesichert.</p>
+    <hr />
+    <p><strong>Veranstaltung:</strong> ${EVENT_TITLE}</p>
+    <p><strong>Teilnehmer:</strong> ${entry.firstName} ${entry.lastName}</p>
+    <p><strong>Bus:</strong> ${busOption ? busOption.label : entry.bus}</p>
+    <p><strong>Preis:</strong> ${PRICE_PER_PERSON_LABEL}</p>
+    <p><strong>Anmeldefrist:</strong> ${REGISTRATION_DEADLINE}</p>
+    <hr />
+    <p>Bei Fragen einfach auf diese E-Mail antworten.</p>
+    <p>Viele Grüße</p>
+  `;
 }
 
 export default async function handler(req, res) {
@@ -106,8 +125,25 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "Anmeldung nicht gefunden." });
     }
 
+    const wasPaid = signups[index].paid;
     signups[index] = { ...signups[index], paid };
     await redis.set(SIGNUPS_KEY, signups);
+
+    if (paid && !wasPaid && process.env.CONTACT_FROM_EMAIL) {
+      const entry = signups[index];
+      const busOption = BUS_OPTIONS.find((option) => option.id === entry.bus);
+
+      try {
+        await resend.emails.send({
+          from: process.env.CONTACT_FROM_EMAIL,
+          to: entry.email,
+          subject: `Zahlung bestätigt – ${EVENT_TITLE}`,
+          html: buildConfirmationHtml(entry, busOption),
+        });
+      } catch (error) {
+        console.error("Fehler beim Versand der Zahlungsbestätigung:", error);
+      }
+    }
 
     return res.status(200).json({ signups, counts: busCounts(signups), total: signups.length });
   }
