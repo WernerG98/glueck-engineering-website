@@ -49,11 +49,17 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const firstName = typeof req.body?.firstName === "string" ? req.body.firstName.trim() : "";
     const lastName = typeof req.body?.lastName === "string" ? req.body.lastName.trim() : "";
+    const email = typeof req.body?.email === "string" ? req.body.email.trim() : "";
+    const newsletter = Boolean(req.body?.newsletter);
     const bus = typeof req.body?.bus === "string" ? req.body.bus : "";
     const busOption = BUS_OPTIONS.find((option) => option.id === bus);
 
     if (!firstName || !lastName || !busOption) {
       return res.status(400).json({ error: "Bitte Vorname, Nachname und Bus angeben." });
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: "Bitte eine gültige E-Mail-Adresse angeben." });
     }
 
     if (new Date() > new Date(`${REGISTRATION_DEADLINE}T23:59:59`)) {
@@ -75,6 +81,8 @@ export default async function handler(req, res) {
       id: crypto.randomUUID(),
       firstName,
       lastName,
+      email,
+      newsletter,
       bus,
       paid: false,
       createdAt: new Date().toISOString(),

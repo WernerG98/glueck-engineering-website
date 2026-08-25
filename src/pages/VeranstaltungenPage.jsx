@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
@@ -78,7 +79,7 @@ function EventContent({ password }) {
   const [counts, setCounts] = useState({});
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState({ firstName: "", lastName: "", bus: "" });
+  const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "", bus: "", newsletter: false });
   const [submitError, setSubmitError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -226,6 +227,14 @@ function EventContent({ password }) {
                   />
                 </div>
 
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="E-Mail *"
+                  className="rounded-xl border border-neutral-700 bg-neutral-950 px-4 py-3 outline-none transition placeholder:text-neutral-500 focus:border-accent"
+                />
+
                 <div className="grid gap-3 sm:grid-cols-2">
                   {BUS_OPTIONS.map((bus) => {
                     const count = counts[bus.id] ?? 0;
@@ -247,17 +256,36 @@ function EventContent({ password }) {
                           checked={formData.bus === bus.id}
                           onChange={(e) => setFormData({ ...formData, bus: e.target.value })}
                         />
-                        {bus.label} ({count}/{bus.capacity})
+                        {bus.label}
                       </label>
                     );
                   })}
                 </div>
 
+                <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-300">
+                  <input
+                    type="checkbox"
+                    checked={formData.newsletter}
+                    onChange={(e) => setFormData({ ...formData, newsletter: e.target.checked })}
+                    className="h-4 w-4 accent-accent"
+                  />
+                  Newsletter abonnieren (Infos zu neuen Angeboten)
+                </label>
+
+                <p className="text-xs text-neutral-600">
+                  Die Angaben werden zur Organisation des Ausflugs verwendet, bei angehaktem Newsletter zusätzlich
+                  für gelegentliche Neuigkeiten. Mehr dazu in der{" "}
+                  <Link to="/datenschutz" className="underline hover:text-neutral-400">
+                    Datenschutzerklärung
+                  </Link>
+                  .
+                </p>
+
                 {submitError && <p className="text-sm text-red-400">{submitError}</p>}
 
                 <button
                   type="submit"
-                  disabled={submitting || !formData.firstName || !formData.lastName || !formData.bus}
+                  disabled={submitting || !formData.firstName || !formData.lastName || !formData.email || !formData.bus}
                   className="mt-2 rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {submitting ? "Wird gesendet..." : "Anmelden"}
@@ -279,11 +307,13 @@ function EventContent({ password }) {
 
       {showAdmin && (
         <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4 sm:p-6">
-          <table className="w-full min-w-[480px] text-left text-sm">
+          <table className="w-full min-w-[600px] text-left text-sm">
             <thead>
               <tr className="border-b border-neutral-800 text-neutral-500">
                 <th className="pb-2 pr-4">Name</th>
+                <th className="pb-2 pr-4">E-Mail</th>
                 <th className="pb-2 pr-4">Bus</th>
+                <th className="pb-2 pr-4">Newsletter</th>
                 <th className="pb-2">Bezahlt</th>
               </tr>
             </thead>
@@ -293,9 +323,11 @@ function EventContent({ password }) {
                   <td className="py-2 pr-4 text-neutral-200">
                     {entry.firstName} {entry.lastName}
                   </td>
+                  <td className="py-2 pr-4 text-neutral-400">{entry.email}</td>
                   <td className="py-2 pr-4 text-neutral-400">
                     {BUS_OPTIONS.find((b) => b.id === entry.bus)?.label || entry.bus}
                   </td>
+                  <td className="py-2 pr-4 text-neutral-400">{entry.newsletter ? "Ja" : "-"}</td>
                   <td className="py-2">
                     <input
                       type="checkbox"
@@ -308,7 +340,7 @@ function EventContent({ password }) {
               ))}
               {signups.length === 0 && !loading && (
                 <tr>
-                  <td colSpan={3} className="py-4 text-neutral-500">
+                  <td colSpan={5} className="py-4 text-neutral-500">
                     Noch keine Anmeldungen.
                   </td>
                 </tr>
