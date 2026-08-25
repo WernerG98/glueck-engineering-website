@@ -8,7 +8,6 @@ import useContactForm from "../hooks/useContactForm";
 import {
   BUS_OPTIONS,
   EVENT_TITLE,
-  MAX_PARTICIPANTS,
   PAYPAL_LINK,
   PRICE_PER_PERSON_LABEL,
   REGISTRATION_DEADLINE,
@@ -77,7 +76,6 @@ function PasswordGate({ onUnlock }) {
 function EventContent({ password }) {
   const [signups, setSignups] = useState([]);
   const [counts, setCounts] = useState({});
-  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "", bus: "", newsletter: false });
   const [submitError, setSubmitError] = useState("");
@@ -92,7 +90,6 @@ function EventContent({ password }) {
       const data = await response.json();
       setSignups(data.signups || []);
       setCounts(data.counts || {});
-      setTotal(data.total || 0);
     } catch {
       // Zähler bleibt auf letztem bekannten Stand
     } finally {
@@ -124,7 +121,6 @@ function EventContent({ password }) {
 
       setSignups(data.signups || []);
       setCounts(data.counts || {});
-      setTotal(data.total || 0);
       setSubmitted(true);
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Anmeldung fehlgeschlagen.");
@@ -144,7 +140,6 @@ function EventContent({ password }) {
       if (response.ok) {
         setSignups(data.signups || []);
         setCounts(data.counts || {});
-        setTotal(data.total || 0);
       }
     } catch {
       // still, kein Reload nötig
@@ -164,7 +159,6 @@ function EventContent({ password }) {
       if (response.ok) {
         setSignups(data.signups || []);
         setCounts(data.counts || {});
-        setTotal(data.total || 0);
       }
     } catch {
       // still, kein Reload nötig
@@ -181,9 +175,6 @@ function EventContent({ password }) {
       <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-400">
         <span>Preis: {PRICE_PER_PERSON_LABEL} pro Person</span>
         <span>Anmeldefrist: {formatDeadline(REGISTRATION_DEADLINE)}</span>
-        <span>
-          Plätze: {loading ? "..." : total} / {MAX_PARTICIPANTS}
-        </span>
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
