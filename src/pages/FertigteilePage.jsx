@@ -53,15 +53,6 @@ export default function FertigteilePage() {
               Passgenaue Ersatz- und Zubehörteile für ausgewählte Fahrzeuge, direkt ab Lager fertigbar.
               Bei Bedarf an anderen Farben oder Stückzahlen einfach in der Anfrage angeben.
             </p>
-
-            <div className="mt-8">
-              <button
-                onClick={() => openContactModal("Allgemeine Anfrage", "general")}
-                className="inline-block rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
-              >
-                Allgemeine Anfrage senden
-              </button>
-            </div>
           </Reveal>
         </section>
 
