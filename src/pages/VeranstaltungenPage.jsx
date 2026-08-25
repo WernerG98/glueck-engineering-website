@@ -151,6 +151,26 @@ function EventContent({ password }) {
     }
   };
 
+  const removeSignup = async (id, name) => {
+    if (!window.confirm(`${name} wirklich entfernen?`)) return;
+
+    try {
+      const response = await fetch("/api/veranstaltung", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSignups(data.signups || []);
+        setCounts(data.counts || {});
+        setTotal(data.total || 0);
+      }
+    } catch {
+      // still, kein Reload nötig
+    }
+  };
+
   const deadlinePassed = new Date() > new Date(`${REGISTRATION_DEADLINE}T23:59:59`);
 
   return (
@@ -307,14 +327,15 @@ function EventContent({ password }) {
 
       {showAdmin && (
         <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4 sm:p-6">
-          <table className="w-full min-w-[600px] text-left text-sm">
+          <table className="w-full min-w-[680px] text-left text-sm">
             <thead>
               <tr className="border-b border-neutral-800 text-neutral-500">
                 <th className="pb-2 pr-4">Name</th>
                 <th className="pb-2 pr-4">E-Mail</th>
                 <th className="pb-2 pr-4">Bus</th>
                 <th className="pb-2 pr-4">Newsletter</th>
-                <th className="pb-2">Bezahlt</th>
+                <th className="pb-2 pr-4">Bezahlt</th>
+                <th className="pb-2"></th>
               </tr>
             </thead>
             <tbody>
@@ -328,7 +349,7 @@ function EventContent({ password }) {
                     {BUS_OPTIONS.find((b) => b.id === entry.bus)?.label || entry.bus}
                   </td>
                   <td className="py-2 pr-4 text-neutral-400">{entry.newsletter ? "Ja" : "-"}</td>
-                  <td className="py-2">
+                  <td className="py-2 pr-4">
                     <input
                       type="checkbox"
                       checked={entry.paid}
@@ -336,11 +357,19 @@ function EventContent({ password }) {
                       className="h-4 w-4 accent-accent"
                     />
                   </td>
+                  <td className="py-2">
+                    <button
+                      onClick={() => removeSignup(entry.id, `${entry.firstName} ${entry.lastName}`)}
+                      className="text-xs text-neutral-500 underline hover:text-red-400"
+                    >
+                      Entfernen
+                    </button>
+                  </td>
                 </tr>
               ))}
               {signups.length === 0 && !loading && (
                 <tr>
-                  <td colSpan={5} className="py-4 text-neutral-500">
+                  <td colSpan={6} className="py-4 text-neutral-500">
                     Noch keine Anmeldungen.
                   </td>
                 </tr>

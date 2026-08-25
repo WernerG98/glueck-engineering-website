@@ -22,9 +22,10 @@ async function getSignups(redis) {
   return Array.isArray(raw) ? raw : [];
 }
 
+// Ein Platz gilt erst als belegt, wenn die Zahlung bestätigt (Haken bei "Bezahlt") wurde.
 function busCounts(signups) {
   return BUS_OPTIONS.reduce((acc, bus) => {
-    acc[bus.id] = signups.filter((entry) => entry.bus === bus.id).length;
+    acc[bus.id] = signups.filter((entry) => entry.bus === bus.id && entry.paid).length;
     return acc;
   }, {});
 }
@@ -109,6 +110,21 @@ export default async function handler(req, res) {
     await redis.set(SIGNUPS_KEY, signups);
 
     return res.status(200).json({ signups, counts: busCounts(signups), total: signups.length });
+  }
+
+  if (req.method === "DELETE") {
+    const id = typeof req.body?.id === "string" ? req.body.id : "";
+
+    const signups = await getSignups(redis);
+    const updated = signups.filter((entry) => entry.id !== id);
+
+    if (updated.length === signups.length) {
+      return res.status(404).json({ error: "Anmeldung nicht gefunden." });
+    }
+
+    await redis.set(SIGNUPS_KEY, updated);
+
+    return res.status(200).json({ signups: updated, counts: busCounts(updated), total: updated.length });
   }
 
   return res.status(405).json({ error: "Methode nicht erlaubt." });
