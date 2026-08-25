@@ -4,6 +4,14 @@ import { BUS_OPTIONS, MAX_PARTICIPANTS, REGISTRATION_DEADLINE } from "../src/dat
 const SIGNUPS_KEY = "veranstaltung:haslinger-hof-2026:signups";
 const ADMIN_PASSWORD = process.env.EVENT_ADMIN_PASSWORD || "admin";
 
+// Vercels Marketplace-Integrationen für Upstash Redis setzen die
+// Umgebungsvariablen je nach Anbindung unter unterschiedlichen Namen.
+// Hier werden die gängigen Varianten abgedeckt.
+const REDIS_URL =
+  process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || process.env.REDIS_URL;
+const REDIS_TOKEN =
+  process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || process.env.REDIS_TOKEN;
+
 function checkPassword(req) {
   const password = req.method === "GET" ? req.query?.password : req.body?.password;
   return password === ADMIN_PASSWORD;
@@ -22,8 +30,8 @@ function busCounts(signups) {
 }
 
 export default async function handler(req, res) {
-  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
-    console.error("Upstash-Redis-Umgebungsvariablen fehlen.");
+  if (!REDIS_URL || !REDIS_TOKEN) {
+    console.error("Redis-Umgebungsvariablen fehlen (weder UPSTASH_REDIS_REST_* noch KV_REST_API_* gesetzt).");
     return res.status(500).json({ error: "Server-Konfiguration unvollständig." });
   }
 
@@ -31,7 +39,7 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: "Falsches Passwort." });
   }
 
-  const redis = Redis.fromEnv();
+  const redis = new Redis({ url: REDIS_URL, token: REDIS_TOKEN });
 
   if (req.method === "GET") {
     const signups = await getSignups(redis);
