@@ -32,13 +32,16 @@ function PasswordGate({ onUnlock }) {
 
     try {
       const response = await fetch(`/api/veranstaltung?password=${encodeURIComponent(password)}`);
+
       if (!response.ok) {
-        throw new Error("Falsches Passwort.");
+        const data = await response.json().catch(() => ({}));
+        throw new Error(response.status === 401 ? "Falsches Passwort." : data?.error || "Fehler beim Prüfen des Passworts.");
       }
+
       sessionStorage.setItem(STORAGE_KEY, password);
       onUnlock(password);
-    } catch {
-      setError("Falsches Passwort.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Fehler beim Prüfen des Passworts.");
     } finally {
       setChecking(false);
     }
