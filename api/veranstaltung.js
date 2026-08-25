@@ -1,10 +1,58 @@
 import { Redis } from "@upstash/redis";
 import { Resend } from "resend";
+import { google } from "googleapis";
 import { BUS_OPTIONS, EVENT_TITLE, MAX_PARTICIPANTS, PRICE_PER_PERSON_LABEL, REGISTRATION_DEADLINE } from "../src/data/veranstaltung.js";
 
 const SIGNUPS_KEY = "veranstaltung:haslinger-hof-2026:signups";
 const ADMIN_PASSWORD = process.env.EVENT_ADMIN_PASSWORD || "admin";
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Google-Sheet-Sync ist optional: solange die drei Variablen fehlen, wird
+// einfach nichts synchronisiert (kein Fehler für die eigentliche Anmeldung).
+const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
+const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+const GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, "\n");
+
+async function syncToGoogleSheet(signups) {
+  if (!GOOGLE_SHEET_ID || !GOOGLE_SERVICE_ACCOUNT_EMAIL || !GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY) {
+    return;
+  }
+
+  try {
+    const auth = new google.auth.JWT({
+      email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      key: GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY,
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    });
+
+    const sheets = google.sheets({ version: "v4", auth });
+
+    const header = ["Vorname", "Nachname", "E-Mail", "Bus", "Newsletter", "Bezahlt", "Angemeldet am"];
+    const rows = signups.map((entry) => [
+      entry.firstName,
+      entry.lastName,
+      entry.email,
+      BUS_OPTIONS.find((option) => option.id === entry.bus)?.label || entry.bus,
+      entry.newsletter ? "Ja" : "Nein",
+      entry.paid ? "Ja" : "Nein",
+      new Date(entry.createdAt).toLocaleString("de-DE"),
+    ]);
+
+    await sheets.spreadsheets.values.clear({
+      spreadsheetId: GOOGLE_SHEET_ID,
+      range: "Anmeldungen!A1:Z1000",
+    });
+
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: GOOGLE_SHEET_ID,
+      range: "Anmeldungen!A1",
+      valueInputOption: "RAW",
+      requestBody: { values: [header, ...rows] },
+    });
+  } catch (error) {
+    console.error("Fehler beim Sync mit Google Sheets:", error);
+  }
+}
 
 // Vercels Marketplace-Integrationen für Upstash Redis setzen die
 // Umgebungsvariablen je nach Anbindung unter unterschiedlichen Namen.
@@ -110,6 +158,7 @@ export default async function handler(req, res) {
 
     const updated = [...signups, entry];
     await redis.set(SIGNUPS_KEY, updated);
+    await syncToGoogleSheet(updated);
 
     return res.status(200).json({ signups: updated, counts: busCounts(updated), total: updated.length });
   }
@@ -128,6 +177,7 @@ export default async function handler(req, res) {
     const wasPaid = signups[index].paid;
     signups[index] = { ...signups[index], paid };
     await redis.set(SIGNUPS_KEY, signups);
+    await syncToGoogleSheet(signups);
 
     if (paid && !wasPaid && process.env.CONTACT_FROM_EMAIL) {
       const entry = signups[index];
@@ -159,6 +209,7 @@ export default async function handler(req, res) {
     }
 
     await redis.set(SIGNUPS_KEY, updated);
+    await syncToGoogleSheet(updated);
 
     return res.status(200).json({ signups: updated, counts: busCounts(updated), total: updated.length });
   }
