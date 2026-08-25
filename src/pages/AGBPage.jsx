@@ -3,7 +3,6 @@ import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
 import useContactForm from "../hooks/useContactForm";
-import { SHIPPING_COST_LABEL } from "../data/siteStatus";
 
 export default function AGBPage() {
   const {
@@ -42,48 +41,27 @@ export default function AGBPage() {
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">2. Vertragsschluss</h2>
             <p>
-              <strong className="text-neutral-300">Individuelle Anfragen</strong> (3D-Druck Dienstleistung,
-              individuelle 3D-Artworks, sowie Fertigteile mit abweichenden Wünschen zu Farbe oder Stückzahl):
-              Die Darstellung von Produkten auf der Website stellt kein bindendes Angebot des Verkäufers dar.
-              Eine über das Kontaktformular gesendete Anfrage ist unverbindlich. Der Verkäufer sendet
+              Die Darstellung von Produkten auf der Website stellt kein bindendes Angebot des Verkäufers
+              dar. Eine über das Kontaktformular gesendete Anfrage ist unverbindlich. Der Verkäufer sendet
               daraufhin ein individuelles Angebot inklusive Preis. Der Vertrag kommt erst zustande, sobald
               dieses Angebot ausdrücklich (per E-Mail oder auf sonstigem Wege) bestätigt wird.
-            </p>
-            <p className="mt-3">
-              <strong className="text-neutral-300">Direktkauf von Fertigteilen</strong> über den Button
-              „Jetzt kaufen“: Mit Klick auf den Bestellbutton in der Kaufabwicklung (Beschriftung entsprechend
-              § 312j Abs. 3 BGB, z. B. „jetzt bezahlen“ oder „zahlungspflichtig bestellen“) gibt der Käufer
-              ein verbindliches Angebot zum Kauf des ausgewählten Artikels ab. Der Vertrag kommt mit
-              erfolgreichem Abschluss der Zahlung zustande.
             </p>
           </section>
 
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">3. Preise und Versandkosten</h2>
             <p>
-              Alle angegebenen Preise sind Endpreise inklusive der gesetzlichen Umsatzsteuer.
-            </p>
-            <p className="mt-3">
-              Bei individuellen Anfragen werden zusätzlich anfallende Versandkosten im Angebot separat
-              ausgewiesen und vor Vertragsschluss mitgeteilt.
-            </p>
-            <p className="mt-3">
-              Beim Direktkauf von Fertigteilen wird eine Versandkostenpauschale von {SHIPPING_COST_LABEL}{" "}
-              zzgl. zum Artikelpreis berechnet und vor Abschluss der Zahlung ausgewiesen.
+              Alle angegebenen Preise sind Endpreise inklusive der gesetzlichen Umsatzsteuer. Zusätzlich
+              anfallende Versandkosten werden im Angebot separat ausgewiesen und vor Vertragsschluss
+              mitgeteilt.
             </p>
           </section>
 
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">4. Zahlung</h2>
             <p>
-              Bei individuellen Anfragen erfolgt die Zahlung per Überweisung auf Rechnung, zahlbar innerhalb
-              von 14 Tagen ohne Abzug nach Rechnungsstellung, sofern im Einzelfall nichts anderes vereinbart
-              ist.
-            </p>
-            <p className="mt-3">
-              Beim Direktkauf von Fertigteilen erfolgt die Zahlung sofort bei Bestellung über den
-              Zahlungsdienstleister Stripe (Stripe Payments Europe, Ltd., Irland) mit den beim Bestellvorgang
-              angezeigten Zahlungsarten (u. a. Kreditkarte, SEPA-Lastschrift).
+              Die Zahlung erfolgt per Überweisung auf Rechnung, zahlbar innerhalb von 14 Tagen ohne Abzug
+              nach Rechnungsstellung, sofern im Einzelfall nichts anderes vereinbart ist.
             </p>
           </section>
 

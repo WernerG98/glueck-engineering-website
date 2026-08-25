@@ -1,10 +1,8 @@
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
-import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
 import FertigteileSection from "../components/sections/FertigteileSection";
 import useContactForm from "../hooks/useContactForm";
@@ -12,8 +10,6 @@ import fertigteile from "../data/fertigteile";
 
 export default function FertigteilePage() {
   const [activeVehicle, setActiveVehicle] = useState("alle");
-  const [searchParams] = useSearchParams();
-  const checkoutStatus = searchParams.get("checkout");
 
   const {
     contactModalOpen,
@@ -45,24 +41,6 @@ export default function FertigteilePage() {
       <Header onOpenContactModal={openContactModal} />
 
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
-        {checkoutStatus === "success" && (
-          <Reveal className="mb-8 rounded-2xl border border-accent/60 bg-accent/10 p-5 sm:p-6">
-            <p className="font-medium text-white">Danke für deine Bestellung!</p>
-            <p className="mt-1 text-sm text-neutral-300">
-              Die Bestellbestätigung ist unterwegs zu deiner E-Mail-Adresse.
-            </p>
-          </Reveal>
-        )}
-
-        {checkoutStatus === "cancelled" && (
-          <Reveal className="mb-8 rounded-2xl border border-neutral-700 bg-neutral-900/60 p-5 sm:p-6">
-            <p className="font-medium text-white">Bezahlung abgebrochen</p>
-            <p className="mt-1 text-sm text-neutral-400">
-              Es wurde nichts berechnet. Du kannst es jederzeit erneut versuchen.
-            </p>
-          </Reveal>
-        )}
-
         <section>
           <Reveal>
             <span className="eyebrow">Produkte</span>
@@ -72,8 +50,8 @@ export default function FertigteilePage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
-              Passgenaue Ersatz- und Zubehörteile für ausgewählte Fahrzeuge, direkt ab Lager fertigbar und
-              direkt kaufbar. Bei Bedarf an anderen Farben oder größeren Stückzahlen einfach anfragen.
+              Passgenaue Ersatz- und Zubehörteile für ausgewählte Fahrzeuge, direkt ab Lager fertigbar.
+              Bei Bedarf an anderen Farben oder Stückzahlen einfach in der Anfrage angeben.
             </p>
 
             <div className="mt-8">
@@ -107,14 +85,6 @@ export default function FertigteilePage() {
         </section>
 
         <FertigteileSection items={filteredFertigteile} onRequest={openContactModal} showHeading={false} />
-
-        <p className="mt-10 text-xs text-neutral-600">
-          Beim Direktkauf gelten unsere{" "}
-          <Link to="/agb" className="text-accent underline hover:text-accent-light">
-            AGB &amp; Widerrufsbelehrung
-          </Link>
-          . Die Bezahlung läuft über Stripe.
-        </p>
       </main>
 
       <Footer />
