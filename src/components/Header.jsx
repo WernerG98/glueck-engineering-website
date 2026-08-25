@@ -60,10 +60,6 @@ export default function Header({ onOpenContactModal }) {
             Materialien
           </NavLink>
 
-          <NavLink to="/veranstaltungen" className={navClassName}>
-            Veranstaltungen
-          </NavLink>
-
           <button
             onClick={handleContactClick}
             className="ml-2 rounded-lg bg-accent px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-accent-light"
@@ -112,10 +108,6 @@ export default function Header({ onOpenContactModal }) {
 
             <NavLink to="/materialien" className={navClassName} onClick={() => setMenuOpen(false)}>
               Materialien
-            </NavLink>
-
-            <NavLink to="/veranstaltungen" className={navClassName} onClick={() => setMenuOpen(false)}>
-              Veranstaltungen
             </NavLink>
 
             <button

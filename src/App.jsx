@@ -5,7 +5,6 @@ import ArtworksPage from "./pages/ArtworksPage";
 import ServicePage from "./pages/ServicePage";
 import MaterialienPage from "./pages/MaterialienPage";
 import FAQPage from "./pages/FAQPage";
-import VeranstaltungenPage from "./pages/VeranstaltungenPage";
 import ImpressumPage from "./pages/ImpressumPage";
 import DatenschutzPage from "./pages/DatenschutzPage";
 import AGBPage from "./pages/AGBPage";
@@ -20,7 +19,6 @@ export default function App() {
       <Route path="/artworks" element={<ArtworksPage />} />
       <Route path="/materialien" element={<MaterialienPage />} />
       <Route path="/faq" element={<FAQPage />} />
-      <Route path="/veranstaltungen" element={<VeranstaltungenPage />} />
       <Route path="/impressum" element={<ImpressumPage />} />
       <Route path="/datenschutz" element={<DatenschutzPage />} />
       <Route path="/agb" element={<AGBPage />} />
