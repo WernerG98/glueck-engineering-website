@@ -12,6 +12,6 @@ export const artworkIntroText =
 
 export const artworkInfoText = `Maximale Abmessungen: 30 × 30 cm.
 
-Preise ab 19,99 € für Schwarz-Weiß beziehungsweise ab 29,99 € zzgl. Versand für mehrfarbige Ausführungen.
+Preise ab 9,99 € für Schwarz-Weiß beziehungsweise ab 29,99 € zzgl. Versand für mehrfarbige Ausführungen.
 
 Die Übermittlung des Bildes erfolgt per Anfrage. Mit der Übermittlung wird bestätigt, dass die erforderlichen Nutzungsrechte am Motiv vorliegen.`;
