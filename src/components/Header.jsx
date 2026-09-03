@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import StatusBanner from "./StatusBanner";
 
 function navClassName({ isActive }) {
   return [
@@ -26,7 +25,6 @@ export default function Header({ onOpenContactModal }) {
 
   return (
     <header className="sticky top-0 z-40 bg-neutral-950/80 backdrop-blur-md">
-      <StatusBanner />
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-b border-neutral-800/80 px-4 py-4 sm:px-6 md:py-5">
         <Link to="/" className="flex items-center gap-3 sm:gap-4" onClick={() => setMenuOpen(false)}>
           <img
