@@ -1,6 +1,8 @@
 // Technische Werte laut Herstellerangaben Bambu Lab (bambulab.com/en-us/filament/guide, wiki.bambulab.com), Stand 2026.
 // UV-Beständigkeit ist keine von Bambu Lab veröffentlichte Kennzahl, sondern eine allgemein anerkannte
 // materialwissenschaftliche Einschätzung des jeweiligen Kunststofftyps.
+// Preisklasse ist eine grobe, relative Einordnung innerhalb des Bambu-Lab-Sortiments (Basic- vs.
+// Spezial- vs. Engineering-Linie), keine exakten Preise, da diese sich laufend ändern können.
 // Kategorien folgen der Materialfamilien-Einteilung von Bambu Lab (PLA, PETG, ASA/ABS, TPU, PC, PA/PET, PPS).
 const materials = [
   // --- PLA-Familie ---
@@ -16,6 +18,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Wird durch UV-Strahlung spröde und verblasst mit der Zeit" },
     weather: { label: "Nicht außentauglich", detail: "Wird durch UV und Wärme mit der Zeit spröde" },
     difficulty: { label: "Einfach", detail: "Keine Trocknung, kein Gehäuse nötig" },
+    price: { label: "Günstig", detail: "Basic-Linie, die günstigste Materialklasse im Sortiment" },
     goodFor: ["3D-Artworks & Wandbilder", "Deko-Objekte", "Prototypen zum Anfassen ohne Belastung"],
   },
   {
@@ -30,6 +33,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Wie PLA Basic" },
     weather: { label: "Nicht außentauglich", detail: "Wie PLA Basic" },
     difficulty: { label: "Einfach", detail: "Keine Trocknung, kein Gehäuse nötig" },
+    price: { label: "Günstig", detail: "Basic-Linie, die günstigste Materialklasse im Sortiment" },
     goodFor: ["3D-Artworks mit blendfreiem, mattem Finish", "Deko-Objekte ohne Hochglanz"],
   },
   {
@@ -44,6 +48,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Wie PLA Basic" },
     weather: { label: "Nicht außentauglich", detail: "Wie PLA Basic" },
     difficulty: { label: "Einfach", detail: "Keine Trocknung, kein Gehäuse nötig" },
+    price: { label: "Günstig", detail: "Basic-Linie, die günstigste Materialklasse im Sortiment" },
     goodFor: ["Deko-Objekte mit reduzierten Zusatzstoffen", "3D-Artworks in naturbelassener Optik"],
   },
   {
@@ -58,6 +63,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Wie PLA Basic" },
     weather: { label: "Nicht außentauglich", detail: "Wie PLA Basic" },
     difficulty: { label: "Einfach", detail: "Keine Trocknung nötig, kein Gehäuse nötig" },
+    price: { label: "Mittel", detail: "Spezial-Linie, teurer als Basic-PLA durch Glanzeffekt" },
     goodFor: ["3D-Artworks mit glänzendem Finish", "Deko-Objekte mit edlem Look"],
   },
   {
@@ -72,6 +78,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Wie PLA Basic" },
     weather: { label: "Nicht außentauglich", detail: "Wie PLA Basic" },
     difficulty: { label: "Einfach", detail: "Keine Trocknung nötig, kein Gehäuse nötig" },
+    price: { label: "Mittel", detail: "Spezial-Linie, teurer als Basic-PLA durch Lichtdurchlässigkeit" },
     goodFor: ["Beleuchtete 3D-Artworks & Lithophanien", "Deko-Objekte mit Lichteffekt"],
   },
   {
@@ -86,6 +93,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Wie PLA Basic" },
     weather: { label: "Nicht außentauglich", detail: "Wie PLA Basic" },
     difficulty: { label: "Mittel", detail: "Abrasiv durch Füllstoffe, gehärtete Düse empfohlen" },
+    price: { label: "Mittel", detail: "Spezial-Linie, teurer als Basic-PLA durch mineralische Füllstoffe" },
     goodFor: ["Deko-Objekte mit Steinoptik", "3D-Artworks mit besonderem Materialeffekt"],
   },
   {
@@ -100,6 +108,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Holzfasern können bei UV-Dauerbelastung zusätzlich vergrauen" },
     weather: { label: "Nicht außentauglich", detail: "Holzanteil nimmt Feuchtigkeit auf" },
     difficulty: { label: "Mittel", detail: "Abrasiv durch Holzfasern, gehärtete Düse empfohlen" },
+    price: { label: "Mittel", detail: "Spezial-Linie, teurer als Basic-PLA durch Holzfaseranteil" },
     goodFor: ["Deko-Objekte mit natürlicher Holzoptik", "3D-Artworks mit warmer Haptik"],
   },
   {
@@ -114,6 +123,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Wie PLA Basic" },
     weather: { label: "Nicht außentauglich", detail: "Wie PLA Basic" },
     difficulty: { label: "Mittel", detail: "Abrasiv durch Metallpartikel, gehärtete Düse empfohlen" },
+    price: { label: "Mittel", detail: "Spezial-Linie, teurer als Basic-PLA durch Metallpartikel" },
     goodFor: ["Deko-Objekte mit Metall-Look", "3D-Artworks mit schwerer, wertiger Anmutung"],
   },
   {
@@ -128,6 +138,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Leuchtpigmente können bei UV-Dauerbelastung an Leuchtkraft verlieren" },
     weather: { label: "Nicht außentauglich", detail: "Wie PLA Basic" },
     difficulty: { label: "Mittel", detail: "Abrasiv durch Pigmente, gehärtete Düse empfohlen" },
+    price: { label: "Mittel", detail: "Spezial-Linie, teurer als Basic-PLA durch Leuchtpigmente" },
     goodFor: ["3D-Artworks mit Leuchteffekt", "Deko-Objekte für dunkle Räume"],
   },
   {
@@ -142,6 +153,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Wie PLA Basic" },
     weather: { label: "Nicht außentauglich", detail: "Wie PLA Basic" },
     difficulty: { label: "Mittel", detail: "Abrasiv, gehärtete Düse empfohlen" },
+    price: { label: "Gehoben", detail: "Carbonfaser-verstärkt, oberes Preissegment im PLA-Sortiment" },
     goodFor: [
       "Formstabile Deko- und Artwork-Teile",
       "Prototypen mit hoher Steifigkeit",
@@ -162,6 +174,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Deutlich besser als PLA/ABS, aber nicht speziell UV-stabilisiert" },
     weather: { label: "Bedingt außentauglich", detail: "Feuchtigkeitsbeständig, UV-Beständigkeit mittelmäßig" },
     difficulty: { label: "Mittel", detail: "Sollte vor dem Druck getrocknet werden" },
+    price: { label: "Günstig", detail: "Basic-Linie, die günstigste Materialklasse im Sortiment" },
     goodFor: ["Alltagstaugliche Ersatzteile", "Allroundmaterial für den Alltag"],
   },
   {
@@ -176,6 +189,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Deutlich besser als PLA/ABS, aber nicht speziell UV-stabilisiert" },
     weather: { label: "Bedingt außentauglich", detail: "Feuchtigkeitsbeständig, UV-Beständigkeit mittelmäßig" },
     difficulty: { label: "Mittel", detail: "Sollte vor dem Druck getrocknet werden" },
+    price: { label: "Günstig", detail: "Basic-Linie, die günstigste Materialklasse im Sortiment" },
     goodFor: ["Alltagstaugliche Ersatzteile", "Clips & Halterungen im Innenraum", "Teile mit Feuchtigkeitskontakt"],
   },
   {
@@ -190,6 +204,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Wie PETG HF" },
     weather: { label: "Bedingt außentauglich", detail: "Wie PETG HF" },
     difficulty: { label: "Mittel", detail: "Sollte vor dem Druck getrocknet werden" },
+    price: { label: "Mittel", detail: "Spezial-Linie, teurer als PETG Basic/HF durch Lichtdurchlässigkeit" },
     goodFor: ["Beleuchtete Funktionsteile", "3D-Artworks mit Lichteffekt und mehr Stabilität als PLA Translucent"],
   },
   {
@@ -204,6 +219,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Wie PETG HF" },
     weather: { label: "Bedingt außentauglich", detail: "Wie PETG HF" },
     difficulty: { label: "Mittel", detail: "Abrasiv, gehärtete Düse empfohlen" },
+    price: { label: "Gehoben", detail: "Carbonfaser-verstärkt, oberes Preissegment im PETG-Sortiment" },
     goodFor: ["Formstabile Ersatzteile mit wenig Durchbiegung", "Funktionsteile mit Feuchtigkeitskontakt"],
   },
 
@@ -220,6 +236,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Vergilbt und wird spröde unter UV-Einstrahlung" },
     weather: { label: "Nicht für Dauereinsatz draußen", detail: "Vergilbt und wird spröde unter UV-Einstrahlung" },
     difficulty: { label: "Anspruchsvoll", detail: "Neigt beim Druck zum Verzug, Gehäuse empfohlen" },
+    price: { label: "Günstig", detail: "Basic-Linie, die günstigste Materialklasse im Sortiment" },
     goodFor: [
       "Halterungen im Fahrzeug-Innenraum",
       "Teile mit Stoßbelastung",
@@ -238,6 +255,7 @@ const materials = [
     uv: { label: "Schlecht", detail: "Wie ABS" },
     weather: { label: "Nicht für Dauereinsatz draußen", detail: "Wie ABS" },
     difficulty: { label: "Anspruchsvoll", detail: "Gehäuse empfohlen, geringerer Verzug als Standard-ABS" },
+    price: { label: "Mittel", detail: "Glasfaser-verstärkt, teurer als Standard-ABS" },
     goodFor: ["Maßhaltige Innenraum-Bauteile", "Teile mit geringem Verzugsrisiko"],
   },
   {
@@ -252,6 +270,7 @@ const materials = [
     uv: { label: "Sehr gut", detail: "Speziell für UV-Stabilität entwickelt, quasi UV-festes ABS" },
     weather: { label: "Sehr gut außentauglich", detail: "Speziell für UV- und Witterungsbeständigkeit entwickelt" },
     difficulty: { label: "Anspruchsvoll", detail: "Muss getrocknet werden, Gehäuse empfohlen" },
+    price: { label: "Mittel", detail: "Teurer als Standard-ABS durch UV-Stabilisierung" },
     goodFor: [
       "Außenteile am Fahrzeug, z. B. Spritzschutz oder Verkleidungen",
       "Teile mit dauerhafter Sonneneinstrahlung",
@@ -270,6 +289,7 @@ const materials = [
     uv: { label: "Sehr gut", detail: "Wie Standard-ASA" },
     weather: { label: "Sehr gut außentauglich", detail: "Wie Standard-ASA" },
     difficulty: { label: "Anspruchsvoll", detail: "Abrasiv, gehärtete Düse empfohlen" },
+    price: { label: "Gehoben", detail: "Carbonfaser-verstärkt, oberes Preissegment im ASA/ABS-Sortiment" },
     goodFor: ["Formstabile Außenteile am Fahrzeug", "Wetterfeste Bauteile mit hohen Maßanforderungen"],
   },
 
@@ -286,6 +306,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Nicht speziell UV-stabilisiert" },
     weather: { label: "Mäßig außentauglich", detail: "Nicht speziell UV-stabilisiert" },
     difficulty: { label: "Anspruchsvoll", detail: "Langsamer Druck, größere Düse empfohlen" },
+    price: { label: "Mittel", detail: "Mittleres Preissegment, typisch für flexible Elastomere" },
     goodFor: ["Weiche Dichtungen & Puffer", "Griffe und Überzüge", "Stark dehnbare Elemente"],
   },
   {
@@ -300,6 +321,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Nicht speziell UV-stabilisiert" },
     weather: { label: "Mäßig außentauglich", detail: "Nicht speziell UV-stabilisiert" },
     difficulty: { label: "Anspruchsvoll", detail: "Langsamer Druck, Trocknung nötig" },
+    price: { label: "Mittel", detail: "Mittleres Preissegment, typisch für flexible Elastomere" },
     goodFor: ["Flexible Halterungen", "Stoßdämpfende Elemente", "Alltagstaugliche Gummibauteile"],
   },
   {
@@ -314,6 +336,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Nicht speziell UV-stabilisiert" },
     weather: { label: "Mäßig außentauglich", detail: "Nicht speziell UV-stabilisiert" },
     difficulty: { label: "Mittel", detail: "Schneller druckbar als weichere TPUs, Trocknung nötig" },
+    price: { label: "Mittel", detail: "Mittleres Preissegment, typisch für flexible Elastomere" },
     goodFor: ["Flexible Clips & Dichtungen", "Anti-Rüttel-Elemente", "Teile, die Stöße abfedern müssen"],
   },
   {
@@ -328,6 +351,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Nicht speziell UV-stabilisiert" },
     weather: { label: "Mäßig außentauglich", detail: "Nicht speziell UV-stabilisiert" },
     difficulty: { label: "Mittel", detail: "Zuverlässiger im AMS als andere TPUs, dennoch Trocknung nötig" },
+    price: { label: "Mittel", detail: "Mittleres Preissegment, typisch für flexible Elastomere" },
     goodFor: ["Flexible Teile im Mehrfarbdruck", "Wiederkehrende TPU-Projekte über das AMS"],
   },
 
@@ -347,6 +371,7 @@ const materials = [
       label: "Anspruchsvoll",
       detail: "Hohe Drucktemperatur, Trocknung nötig, Gehäuse empfohlen",
     },
+    price: { label: "Gehoben", detail: "Technisches Hochleistungspolymer, oberes Preissegment" },
     goodFor: [
       "Extrem schlagfeste Funktionsteile",
       "Bauteile mit hoher mechanischer und thermischer Belastung",
@@ -365,6 +390,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Wie Standard-PC" },
     weather: { label: "Mittel", detail: "Wie Standard-PC" },
     difficulty: { label: "Anspruchsvoll", detail: "Hohe Drucktemperatur, Trocknung nötig" },
+    price: { label: "Gehoben", detail: "Technisches Hochleistungspolymer, oberes Preissegment" },
     goodFor: [
       "Bauteile mit Brandschutzanforderungen",
       "Elektrische und elektronische Gehäuse",
@@ -385,6 +411,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Wie bei technischen Nylons üblich nicht UV-optimiert" },
     weather: { label: "Mittel", detail: "Nimmt Feuchtigkeit stark auf, muss trocken gelagert werden" },
     difficulty: { label: "Anspruchsvoll", detail: "Abrasiv, intensive Trocknung nötig" },
+    price: { label: "Gehoben", detail: "Carbonfaser-verstärktes Nylon, Premium-Preissegment" },
     goodFor: [
       "Verschleißfeste Funktionsteile, z. B. Zahnräder oder Lager",
       "Hoch belastete Ersatzteile",
@@ -403,6 +430,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Wie bei technischen Nylons üblich nicht UV-optimiert" },
     weather: { label: "Mittel", detail: "Nimmt Feuchtigkeit stark auf, muss trocken gelagert werden" },
     difficulty: { label: "Anspruchsvoll", detail: "Intensive Trocknung nötig" },
+    price: { label: "Gehoben", detail: "Glasfaser-verstärktes Nylon, Premium-Preissegment" },
     goodFor: ["Funktionsteile mit Stoßbelastung", "Hochtemperaturbauteile, die auch Schläge abkönnen müssen"],
   },
   {
@@ -420,6 +448,7 @@ const materials = [
       detail: "Muss trocken gelagert werden, UV-Beständigkeit nicht speziell optimiert",
     },
     difficulty: { label: "Anspruchsvoll", detail: "Abrasiv (gehärtete Düse nötig), intensive Trocknung erforderlich" },
+    price: { label: "Gehoben", detail: "Carbonfaser-verstärktes Hochleistungs-Nylon, Premium-Preissegment" },
     goodFor: [
       "Hoch belastete Funktionsteile",
       "Ersatzteile, die sonst aus Metall wären",
@@ -438,6 +467,7 @@ const materials = [
     uv: { label: "Mäßig", detail: "Nicht speziell UV-optimiert" },
     weather: { label: "Mittel", detail: "Robust gegenüber vielen Chemikalien" },
     difficulty: { label: "Anspruchsvoll", detail: "Abrasiv, hohe Drucktemperatur" },
+    price: { label: "Gehoben", detail: "Carbonfaser-verstärkt, Premium-Preissegment" },
     goodFor: [
       "Technische Funktionsteile mit Kontakt zu Chemikalien oder Kraftstoffen",
       "Hochbelastbare, hitzefeste Bauteile",
@@ -458,6 +488,7 @@ const materials = [
       label: "Anspruchsvoll",
       detail: "Profi-Material, hohe Drucktemperatur (280–310 °C), gehärtete Düse zwingend",
     },
+    price: { label: "Gehoben", detail: "High-End-Engineering-Material, höchstes Preissegment im Sortiment" },
     goodFor: [
       "Extrem belastbare Funktionsteile im Grenzbereich klassischer Kunststoffe",
       "Metallersatz bei sehr hoher mechanischer und thermischer Belastung",
@@ -480,6 +511,7 @@ const materials = [
       label: "Anspruchsvoll",
       detail: "Profi-Material, sehr hohe Drucktemperatur (310–340 °C)",
     },
+    price: { label: "Gehoben", detail: "High-End-Engineering-Material, höchstes Preissegment im Sortiment" },
     goodFor: [
       "Bauteile mit extremer Dauertemperaturbelastung, z. B. motornahe Anwendungen",
       "Chemisch stark beanspruchte Funktionsteile",

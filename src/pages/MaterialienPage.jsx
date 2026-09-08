@@ -21,6 +21,8 @@ const PROPERTY_GLOSSARY = {
     "Ob sich das Material für den dauerhaften Einsatz im Freien eignet, zusammengefasst aus UV- und Witterungsbeständigkeit.",
   Druckschwierigkeit:
     "Wie anspruchsvoll der 3D-Druck mit diesem Material ist, z. B. wegen nötiger Trocknung. Betrifft die Fertigung, nicht die Qualität des fertigen Teils.",
+  Preisklasse:
+    "Grobe, relative Einordnung des Materialpreises innerhalb unseres Sortiments (Basic-, Spezial- oder Engineering-Linie). Keine exakten Preise, da diese sich laufend ändern können.",
 };
 
 function PropertyRow({ label, value }) {
@@ -50,6 +52,7 @@ function MaterialCard({ material, onRequest }) {
         <PropertyRow label="UV-Beständigkeit" value={material.uv} />
         <PropertyRow label="Außentauglichkeit" value={material.weather} />
         <PropertyRow label="Druckschwierigkeit" value={material.difficulty} />
+        <PropertyRow label="Preisklasse" value={material.price} />
       </div>
 
       <div className="mt-4 flex-1">
@@ -119,7 +122,7 @@ export default function MaterialienPage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
-              Wir drucken ausschließlich mit Filamenten von Bambu Lab. Die technischen Werte hier stammen direkt
+              Wir drucken überwiegend mit Filamenten von Bambu Lab. Die technischen Werte hier stammen direkt
               von den Herstellerangaben und helfen dir bei der Einschätzung, welches Material zu deinem Vorhaben
               passt. Unsicher? Wir beraten dich gerne bei der Anfrage.
             </p>
@@ -175,7 +178,8 @@ export default function MaterialienPage() {
               Herstellerangaben von Bambu Lab
             </a>
             . Die UV-Beständigkeit wird dort nicht als Kennzahl veröffentlicht und basiert auf allgemein
-            anerkannten materialwissenschaftlichen Einschätzungen des jeweiligen Kunststofftyps. Alle Angaben ohne
+            anerkannten materialwissenschaftlichen Einschätzungen des jeweiligen Kunststofftyps. Die Preisklasse ist
+            eine grobe, relative Einordnung innerhalb unseres Sortiments, keine exakten Preise. Alle Angaben ohne
             Gewähr und abhängig von Bauteilgeometrie, Druckausrichtung und Einsatzbedingungen. Bei besonderen
             Anforderungen sprich uns direkt an.
           </p>
