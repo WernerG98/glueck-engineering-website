@@ -8,6 +8,7 @@ import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
 import GallerySection from "../components/sections/GallerySection";
 import ArtworksProcessSection from "../components/sections/ArtworksProcessSection";
+import ArtworkPreviewTool from "../components/sections/ArtworkPreviewTool";
 import useContactForm from "../hooks/useContactForm";
 import {
   artworkGalleryImages,
@@ -62,6 +63,13 @@ export default function ArtworksPage() {
               </button>
 
               <a
+                href="#vorschau"
+                className="inline-block rounded-lg border border-neutral-700 px-6 py-3 text-center transition hover:border-neutral-500 hover:bg-neutral-900"
+              >
+                Vorschau ausprobieren
+              </a>
+
+              <a
                 href="#galerie"
                 className="inline-block rounded-lg border border-neutral-700 px-6 py-3 text-center transition hover:border-neutral-500 hover:bg-neutral-900"
               >
@@ -86,6 +94,8 @@ export default function ArtworksPage() {
             />
           </Reveal>
         </section>
+
+        <ArtworkPreviewTool onRequest={openContactModal} />
 
         <section className="mt-16 sm:mt-20">
           <Reveal className="grid gap-6 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:gap-8 sm:p-8 md:grid-cols-2 md:items-center md:p-10">
