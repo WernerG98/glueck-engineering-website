@@ -8,19 +8,11 @@ import Reveal from "../components/Reveal";
 import InfoTooltip from "../components/InfoTooltip";
 import useContactForm from "../hooks/useContactForm";
 import materials, { materialCategories, materialFilters } from "../data/materials";
-import { getLevel } from "../data/materialLevels";
+import { getLevel, PROPERTY_ROWS } from "../data/materialLevels";
+import LevelBar from "../components/LevelBar";
+import MaterialQuiz from "../components/sections/MaterialQuiz";
 
 const MAX_COMPARE = 3;
-
-const PROPERTY_ROWS = [
-  { key: "heat", label: "Hitzebeständigkeit" },
-  { key: "strength", label: "Festigkeit" },
-  { key: "flex", label: "Flexibilität" },
-  { key: "uv", label: "UV-Beständigkeit" },
-  { key: "weather", label: "Außentauglichkeit" },
-  { key: "difficulty", label: "Druckschwierigkeit" },
-  { key: "price", label: "Preisklasse" },
-];
 
 const PROPERTY_GLOSSARY = {
   Hitzebeständigkeit:
@@ -38,22 +30,6 @@ const PROPERTY_GLOSSARY = {
   Preisklasse:
     "Grobe, relative Einordnung des Materialpreises innerhalb unseres Sortiments (Basic-, Spezial- oder Engineering-Linie). Keine exakten Preise, da diese sich laufend ändern können.",
 };
-
-function LevelBar({ level }) {
-  if (level == null) {
-    return <span className="text-sm text-neutral-600">–</span>;
-  }
-  return (
-    <div className="flex items-center gap-1">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <span
-          key={i}
-          className={`h-1.5 w-4 rounded-full ${i < level ? "bg-accent" : "bg-neutral-800"}`}
-        />
-      ))}
-    </div>
-  );
-}
 
 function PropertyRow({ label, value, property }) {
   return (
@@ -255,6 +231,10 @@ export default function MaterialienPage() {
               passt. Unsicher? Wir beraten dich gerne bei der Anfrage.
             </p>
           </Reveal>
+        </section>
+
+        <section className="mt-10 sm:mt-12">
+          <MaterialQuiz onRequest={openContactModal} />
         </section>
 
         <section className="mt-10 sm:mt-12">

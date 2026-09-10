@@ -49,6 +49,16 @@ const LEVELS = {
   },
 };
 
+export const PROPERTY_ROWS = [
+  { key: "heat", label: "Hitzebeständigkeit" },
+  { key: "strength", label: "Festigkeit" },
+  { key: "flex", label: "Flexibilität" },
+  { key: "uv", label: "UV-Beständigkeit" },
+  { key: "weather", label: "Außentauglichkeit" },
+  { key: "difficulty", label: "Druckschwierigkeit" },
+  { key: "price", label: "Preisklasse" },
+];
+
 export function getLevel(property, label) {
   const table = LEVELS[property];
   if (!table) return null;
