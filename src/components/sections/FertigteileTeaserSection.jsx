@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Reveal from "../Reveal";
+import ModelViewer from "../ModelViewer";
 
 export default function FertigteileTeaserSection() {
   return (
@@ -27,12 +28,11 @@ export default function FertigteileTeaserSection() {
           </div>
         </div>
 
-        <div className="group overflow-hidden rounded-2xl border border-neutral-800">
-          <img
-            src="/Heckklappenaussteller_T4_T5_T6.png"
-            alt="VW T4/T5/T6 Heckklappenaussteller"
-            className="h-64 w-full object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-80 md:h-full"
-          />
+        <div className="relative h-64 overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 sm:h-80 md:h-full">
+          <ModelViewer src="/models/heckklappenaussteller-t4-t5-t6.stl" format="stl" />
+          <span className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-neutral-950/80 px-3 py-1.5 text-xs font-medium text-neutral-300 backdrop-blur-sm">
+            VW T4/T5/T6 Heckklappenaussteller · 3D-Vorschau
+          </span>
         </div>
       </Reveal>
     </section>
