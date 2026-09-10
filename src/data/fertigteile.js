@@ -6,6 +6,7 @@ const fertigteile = [
     price: "19,99 €",
     text: "Passgenaue Führung für den unteren Kühlergrill des VW T4 mit langem Vorderwagen für originale Kotflügel. Bei Nachbau-Kotflügeln sind die Laschen oft höher, die Öffnung im Halter kann einfach angepasst werden.",
     vehicles: ["VW T4"],
+    model: { src: "/models/vw-t4-fuehrung-blende.stl", format: "stl" },
   },
   {
     id: "vw-t5-clip-kopfstuetze",
