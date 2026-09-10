@@ -11,6 +11,7 @@ import materials, { materialCategories, materialFilters } from "../data/material
 import { getLevel, PROPERTY_ROWS } from "../data/materialLevels";
 import LevelBar from "../components/LevelBar";
 import MaterialQuiz from "../components/sections/MaterialQuiz";
+import TiltCard from "../components/TiltCard";
 
 const MAX_COMPARE = 3;
 
@@ -48,7 +49,7 @@ function PropertyRow({ label, value, property }) {
 
 function MaterialCard({ material, onRequest, isComparing, onToggleCompare, compareDisabled }) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 transition hover:-translate-y-1 hover:border-neutral-700 sm:p-6">
+    <TiltCard className="flex h-full flex-col rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 transition hover:border-neutral-700 sm:p-6">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="text-xl font-semibold text-white sm:text-2xl">{material.name}</h3>
@@ -96,7 +97,7 @@ function MaterialCard({ material, onRequest, isComparing, onToggleCompare, compa
           Anfrage mit {material.name}
         </button>
       </div>
-    </div>
+    </TiltCard>
   );
 }
 

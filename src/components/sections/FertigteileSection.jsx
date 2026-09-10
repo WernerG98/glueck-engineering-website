@@ -1,13 +1,17 @@
 import { useState } from "react";
 import Reveal from "../Reveal";
 import ModelViewer from "../ModelViewer";
+import TiltCard from "../TiltCard";
 
 function FertigteilCard({ item, onRequest }) {
   const [show3D, setShow3D] = useState(false);
   const hasModel = Boolean(item.model);
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 transition hover:-translate-y-1 hover:border-neutral-700 sm:p-6">
+    <TiltCard
+      disabled={show3D}
+      className="flex h-full flex-col rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 transition hover:border-neutral-700 sm:p-6"
+    >
       <div className="group relative aspect-square overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950">
         {show3D && hasModel ? (
           <ModelViewer src={item.model.src} format={item.model.format} />
@@ -50,7 +54,7 @@ function FertigteilCard({ item, onRequest }) {
           </button>
         </div>
       </div>
-    </div>
+    </TiltCard>
   );
 }
 
