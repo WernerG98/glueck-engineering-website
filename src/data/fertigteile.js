@@ -14,6 +14,7 @@ const fertigteile = [
     price: "9,99 €",
     text: "Ersatzclip für die Verstellung der Kopfstütze. Standardmäßig in Schwarz, andere Wunschfarbe bitte über eine Anfrage klären.",
     vehicles: ["VW T5"],
+    model: { src: "/models/vw-t5-clip-kopfstuetze.stl", format: "stl" },
   },
   {
     id: "honda-xrv750-spritzschutz",
@@ -22,6 +23,7 @@ const fertigteile = [
     price: "24,99 €",
     text: "Robuster Spritzschutz für die hintere Schwinge. Steifer als das Originalbauteil, dabei aber weiterhin ausreichend flexibel, um Belastungen und Vibrationen im Fahrbetrieb zuverlässig aufzunehmen.",
     vehicles: ["Honda XRV750"],
+    model: { src: "/models/honda-xrv750-spritzschutz.3mf", format: "3mf" },
   },
   {
     id: "vw-t4-t5-t6-heckklappenaussteller",
@@ -30,6 +32,7 @@ const fertigteile = [
     price: "9,99 €",
     text: "Erzeugt einen Spalt und hält die Heckklappe leicht geöffnet für Durchzug im Fahrzeug.",
     vehicles: ["VW T4", "VW T5", "VW T6"],
+    model: { src: "/models/heckklappenaussteller-t4-t5-t6.stl", format: "stl" },
   },
   {
     id: "vw-t3-heckklappenaussteller",
@@ -38,6 +41,7 @@ const fertigteile = [
     price: "9,99 €",
     text: "Erzeugt einen Spalt und hält die Heckklappe leicht geöffnet für Durchzug im Fahrzeug.",
     vehicles: ["VW T3"],
+    model: { src: "/models/heckklappenaussteller-t3.stl", format: "stl" },
   },
   {
     id: "vw-t5-2-stellmotor-klimaturm",
