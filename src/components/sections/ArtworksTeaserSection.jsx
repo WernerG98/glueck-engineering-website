@@ -1,16 +1,18 @@
 import { Link } from "react-router-dom";
 import Reveal from "../Reveal";
+import BeforeAfterSlider from "../BeforeAfterSlider";
 
-export default function ArtworksTeaserSection({ onRequest, onPreview }) {
+export default function ArtworksTeaserSection({ onRequest }) {
   return (
     <section className="mt-16 sm:mt-20 md:mt-24">
       <Reveal className="grid gap-6 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:gap-8 sm:p-8 md:grid-cols-2 md:items-center md:p-10">
-        <div className="group order-2 overflow-hidden rounded-2xl border border-neutral-800 md:order-1">
-          <img
-            src="/Artwork_Wave.png"
-            alt="3D Artwork Welle"
-            className="h-64 w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-80 md:h-full"
-            onClick={() => onPreview("/Artwork_Wave.png")}
+        <div className="order-2 md:order-1">
+          <BeforeAfterSlider
+            beforeSrc="/Artwork_Stanced_E46.png"
+            afterSrc="/Artwork_E46_Ergebnis.jpg"
+            beforeLabel="Motiv"
+            afterLabel="Fertiges Artwork"
+            className="h-64 sm:h-80 md:h-full"
           />
         </div>
 
