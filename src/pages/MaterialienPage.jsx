@@ -8,6 +8,7 @@ import Reveal from "../components/Reveal";
 import InfoTooltip from "../components/InfoTooltip";
 import useContactForm from "../hooks/useContactForm";
 import materials, { materialCategories, materialFilters } from "../data/materials";
+import { getLevel } from "../data/materialLevels";
 
 const PROPERTY_GLOSSARY = {
   Hitzebeständigkeit:
@@ -26,14 +27,33 @@ const PROPERTY_GLOSSARY = {
     "Grobe, relative Einordnung des Materialpreises innerhalb unseres Sortiments (Basic-, Spezial- oder Engineering-Linie). Keine exakten Preise, da diese sich laufend ändern können.",
 };
 
-function PropertyRow({ label, value }) {
+function LevelBar({ level }) {
+  if (level == null) {
+    return <span className="text-sm text-neutral-600">–</span>;
+  }
   return (
-    <div className="flex items-start justify-between gap-4 py-2.5">
+    <div className="flex items-center gap-1">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <span
+          key={i}
+          className={`h-1.5 w-4 rounded-full ${i < level ? "bg-accent" : "bg-neutral-800"}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+function PropertyRow({ label, value, property }) {
+  return (
+    <div className="flex items-center justify-between gap-4 py-2.5">
       <span className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-neutral-500">
         {label}
         {PROPERTY_GLOSSARY[label] && <InfoTooltip text={PROPERTY_GLOSSARY[label]} />}
       </span>
-      <span className="text-right text-sm text-neutral-200">{value.label}</span>
+      <div className="flex items-center gap-3">
+        <span className="text-right text-sm text-neutral-200">{value.label}</span>
+        <LevelBar level={getLevel(property, value.label)} />
+      </div>
     </div>
   );
 }
@@ -47,13 +67,13 @@ function MaterialCard({ material, onRequest }) {
       </div>
 
       <div className="mt-4 divide-y divide-neutral-800 border-y border-neutral-800">
-        <PropertyRow label="Hitzebeständigkeit" value={material.heat} />
-        <PropertyRow label="Festigkeit" value={material.strength} />
-        <PropertyRow label="Flexibilität" value={material.flex} />
-        <PropertyRow label="UV-Beständigkeit" value={material.uv} />
-        <PropertyRow label="Außentauglichkeit" value={material.weather} />
-        <PropertyRow label="Druckschwierigkeit" value={material.difficulty} />
-        <PropertyRow label="Preisklasse" value={material.price} />
+        <PropertyRow label="Hitzebeständigkeit" value={material.heat} property="heat" />
+        <PropertyRow label="Festigkeit" value={material.strength} property="strength" />
+        <PropertyRow label="Flexibilität" value={material.flex} property="flex" />
+        <PropertyRow label="UV-Beständigkeit" value={material.uv} property="uv" />
+        <PropertyRow label="Außentauglichkeit" value={material.weather} property="weather" />
+        <PropertyRow label="Druckschwierigkeit" value={material.difficulty} property="difficulty" />
+        <PropertyRow label="Preisklasse" value={material.price} property="price" />
       </div>
 
       <div className="mt-4 flex-1">
@@ -173,7 +193,9 @@ export default function MaterialienPage() {
 
         <Reveal>
           <p className="mt-10 text-xs leading-relaxed text-neutral-600">
-            Werte für Hitzebeständigkeit (HDT bei 0,45 MPa) und Festigkeit (Biegefestigkeit XY) laut{" "}
+            Die Balken sind eine vereinfachte, relative Visualisierung der jeweiligen Textwerte zum schnellen
+            Vergleich, keine linear skalierten Messwerte. Werte für Hitzebeständigkeit (HDT bei 0,45 MPa) und
+            Festigkeit (Biegefestigkeit XY) laut{" "}
             <a
               href="https://bambulab.com/en-us/filament/guide"
               target="_blank"
