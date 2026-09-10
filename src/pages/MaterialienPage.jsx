@@ -10,6 +10,18 @@ import useContactForm from "../hooks/useContactForm";
 import materials, { materialCategories, materialFilters } from "../data/materials";
 import { getLevel } from "../data/materialLevels";
 
+const MAX_COMPARE = 3;
+
+const PROPERTY_ROWS = [
+  { key: "heat", label: "Hitzebeständigkeit" },
+  { key: "strength", label: "Festigkeit" },
+  { key: "flex", label: "Flexibilität" },
+  { key: "uv", label: "UV-Beständigkeit" },
+  { key: "weather", label: "Außentauglichkeit" },
+  { key: "difficulty", label: "Druckschwierigkeit" },
+  { key: "price", label: "Preisklasse" },
+];
+
 const PROPERTY_GLOSSARY = {
   Hitzebeständigkeit:
     "Zeigt, bis zu welcher Temperatur ein Bauteil seine Form behält, bevor es weich wird. Wichtig z. B. bei praller Sonne im Auto oder in Wärmenähe.",
@@ -58,22 +70,34 @@ function PropertyRow({ label, value, property }) {
   );
 }
 
-function MaterialCard({ material, onRequest }) {
+function MaterialCard({ material, onRequest, isComparing, onToggleCompare, compareDisabled }) {
   return (
     <div className="flex h-full flex-col rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 transition hover:-translate-y-1 hover:border-neutral-700 sm:p-6">
-      <div>
-        <h3 className="text-xl font-semibold text-white sm:text-2xl">{material.name}</h3>
-        <p className="mt-1 text-sm text-neutral-400">{material.tagline}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-xl font-semibold text-white sm:text-2xl">{material.name}</h3>
+          <p className="mt-1 text-sm text-neutral-400">{material.tagline}</p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => onToggleCompare(material.id)}
+          disabled={!isComparing && compareDisabled}
+          className={[
+            "shrink-0 rounded-lg border px-3 py-1.5 text-xs font-medium transition disabled:cursor-not-allowed disabled:opacity-40",
+            isComparing
+              ? "border-accent bg-neutral-800/80 text-white"
+              : "border-neutral-700 text-neutral-400 hover:border-neutral-500 hover:text-white",
+          ].join(" ")}
+        >
+          {isComparing ? "✓ Vergleichen" : "+ Vergleichen"}
+        </button>
       </div>
 
       <div className="mt-4 divide-y divide-neutral-800 border-y border-neutral-800">
-        <PropertyRow label="Hitzebeständigkeit" value={material.heat} property="heat" />
-        <PropertyRow label="Festigkeit" value={material.strength} property="strength" />
-        <PropertyRow label="Flexibilität" value={material.flex} property="flex" />
-        <PropertyRow label="UV-Beständigkeit" value={material.uv} property="uv" />
-        <PropertyRow label="Außentauglichkeit" value={material.weather} property="weather" />
-        <PropertyRow label="Druckschwierigkeit" value={material.difficulty} property="difficulty" />
-        <PropertyRow label="Preisklasse" value={material.price} property="price" />
+        {PROPERTY_ROWS.map((row) => (
+          <PropertyRow key={row.key} label={row.label} value={material[row.key]} property={row.key} />
+        ))}
       </div>
 
       <div className="mt-4 flex-1">
@@ -100,8 +124,74 @@ function MaterialCard({ material, onRequest }) {
   );
 }
 
+function CompareSection({ selected, onRemove, onClear }) {
+  return (
+    <Reveal className="rounded-2xl border border-accent/60 bg-neutral-900/60 p-5 sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <span className="eyebrow">Vergleich ({selected.length}/{MAX_COMPARE})</span>
+        {selected.length > 0 && (
+          <button
+            type="button"
+            onClick={onClear}
+            className="text-xs font-medium text-neutral-500 underline hover:text-white"
+          >
+            Auswahl leeren
+          </button>
+        )}
+      </div>
+
+      {selected.length < 2 ? (
+        <p className="mt-3 text-sm text-neutral-400">
+          Mit "+ Vergleichen" auf einer Materialkarte mindestens ein zweites Material auswählen, um sie hier
+          nebeneinander zu sehen.
+        </p>
+      ) : (
+        <div className="mt-4 overflow-x-auto">
+          <div className="min-w-[520px]">
+            <div
+              className="grid gap-3"
+              style={{ gridTemplateColumns: `140px repeat(${selected.length}, 1fr)` }}
+            >
+              <div />
+              {selected.map((material) => (
+                <div key={material.id} className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => onRemove(material.id)}
+                    className="mb-1 text-xs text-neutral-500 hover:text-white"
+                  >
+                    ✕ entfernen
+                  </button>
+                  <h3 className="text-sm font-semibold text-white">{material.name}</h3>
+                </div>
+              ))}
+            </div>
+
+            {PROPERTY_ROWS.map((row) => (
+              <div
+                key={row.key}
+                className="grid items-center gap-3 border-t border-neutral-800 py-3"
+                style={{ gridTemplateColumns: `140px repeat(${selected.length}, 1fr)` }}
+              >
+                <span className="text-xs uppercase tracking-wide text-neutral-500">{row.label}</span>
+                {selected.map((material) => (
+                  <div key={material.id} className="flex flex-col items-center gap-1">
+                    <span className="text-xs text-neutral-300">{material[row.key].label}</span>
+                    <LevelBar level={getLevel(row.key, material[row.key].label)} />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </Reveal>
+  );
+}
+
 export default function MaterialienPage() {
   const [activeFilter, setActiveFilter] = useState("alle");
+  const [compareIds, setCompareIds] = useState([]);
 
   const {
     contactModalOpen,
@@ -129,6 +219,19 @@ export default function MaterialienPage() {
       .filter((category) => category.items.length > 0);
   }, [activeFilter]);
 
+  const compareMaterials = useMemo(
+    () => compareIds.map((id) => materials.find((m) => m.id === id)).filter(Boolean),
+    [compareIds]
+  );
+
+  const toggleCompare = (id) => {
+    setCompareIds((current) => {
+      if (current.includes(id)) return current.filter((c) => c !== id);
+      if (current.length >= MAX_COMPARE) return current;
+      return [...current, id];
+    });
+  };
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <PageMeta
@@ -152,6 +255,14 @@ export default function MaterialienPage() {
               passt. Unsicher? Wir beraten dich gerne bei der Anfrage.
             </p>
           </Reveal>
+        </section>
+
+        <section className="mt-10 sm:mt-12">
+          <CompareSection
+            selected={compareMaterials}
+            onRemove={toggleCompare}
+            onClear={() => setCompareIds([])}
+          />
         </section>
 
         <section className="mt-10 sm:mt-12">
@@ -183,7 +294,13 @@ export default function MaterialienPage() {
               <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {category.items.map((material, index) => (
                   <Reveal key={material.id} delay={index * 80} className="h-full">
-                    <MaterialCard material={material} onRequest={openContactModal} />
+                    <MaterialCard
+                      material={material}
+                      onRequest={openContactModal}
+                      isComparing={compareIds.includes(material.id)}
+                      onToggleCompare={toggleCompare}
+                      compareDisabled={compareIds.length >= MAX_COMPARE}
+                    />
                   </Reveal>
                 ))}
               </div>
