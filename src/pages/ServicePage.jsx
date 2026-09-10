@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
@@ -24,6 +25,10 @@ export default function ServicePage() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
+      <PageMeta
+        title="3D-Druck Dienstleistung"
+        description="Individuelle 3D-Drucklösungen für funktionale Bauteile, Prototypen und Kleinserien – von der Beratung bis zur fertigen Bauteilproduktion."
+      />
       <Header onOpenContactModal={openContactModal} />
 
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">

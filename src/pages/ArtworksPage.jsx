@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
@@ -33,6 +34,10 @@ export default function ArtworksPage() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
+      <PageMeta
+        title="3D-Artworks"
+        description="Individuelle, mehrschichtige 3D-Artworks mit ausgeprägter Tiefenwirkung, schwarz-weiß oder mehrfarbig nach deinem Motiv."
+      />
       <Header onOpenContactModal={openContactModal} />
 
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">

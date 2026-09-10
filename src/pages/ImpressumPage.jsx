@@ -1,3 +1,4 @@
+import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
@@ -21,6 +22,7 @@ export default function ImpressumPage() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
+      <PageMeta title="Impressum" description="Impressum und Anbieterkennzeichnung von Glück Engineering." />
       <Header onOpenContactModal={openContactModal} />
 
       <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 md:py-20">

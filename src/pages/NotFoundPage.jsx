@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
@@ -22,6 +23,7 @@ export default function NotFoundPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-neutral-950 text-white">
+      <PageMeta title="Seite nicht gefunden" />
       <Header onOpenContactModal={openContactModal} />
 
       <main className="mx-auto flex max-w-3xl flex-1 flex-col items-center justify-center px-4 py-20 text-center sm:px-6">

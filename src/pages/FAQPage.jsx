@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
@@ -63,6 +64,10 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
+      <PageMeta
+        title="Häufige Fragen"
+        description="Antworten auf häufige Fragen zu Lieferzeit, Materialien, Ablauf und Bestellung bei Glück Engineering."
+      />
       <Header onOpenContactModal={openContactModal} />
 
       <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">

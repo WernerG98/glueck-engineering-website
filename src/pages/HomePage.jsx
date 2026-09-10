@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
@@ -29,6 +30,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
+      <PageMeta description="Individuelle Fertigteile, technische 3D-Drucklösungen und mehrschichtige 3D-Artworks aus einer Hand." />
       <Header onOpenContactModal={openContactModal} />
 
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
