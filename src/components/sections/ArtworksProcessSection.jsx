@@ -25,7 +25,7 @@ const steps = [
       "Nach erfolgter Freigabe wird das Produkt gefertigt und anschließend sorgfältig verpackt versendet. So wird aus dem Entwurf ein echtes Artwork:",
     beforeAfter: {
       beforeSrc: "/Artwork_Stanced_E46_6.png",
-      afterSrc: "/Artwork_E46_Ergebnis.jpg",
+      afterSrc: "/Artwork_E46_Ergebnis_Cropped.jpg",
       beforeLabel: "Entwurf",
       afterLabel: "Fertig gedruckt",
     },
@@ -85,7 +85,7 @@ export default function ArtworksProcessSection() {
 
           {step.image && (
             <div className="mt-6 flex justify-center">
-              <div className="group w-full max-w-md overflow-hidden rounded-2xl border border-neutral-800">
+              <div className="group aspect-square w-full max-w-md overflow-hidden rounded-2xl border border-neutral-800">
                 <img
                   src={step.image}
                   alt={step.imageAlt}

@@ -8,8 +8,8 @@ export default function ArtworksTeaserSection({ onRequest }) {
       <Reveal className="grid gap-6 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:gap-8 sm:p-8 md:grid-cols-2 md:items-center md:p-10">
         <div className="order-2 md:order-1">
           <BeforeAfterSlider
-            beforeSrc="/Artwork_Stanced_E46.png"
-            afterSrc="/Artwork_E46_Ergebnis.jpg"
+            beforeSrc="/Artwork_Stanced_E46_6.png"
+            afterSrc="/Artwork_E46_Ergebnis_Cropped.jpg"
             beforeLabel="Motiv"
             afterLabel="Fertiges Artwork"
             className="h-64 sm:h-80 md:h-full"
