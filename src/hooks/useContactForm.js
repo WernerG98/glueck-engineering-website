@@ -25,10 +25,10 @@ export default function useContactForm() {
   const [attachment, setAttachment] = useState(null);
   const [formData, setFormData] = useState(initialFormData);
 
-  const openContactModal = (subject, type) => {
+  const openContactModal = (subject, type, prefill = {}) => {
     setRequestSubject(subject);
     setRequestType(type);
-    setFormData(initialFormData);
+    setFormData({ ...initialFormData, ...prefill });
     setAttachment(null);
     setContactModalOpen(true);
   };

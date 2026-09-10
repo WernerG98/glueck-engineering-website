@@ -5,15 +5,18 @@ import { Analytics } from "@vercel/analytics/react";
 import App from "./App";
 import CursorSpotlight from "./components/CursorSpotlight";
 import ScrollProgress from "./components/ScrollProgress";
+import { MerkzettelProvider } from "./context/MerkzettelContext";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ScrollProgress />
-      <CursorSpotlight />
-      <App />
-      <Analytics />
+      <MerkzettelProvider>
+        <ScrollProgress />
+        <CursorSpotlight />
+        <App />
+        <Analytics />
+      </MerkzettelProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

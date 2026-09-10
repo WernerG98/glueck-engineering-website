@@ -2,10 +2,13 @@ import { useState } from "react";
 import Reveal from "../Reveal";
 import ModelViewer from "../ModelViewer";
 import TiltCard from "../TiltCard";
+import { useMerkzettel } from "../../context/MerkzettelContext";
 
 function FertigteilCard({ item, onRequest }) {
   const [show3D, setShow3D] = useState(false);
   const hasModel = Boolean(item.model);
+  const { isSaved, toggleItem } = useMerkzettel();
+  const saved = isSaved(item.id);
 
   return (
     <TiltCard
@@ -13,6 +16,20 @@ function FertigteilCard({ item, onRequest }) {
       className="flex h-full flex-col rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 transition hover:border-neutral-700 sm:p-6"
     >
       <div className="group relative aspect-square overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950">
+        <button
+          type="button"
+          onClick={() => toggleItem(item)}
+          aria-label={saved ? "Von Merkzettel entfernen" : "Zum Merkzettel hinzufügen"}
+          aria-pressed={saved}
+          className={`absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full backdrop-blur-sm transition ${
+            saved ? "bg-accent text-neutral-950" : "bg-neutral-950/80 text-white hover:bg-neutral-900"
+          }`}
+        >
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 4h12v17l-6-4-6 4z" />
+          </svg>
+        </button>
+
         {show3D && hasModel ? (
           <ModelViewer src={item.model.src} format={item.model.format} />
         ) : item.image ? (
