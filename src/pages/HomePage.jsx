@@ -6,6 +6,7 @@ import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
 import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
+import HeroGear3D from "../components/HeroGear3D";
 import FertigteileTeaserSection from "../components/sections/FertigteileTeaserSection";
 import ServiceTeaserSection from "../components/sections/ServiceTeaserSection";
 import ArtworksTeaserSection from "../components/sections/ArtworksTeaserSection";
@@ -36,7 +37,10 @@ export default function HomePage() {
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
         <section className="grid items-center gap-10 md:grid-cols-2 md:gap-12">
           <Reveal>
-            <span className="eyebrow">Fertigteile · 3D-Druck · Artworks</span>
+            <div className="flex items-center gap-4">
+              <HeroGear3D className="h-16 w-16 shrink-0 sm:h-20 sm:w-20" />
+              <span className="eyebrow">Fertigteile · 3D-Druck · Artworks</span>
+            </div>
 
             <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl">
               Teile, die funktionieren.
