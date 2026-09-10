@@ -7,6 +7,7 @@ import FloatingContactButton from "../components/FloatingContactButton";
 import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
 import HeroGear3D from "../components/HeroGear3D";
+import MagneticButton from "../components/MagneticButton";
 import FertigteileTeaserSection from "../components/sections/FertigteileTeaserSection";
 import ServiceTeaserSection from "../components/sections/ServiceTeaserSection";
 import ArtworksTeaserSection from "../components/sections/ArtworksTeaserSection";
@@ -53,12 +54,14 @@ export default function HomePage() {
             </p>
 
             <div className="mt-8">
-              <button
-                onClick={() => openContactModal("3D-Druck Dienstleistung", "service")}
-                className="inline-block rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
-              >
-                Datei hochladen &amp; Angebot erhalten
-              </button>
+              <MagneticButton>
+                <button
+                  onClick={() => openContactModal("3D-Druck Dienstleistung", "service")}
+                  className="rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
+                >
+                  Datei hochladen &amp; Angebot erhalten
+                </button>
+              </MagneticButton>
             </div>
           </Reveal>
 

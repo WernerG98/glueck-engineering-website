@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import MagneticButton from "./MagneticButton";
 
 function navClassName({ isActive }) {
   return [
@@ -58,12 +59,14 @@ export default function Header({ onOpenContactModal }) {
             Materialien
           </NavLink>
 
-          <button
-            onClick={handleContactClick}
-            className="ml-2 rounded-lg bg-accent px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-accent-light"
-          >
-            Kontakt
-          </button>
+          <MagneticButton className="ml-2">
+            <button
+              onClick={handleContactClick}
+              className="rounded-lg bg-accent px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-accent-light"
+            >
+              Kontakt
+            </button>
+          </MagneticButton>
         </div>
 
         <button
