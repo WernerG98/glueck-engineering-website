@@ -29,9 +29,9 @@ export default function FertigteileTeaserSection() {
         </div>
 
         <div className="relative h-64 overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 sm:h-80 md:h-full">
-          <ModelViewer src="/models/heckklappenaussteller-t4-t5-t6.stl" format="stl" />
+          <ModelViewer src="/models/vw-t4-fuehrung-blende.stl" format="stl" />
           <span className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-neutral-950/80 px-3 py-1.5 text-xs font-medium text-neutral-300 backdrop-blur-sm">
-            VW T4/T5/T6 Heckklappenaussteller · 3D-Vorschau
+            VW T4 Führung für Blende · 3D-Vorschau
           </span>
         </div>
       </Reveal>
