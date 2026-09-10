@@ -5,8 +5,3 @@
 // (z. B. bei zu vielen Anfragen). Alle "Anfrage senden"-Buttons bleiben
 // sichtbar, öffnen dann aber einen Hinweis statt des Formulars.
 export const ACCEPTING_REQUESTS = true;
-
-// Pauschale Versandkosten für den Direktkauf von Fertigteilen, in Cent.
-// Wird sowohl im Stripe-Checkout als auch im Preishinweis auf der Seite verwendet.
-export const SHIPPING_COST_CENTS = 499;
-export const SHIPPING_COST_LABEL = "4,99 €";
