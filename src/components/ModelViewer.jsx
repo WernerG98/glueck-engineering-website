@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function ModelViewer({ src, format }) {
+export default function ModelViewer({ src, format, interactive = true }) {
   const containerRef = useRef(null);
   const [status, setStatus] = useState("loading");
 
@@ -14,9 +14,9 @@ export default function ModelViewer({ src, format }) {
       const container = containerRef.current;
       if (!container) return;
 
-      const [THREE, { OrbitControls }, loaderModule] = await Promise.all([
+      const [THREE, orbitModule, loaderModule] = await Promise.all([
         import("three"),
-        import("three/examples/jsm/controls/OrbitControls.js"),
+        interactive ? import("three/examples/jsm/controls/OrbitControls.js") : Promise.resolve(null),
         format === "3mf"
           ? import("three/examples/jsm/loaders/3MFLoader.js")
           : import("three/examples/jsm/loaders/STLLoader.js"),
@@ -45,11 +45,14 @@ export default function ModelViewer({ src, format }) {
       fill.position.set(-3, -1, -2);
       scene.add(fill);
 
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.08;
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 2.2;
+      let controls = null;
+      if (interactive) {
+        controls = new orbitModule.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 2.2;
+      }
 
       function fitCameraToObject(object) {
         const box = new THREE.Box3().setFromObject(object);
@@ -65,8 +68,11 @@ export default function ModelViewer({ src, format }) {
         camera.near = distance / 100;
         camera.far = distance * 100;
         camera.updateProjectionMatrix();
-        controls.target.set(0, 0, 0);
-        controls.update();
+        camera.lookAt(0, 0, 0);
+        if (controls) {
+          controls.target.set(0, 0, 0);
+          controls.update();
+        }
       }
 
       const material = new THREE.MeshStandardMaterial({
@@ -74,6 +80,8 @@ export default function ModelViewer({ src, format }) {
         metalness: 0.1,
         roughness: 0.55,
       });
+
+      let spinner = null;
 
       try {
         if (format === "3mf") {
@@ -87,6 +95,7 @@ export default function ModelViewer({ src, format }) {
               });
               scene.add(object);
               fitCameraToObject(object);
+              spinner = object;
               setStatus("ready");
             },
             undefined,
@@ -102,6 +111,7 @@ export default function ModelViewer({ src, format }) {
               const mesh = new THREE.Mesh(geometry, material);
               scene.add(mesh);
               fitCameraToObject(mesh);
+              spinner = mesh;
               setStatus("ready");
             },
             undefined,
@@ -113,7 +123,11 @@ export default function ModelViewer({ src, format }) {
       }
 
       function animate() {
-        controls.update();
+        if (controls) {
+          controls.update();
+        } else if (spinner) {
+          spinner.rotation.y += 0.006;
+        }
         renderer.render(scene, camera);
         animationFrame = requestAnimationFrame(animate);
       }
@@ -142,11 +156,14 @@ export default function ModelViewer({ src, format }) {
         renderer.domElement.remove();
       }
     };
-  }, [src, format]);
+  }, [src, format, interactive]);
 
   return (
     <div className="relative h-full w-full">
-      <div ref={containerRef} className="h-full w-full cursor-grab active:cursor-grabbing" />
+      <div
+        ref={containerRef}
+        className={`h-full w-full ${interactive ? "cursor-grab active:cursor-grabbing" : ""}`}
+      />
       {status === "loading" && (
         <div className="absolute inset-0 flex items-center justify-center text-sm text-neutral-500">
           3D-Modell wird geladen…
