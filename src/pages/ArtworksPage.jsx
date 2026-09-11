@@ -85,10 +85,10 @@ export default function ArtworksPage() {
 
           <Reveal delay={150} className="group overflow-hidden rounded-2xl border border-neutral-800">
             <img
-              src="/Artwork_Foggy_Mountains_v2.png"
-              alt="3D Artwork Foggy Mountains"
+              src="/Artwork_Praesentation_Wand.jpg"
+              alt="Drei fertige 3D-Artworks gerahmt an der Wand"
               className="h-72 w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-96 md:h-[30rem]"
-              onClick={() => setSelectedImage("/Artwork_Foggy_Mountains_v2.png")}
+              onClick={() => setSelectedImage("/Artwork_Praesentation_Wand.jpg")}
             />
           </Reveal>
         </section>
