@@ -126,6 +126,14 @@ export default function ArtworksPage() {
                 afterLabel="Fertiges Artwork"
                 aspectRatio="1800 / 1454"
               />
+              <p className="mt-4 text-sm leading-relaxed text-neutral-400 sm:text-base">
+                Auf dem Foto wirkt das fertige Artwork wie ein normaler Druck – tatsächlich ist es
+                ein echtes Höhenbild: Durch unterschiedliche Materialstärke entsteht eine
+                reliefartige, spürbar dreidimensionale Oberfläche mit ausgeprägter Tiefenwirkung,
+                die sich im Licht je nach Blickwinkel verändert. Aus der Distanz wirkt das Artwork
+                wie ein hochauflösendes Foto, aus der Nähe wird die Struktur sichtbar und das Bild
+                bekommt durch die Höhenunterschiede eine fast technische Anmutung.
+              </p>
             </div>
           </Reveal>
         </section>
