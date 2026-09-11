@@ -87,7 +87,8 @@ export default function ArtworksPage() {
             <img
               src="/Artwork_Praesentation_Wand.jpg"
               alt="Drei fertige 3D-Artworks gerahmt an der Wand"
-              className="h-72 w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-96 md:h-[30rem]"
+              className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
+              style={{ aspectRatio: "1254 / 970" }}
               onClick={() => setSelectedImage("/Artwork_Praesentation_Wand.jpg")}
             />
           </Reveal>
