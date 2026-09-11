@@ -5,13 +5,15 @@ export default function BeforeAfterSlider({
   afterSrc,
   beforeLabel = "Vorher",
   afterLabel = "Nachher",
+  aspectRatio = "1 / 1",
   className = "",
 }) {
   const [position, setPosition] = useState(50);
 
   return (
     <div
-      className={`relative aspect-square w-full select-none overflow-hidden rounded-2xl border border-neutral-800 ${className}`}
+      className={`relative w-full select-none overflow-hidden rounded-2xl border border-neutral-800 ${className}`}
+      style={{ aspectRatio }}
     >
       <img
         src={afterSrc}

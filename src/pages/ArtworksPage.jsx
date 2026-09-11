@@ -118,12 +118,13 @@ export default function ArtworksPage() {
               Artwork zu vergleichen.
             </p>
 
-            <div className="mx-auto mt-8 max-w-xl">
+            <div className="mx-auto mt-8 max-w-2xl">
               <BeforeAfterSlider
                 beforeSrc="/Artwork_Wing_Original.jpg"
                 afterSrc="/Artwork_Wing_Ergebnis.jpg"
                 beforeLabel="Original"
                 afterLabel="Fertiges Artwork"
+                aspectRatio="3 / 2"
               />
             </div>
           </Reveal>
