@@ -3,7 +3,7 @@ export const artworkGalleryImages = [
   "/Artwork_Stanced_E46_5.png",
   "/Artwork_E87.png",
   "/Artwork_Kein_Leben_bleibt.png",
-  "/Artwork_Foggy_Mountains.png",
+  "/Artwork_Foggy_Mountains_v2.png",
   "/Artwork_Wave.png",
 ];
 
