@@ -6,15 +6,11 @@ import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
 import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
-import GallerySection from "../components/sections/GallerySection";
+import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import ArtworksProcessSection from "../components/sections/ArtworksProcessSection";
 import ArtworkPreviewTool from "../components/sections/ArtworkPreviewTool";
 import useContactForm from "../hooks/useContactForm";
-import {
-  artworkGalleryImages,
-  artworkInfoText,
-  artworkIntroText,
-} from "../data/artworks";
+import { artworkInfoText, artworkIntroText } from "../data/artworks";
 
 export default function ArtworksPage() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -70,13 +66,6 @@ export default function ArtworksPage() {
               </a>
 
               <a
-                href="#galerie"
-                className="inline-block rounded-lg border border-neutral-700 px-6 py-3 text-center transition hover:border-neutral-500 hover:bg-neutral-900"
-              >
-                Zur Galerie
-              </a>
-
-              <a
                 href="#ablauf-artworks"
                 className="inline-block rounded-lg border border-neutral-700 px-6 py-3 text-center transition hover:border-neutral-500 hover:bg-neutral-900"
               >
@@ -118,7 +107,28 @@ export default function ArtworksPage() {
           </Reveal>
         </section>
 
-        <GallerySection images={artworkGalleryImages} onPreview={setSelectedImage} />
+        <section className="mt-16 sm:mt-20">
+          <Reveal className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:p-8 md:p-10">
+            <span className="eyebrow">Beispiel</span>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+              Vom Originalfoto zum 3D-Artwork
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+              Ziehe den Regler, um das eingereichte Originalfoto mit dem fertigen, gedruckten
+              Artwork zu vergleichen.
+            </p>
+
+            <div className="mx-auto mt-8 max-w-xl">
+              <BeforeAfterSlider
+                beforeSrc="/Artwork_Wing_Original.jpg"
+                afterSrc="/Artwork_Wing_Ergebnis.jpg"
+                beforeLabel="Original"
+                afterLabel="Fertiges Artwork"
+              />
+            </div>
+          </Reveal>
+        </section>
+
         <ArtworksProcessSection />
       </main>
 
