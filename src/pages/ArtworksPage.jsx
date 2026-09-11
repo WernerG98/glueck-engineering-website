@@ -120,6 +120,17 @@ export default function ArtworksPage() {
 
             <div className="mx-auto mt-8 max-w-2xl">
               <BeforeAfterSlider
+                beforeSrc="/Artwork_Wing_Full.jpg"
+                afterSrc="/Artwork_Wing_Ergebnis_Full.jpg"
+                beforeLabel="Original"
+                afterLabel="Fertiges Artwork"
+                aspectRatio="1800 / 1454"
+              />
+              <p className="mt-3 text-center text-xs text-neutral-500">Das vollständige Foto.</p>
+            </div>
+
+            <div className="mx-auto mt-10 max-w-2xl">
+              <BeforeAfterSlider
                 beforeSrc="/Artwork_Wing_Original.jpg"
                 afterSrc="/Artwork_Wing_Ergebnis.jpg"
                 beforeLabel="Original"
@@ -127,39 +138,8 @@ export default function ArtworksPage() {
                 aspectRatio="3 / 2"
               />
               <p className="mt-3 text-center text-xs text-neutral-500">
-                Detailausschnitt, damit Original und Artwork exakt übereinanderliegen. Die
-                vollständigen Fotos gibt es darunter.
+                Detailausschnitt, damit Original und Artwork exakt übereinanderliegen.
               </p>
-            </div>
-
-            <div className="mx-auto mt-10 grid max-w-4xl gap-6 sm:grid-cols-2">
-              <div>
-                <p className="mb-3 text-sm text-neutral-400">Das vollständige Originalfoto:</p>
-                <div
-                  className="group overflow-hidden rounded-2xl border border-neutral-800 cursor-pointer"
-                  onClick={() => setSelectedImage("/Artwork_Wing_Full.jpg")}
-                >
-                  <img
-                    src="/Artwork_Wing_Full.jpg"
-                    alt="Vollständiges Originalfoto des BMW E46"
-                    className="w-full object-cover transition duration-700 ease-out group-hover:scale-105"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <p className="mb-3 text-sm text-neutral-400">Das vollständige, fertige Artwork:</p>
-                <div
-                  className="group overflow-hidden rounded-2xl border border-neutral-800 cursor-pointer"
-                  onClick={() => setSelectedImage("/Artwork_Wing_Ergebnis_Full.jpg")}
-                >
-                  <img
-                    src="/Artwork_Wing_Ergebnis_Full.jpg"
-                    alt="Vollständiges, fertiges 3D-Artwork des BMW E46, gerahmt"
-                    className="w-full object-cover transition duration-700 ease-out group-hover:scale-105"
-                  />
-                </div>
-              </div>
             </div>
           </Reveal>
         </section>
