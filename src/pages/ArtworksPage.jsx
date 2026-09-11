@@ -126,20 +126,6 @@ export default function ArtworksPage() {
                 afterLabel="Fertiges Artwork"
                 aspectRatio="1800 / 1454"
               />
-              <p className="mt-3 text-center text-xs text-neutral-500">Das vollständige Foto.</p>
-            </div>
-
-            <div className="mx-auto mt-10 max-w-2xl">
-              <BeforeAfterSlider
-                beforeSrc="/Artwork_Wing_Original.jpg"
-                afterSrc="/Artwork_Wing_Ergebnis.jpg"
-                beforeLabel="Original"
-                afterLabel="Fertiges Artwork"
-                aspectRatio="3 / 2"
-              />
-              <p className="mt-3 text-center text-xs text-neutral-500">
-                Detailausschnitt, damit Original und Artwork exakt übereinanderliegen.
-              </p>
             </div>
           </Reveal>
         </section>
