@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Reveal from "../Reveal";
 import BeforeAfterSlider from "../BeforeAfterSlider";
+import ProcessStations from "../ProcessStations";
 
 const steps = [
   {
@@ -39,48 +40,37 @@ export default function ArtworksProcessSection() {
   return (
     <section id="ablauf-artworks" className="mt-16 sm:mt-20 md:mt-24">
       <Reveal>
-        <span className="eyebrow">Ablauf</span>
+        <span className="eyebrow">Fertigungsbegleitschein</span>
         <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">
           Ablauf für individuelle 3D-Artworks
         </h2>
       </Reveal>
 
-      <Reveal className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:p-8">
-        <div className="flex flex-wrap gap-2">
-          {steps.map((s, index) => (
-            <button
-              key={s.title}
-              onClick={() => setActiveStep(index)}
-              className={[
-                "flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition sm:px-4",
-                index === activeStep
-                  ? "border-accent bg-neutral-800/80 text-white"
-                  : "border-neutral-800 text-neutral-400 hover:border-neutral-700 hover:text-white",
-              ].join(" ")}
-            >
-              <span
-                className={[
-                  "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs",
-                  index === activeStep ? "border-accent text-accent" : "border-neutral-600",
-                ].join(" ")}
-              >
-                {index + 1}
-              </span>
-              <span className="hidden sm:inline">{s.title}</span>
-            </button>
-          ))}
+      <Reveal className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-800 bg-neutral-950/40 px-6 py-3 sm:px-8">
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-neutral-500">
+            Fertigungsbegleitschein
+          </span>
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-neutral-500">
+            Station {String(activeStep + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+          </span>
         </div>
 
-        <div className="mt-6 border-t border-neutral-800 pt-6">
+        <ProcessStations steps={steps} activeStep={activeStep} onSelect={setActiveStep} />
+
+        <div className="border-t border-neutral-800 px-6 py-6 sm:px-8 sm:py-8">
           <h3 className="text-lg font-semibold sm:text-xl">{step.title}</h3>
           <p className="mt-3 text-sm text-neutral-400 sm:text-base">{step.description}</p>
 
           {step.bullets && (
-            <div className="mt-4 space-y-2 text-sm text-neutral-300 sm:text-base">
+            <ul className="mt-4 space-y-2 text-sm text-neutral-300 sm:text-base">
               {step.bullets.map((bullet) => (
-                <p key={bullet}>• {bullet}</p>
+                <li key={bullet} className="flex items-start gap-2.5">
+                  <span className="mt-1 h-3.5 w-3.5 shrink-0 rounded-[2px] border border-neutral-600" aria-hidden="true" />
+                  <span>{bullet}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
 
           {step.image && (
@@ -113,16 +103,16 @@ export default function ArtworksProcessSection() {
             <button
               onClick={() => setActiveStep((s) => Math.max(0, s - 1))}
               disabled={activeStep === 0}
-              className="rounded-lg border border-neutral-700 px-4 py-2 text-sm transition hover:border-neutral-500 hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-neutral-700 px-4 py-2 font-mono text-xs uppercase tracking-wide transition hover:border-neutral-500 hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Zurück
+              ‹ Zurück
             </button>
             <button
               onClick={() => setActiveStep((s) => Math.min(steps.length - 1, s + 1))}
               disabled={activeStep === steps.length - 1}
-              className="rounded-lg border border-neutral-700 px-4 py-2 text-sm transition hover:border-neutral-500 hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-neutral-700 px-4 py-2 font-mono text-xs uppercase tracking-wide transition hover:border-neutral-500 hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Weiter
+              Weiter ›
             </button>
           </div>
         </div>
