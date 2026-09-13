@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Reveal from "../Reveal";
 
-export default function ServiceTeaserSection({ onRequest }) {
+export default function ServiceTeaserSection({ onRequest, onPreview }) {
   return (
     <section className="mt-16 sm:mt-20 md:mt-24">
       <Reveal className="grid gap-6 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:gap-8 sm:p-8 md:grid-cols-2 md:items-center md:p-10">
@@ -36,7 +36,9 @@ export default function ServiceTeaserSection({ onRequest }) {
           <img
             src="/3D-Druck_S54_Ergebnis.jpg"
             alt="3D-Druck Dienstleistung"
-            className="h-64 w-full object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-80 md:h-full"
+            className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
+            style={{ aspectRatio: "1 / 1" }}
+            onClick={() => onPreview?.("/3D-Druck_S54_Ergebnis.jpg")}
           />
         </div>
       </Reveal>

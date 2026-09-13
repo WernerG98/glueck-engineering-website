@@ -69,12 +69,14 @@ export default function HomePage() {
             <img
               src="/Artwork_Stanced_E46.png"
               alt="3D Artwork BMW E46"
-              className="h-72 w-full object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-96 md:h-[30rem]"
+              className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
+              style={{ aspectRatio: "1 / 1" }}
+              onClick={() => setSelectedImage("/Artwork_Stanced_E46.png")}
             />
           </Reveal>
         </section>
 
-        <ServiceTeaserSection onRequest={openContactModal} />
+        <ServiceTeaserSection onRequest={openContactModal} onPreview={setSelectedImage} />
         <FertigteileTeaserSection />
         <ArtworksTeaserSection onRequest={openContactModal} onPreview={setSelectedImage} />
       </main>
