@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -101,6 +101,52 @@ function MaterialCard({ material, onRequest, isComparing, onToggleCompare, compa
   );
 }
 
+function MaterialTable({ groupedMaterials }) {
+  return (
+    <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-800">
+      <table className="w-full min-w-[960px] border-collapse text-left text-sm">
+        <thead>
+          <tr className="border-b border-neutral-800 bg-neutral-900/80 text-xs uppercase tracking-wide text-neutral-500">
+            <th className="whitespace-nowrap px-4 py-3 font-medium">Material</th>
+            {PROPERTY_ROWS.map((row) => (
+              <th key={row.key} className="whitespace-nowrap px-4 py-3 font-medium">
+                {row.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {groupedMaterials.map((category) => (
+            <Fragment key={category.id}>
+              <tr>
+                <td
+                  colSpan={PROPERTY_ROWS.length + 1}
+                  className="bg-neutral-950/60 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-500"
+                >
+                  {category.label}
+                </td>
+              </tr>
+              {category.items.map((material) => (
+                <tr key={material.id} className="border-b border-neutral-800 last:border-0 hover:bg-neutral-900/60">
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <span className="font-medium text-white">{material.name}</span>
+                    <span className="ml-2 text-xs text-neutral-500">{material.tagline}</span>
+                  </td>
+                  {PROPERTY_ROWS.map((row) => (
+                    <td key={row.key} className="whitespace-nowrap px-4 py-3 text-neutral-300">
+                      {material[row.key].label}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </Fragment>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function CompareSection({ selected, onRemove, onClear }) {
   return (
     <Reveal className="rounded-2xl border border-accent/60 bg-neutral-900/60 p-5 sm:p-6">
@@ -169,6 +215,7 @@ function CompareSection({ selected, onRemove, onClear }) {
 export default function MaterialienPage() {
   const [activeFilter, setActiveFilter] = useState("alle");
   const [compareIds, setCompareIds] = useState([]);
+  const [view, setView] = useState("karten");
 
   const {
     contactModalOpen,
@@ -247,46 +294,79 @@ export default function MaterialienPage() {
         </section>
 
         <section className="mt-10 sm:mt-12">
-          <Reveal className="flex flex-wrap gap-2">
-            {materialFilters.map((filter) => (
+          <Reveal className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap gap-2">
+              {materialFilters.map((filter) => (
+                <button
+                  key={filter.id}
+                  onClick={() => setActiveFilter(filter.id)}
+                  className={[
+                    "rounded-lg border px-4 py-2 text-sm font-medium transition",
+                    activeFilter === filter.id
+                      ? "border-accent bg-neutral-800/80 text-white"
+                      : "border-neutral-800 text-neutral-400 hover:border-neutral-700 hover:text-white",
+                  ].join(" ")}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex gap-2 font-mono text-xs uppercase tracking-wide">
               <button
-                key={filter.id}
-                onClick={() => setActiveFilter(filter.id)}
+                onClick={() => setView("karten")}
                 className={[
-                  "rounded-lg border px-4 py-2 text-sm font-medium transition",
-                  activeFilter === filter.id
-                    ? "border-accent bg-neutral-800/80 text-white"
-                    : "border-neutral-800 text-neutral-400 hover:border-neutral-700 hover:text-white",
+                  "rounded-lg border px-3 py-2 transition",
+                  view === "karten"
+                    ? "border-accent text-accent"
+                    : "border-neutral-800 text-neutral-500 hover:border-neutral-700 hover:text-white",
                 ].join(" ")}
               >
-                {filter.label}
+                Karten
               </button>
-            ))}
+              <button
+                onClick={() => setView("tabelle")}
+                className={[
+                  "rounded-lg border px-3 py-2 transition",
+                  view === "tabelle"
+                    ? "border-accent text-accent"
+                    : "border-neutral-800 text-neutral-500 hover:border-neutral-700 hover:text-white",
+                ].join(" ")}
+              >
+                Datenblatt
+              </button>
+            </div>
           </Reveal>
 
-          {groupedMaterials.map((category) => (
-            <div key={category.id} className="mt-10 first:mt-6">
-              <Reveal>
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-400">
-                  {category.label}
-                </h2>
-              </Reveal>
+          {view === "tabelle" ? (
+            <Reveal>
+              <MaterialTable groupedMaterials={groupedMaterials} />
+            </Reveal>
+          ) : (
+            groupedMaterials.map((category) => (
+              <div key={category.id} className="mt-10 first:mt-6">
+                <Reveal>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-400">
+                    {category.label}
+                  </h2>
+                </Reveal>
 
-              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {category.items.map((material, index) => (
-                  <Reveal key={material.id} delay={index * 80} className="h-full">
-                    <MaterialCard
-                      material={material}
-                      onRequest={openContactModal}
-                      isComparing={compareIds.includes(material.id)}
-                      onToggleCompare={toggleCompare}
-                      compareDisabled={compareIds.length >= MAX_COMPARE}
-                    />
-                  </Reveal>
-                ))}
+                <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {category.items.map((material, index) => (
+                    <Reveal key={material.id} delay={index * 80} className="h-full">
+                      <MaterialCard
+                        material={material}
+                        onRequest={openContactModal}
+                        isComparing={compareIds.includes(material.id)}
+                        onToggleCompare={toggleCompare}
+                        compareDisabled={compareIds.length >= MAX_COMPARE}
+                      />
+                    </Reveal>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </section>
 
         <Reveal>
