@@ -18,12 +18,19 @@ export default function BeforeAfterSlider({
       <img
         src={afterSrc}
         alt={afterLabel}
+        loading="lazy"
         className="absolute inset-0 h-full w-full object-cover"
         draggable={false}
       />
 
       <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
-        <img src={beforeSrc} alt={beforeLabel} className="h-full w-full object-cover" draggable={false} />
+        <img
+          src={beforeSrc}
+          alt={beforeLabel}
+          loading="lazy"
+          className="h-full w-full object-cover"
+          draggable={false}
+        />
       </div>
 
       <div className="pointer-events-none absolute inset-y-0" style={{ left: `calc(${position}% - 1px)` }}>

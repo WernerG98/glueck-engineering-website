@@ -36,6 +36,7 @@ export default function ServiceTeaserSection({ onRequest, onPreview }) {
           <img
             src="/3D-Druck_S54_Werkstatt.png"
             alt="3D-gedruckter S54-Motor auf Montageständer in der Werkstatt"
+            loading="lazy"
             className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
             style={{ aspectRatio: "1 / 1" }}
             onClick={() => onPreview?.("/3D-Druck_S54_Werkstatt.png")}

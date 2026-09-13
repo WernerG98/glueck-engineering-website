@@ -56,7 +56,12 @@ export default function MerkzettelDrawer({ open, onClose, onOpenContactModal }) 
               {items.map((item) => (
                 <li key={item.id} className="flex gap-3 rounded-xl border border-neutral-800 bg-neutral-950/60 p-3">
                   {item.image ? (
-                    <img src={item.image} alt={item.name} className="h-16 w-16 shrink-0 rounded-lg object-cover" />
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      loading="lazy"
+                      className="h-16 w-16 shrink-0 rounded-lg object-cover"
+                    />
                   ) : (
                     <div className="h-16 w-16 shrink-0 rounded-lg bg-neutral-800" />
                   )}

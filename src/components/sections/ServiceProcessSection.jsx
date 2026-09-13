@@ -58,6 +58,7 @@ export default function ServiceProcessSection() {
                 <img
                   src={step.image}
                   alt="Fertig gedrucktes Bauteil"
+                  loading="lazy"
                   className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
                 />
               </div>

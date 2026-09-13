@@ -36,6 +36,7 @@ function FertigteilCard({ item, onRequest }) {
           <img
             src={item.image}
             alt={item.name}
+            loading="lazy"
             className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
           />
         ) : (
