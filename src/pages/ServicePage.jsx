@@ -1,14 +1,18 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
+import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
 import ServiceProcessSection from "../components/sections/ServiceProcessSection";
 import useContactForm from "../hooks/useContactForm";
 
 export default function ServicePage() {
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const {
     contactModalOpen,
     requestSubject,
@@ -72,7 +76,9 @@ export default function ServicePage() {
             <img
               src="/3D-Druck_S54_Ergebnis.jpg"
               alt="3D-Druck Dienstleistung"
-              className="h-72 w-full object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-96 md:h-[30rem]"
+              className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
+              style={{ aspectRatio: "1 / 1" }}
+              onClick={() => setSelectedImage("/3D-Druck_S54_Ergebnis.jpg")}
             />
           </Reveal>
         </section>
@@ -132,6 +138,8 @@ export default function ServicePage() {
       </main>
 
       <Footer />
+
+      <ImageModal selectedImage={selectedImage} onClose={() => setSelectedImage(null)} />
 
       <FloatingContactButton onOpen={openContactModal} />
 
