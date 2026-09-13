@@ -25,6 +25,8 @@ export default function ServicePage() {
     handleInputChange,
     handleFileChange,
     submitContactForm,
+    formError,
+    isSubmitted,
   } = useContactForm();
 
   return (
@@ -153,6 +155,8 @@ export default function ServicePage() {
         attachment={attachment}
         closeContactModal={closeContactModal}
         submitContactForm={submitContactForm}
+        formError={formError}
+        isSubmitted={isSubmitted}
         isSending={isSending}
       />
     </div>

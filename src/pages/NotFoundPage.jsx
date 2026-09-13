@@ -19,6 +19,8 @@ export default function NotFoundPage() {
     handleInputChange,
     handleFileChange,
     submitContactForm,
+    formError,
+    isSubmitted,
   } = useContactForm();
 
   return (
@@ -57,6 +59,8 @@ export default function NotFoundPage() {
         attachment={attachment}
         closeContactModal={closeContactModal}
         submitContactForm={submitContactForm}
+        formError={formError}
+        isSubmitted={isSubmitted}
         isSending={isSending}
       />
     </div>

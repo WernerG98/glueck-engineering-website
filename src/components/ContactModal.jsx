@@ -15,6 +15,8 @@ export default function ContactModal({
   closeContactModal,
   submitContactForm,
   isSending,
+  formError,
+  isSubmitted,
 }) {
   const panelRef = useRef(null);
 
@@ -35,6 +37,43 @@ export default function ContactModal({
   useFocusTrap(contactModalOpen, panelRef);
 
   if (!contactModalOpen) return null;
+
+  if (isSubmitted) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/80 px-4 py-6 backdrop-blur-sm sm:items-center sm:py-8"
+        onClick={closeContactModal}
+      >
+        <div
+          ref={panelRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-modal-success-title"
+          tabIndex={-1}
+          className="w-full max-w-md rounded-2xl border border-neutral-800 bg-neutral-900 p-6 shadow-2xl shadow-black/50 outline-none"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/15 text-accent">
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h2 id="contact-modal-success-title" className="mt-4 text-xl font-semibold tracking-tight">
+            Anfrage gesendet
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+            Die Anfrage wurde erfolgreich übermittelt. Die Antwort kommt per E-Mail.
+          </p>
+          <button
+            onClick={closeContactModal}
+            className="mt-6 rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
+          >
+            Schließen
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!ACCEPTING_REQUESTS) {
     return (
@@ -95,6 +134,12 @@ export default function ContactModal({
             ✕
           </button>
         </div>
+
+        {formError && (
+          <div className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            {formError}
+          </div>
+        )}
 
         <div className="mt-6 grid gap-4">
           <input

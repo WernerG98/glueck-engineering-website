@@ -229,6 +229,8 @@ export default function MaterialienPage() {
     handleInputChange,
     handleFileChange,
     submitContactForm,
+    formError,
+    isSubmitted,
   } = useContactForm();
 
   const groupedMaterials = useMemo(() => {
@@ -405,6 +407,8 @@ export default function MaterialienPage() {
         attachment={attachment}
         closeContactModal={closeContactModal}
         submitContactForm={submitContactForm}
+        formError={formError}
+        isSubmitted={isSubmitted}
         isSending={isSending}
       />
     </div>

@@ -56,6 +56,8 @@ export default function FertigteilePage() {
     handleInputChange,
     handleFileChange,
     submitContactForm,
+    formError,
+    isSubmitted,
   } = useContactForm();
 
   const vehicleOptions = useMemo(() => {
@@ -129,6 +131,8 @@ export default function FertigteilePage() {
         attachment={attachment}
         closeContactModal={closeContactModal}
         submitContactForm={submitContactForm}
+        formError={formError}
+        isSubmitted={isSubmitted}
         isSending={isSending}
       />
     </div>

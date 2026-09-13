@@ -17,6 +17,8 @@ const initialFormData = {
   serviceQuantity: "1",
 };
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function useContactForm() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [requestSubject, setRequestSubject] = useState("");
@@ -24,12 +26,16 @@ export default function useContactForm() {
   const [isSending, setIsSending] = useState(false);
   const [attachment, setAttachment] = useState(null);
   const [formData, setFormData] = useState(initialFormData);
+  const [formError, setFormError] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const openContactModal = (subject, type, prefill = {}) => {
     setRequestSubject(subject);
     setRequestType(type);
     setFormData({ ...initialFormData, ...prefill });
     setAttachment(null);
+    setFormError("");
+    setIsSubmitted(false);
     setContactModalOpen(true);
   };
 
@@ -40,6 +46,8 @@ export default function useContactForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    setFormError("");
 
     setFormData((prev) => {
       if (name === "artworkFrame") {
@@ -65,6 +73,10 @@ export default function useContactForm() {
   const validateForm = () => {
     if (!formData.name.trim() || !formData.email.trim()) {
       return "Bitte Name und E-Mail ausfüllen.";
+    }
+
+    if (!EMAIL_REGEX.test(formData.email.trim())) {
+      return "Bitte eine gültige E-Mail-Adresse eingeben.";
     }
 
     if (requestType === "general" && !formData.notes.trim()) {
@@ -108,9 +120,11 @@ export default function useContactForm() {
     const validationError = validateForm();
 
     if (validationError) {
-      alert(validationError);
+      setFormError(validationError);
       return;
     }
+
+    setFormError("");
 
     try {
       setIsSending(true);
@@ -153,8 +167,7 @@ export default function useContactForm() {
         throw new Error(result?.error || "Versand fehlgeschlagen.");
       }
 
-      alert("Die Anfrage wurde erfolgreich gesendet.");
-      setContactModalOpen(false);
+      setIsSubmitted(true);
       setFormData(initialFormData);
       setAttachment(null);
     } catch (error) {
@@ -162,7 +175,7 @@ export default function useContactForm() {
         error instanceof Error
           ? error.message
           : "Beim Versand ist ein Fehler aufgetreten.";
-      alert(message);
+      setFormError(message);
     } finally {
       setIsSending(false);
     }
@@ -175,6 +188,8 @@ export default function useContactForm() {
     formData,
     attachment,
     isSending,
+    formError,
+    isSubmitted,
     openContactModal,
     closeContactModal,
     handleInputChange,

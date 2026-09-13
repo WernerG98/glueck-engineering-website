@@ -27,6 +27,8 @@ export default function ArtworksPage() {
     handleInputChange,
     handleFileChange,
     submitContactForm,
+    formError,
+    isSubmitted,
   } = useContactForm();
 
   return (
@@ -110,6 +112,7 @@ export default function ArtworksPage() {
               <img
                 src="/Artwork_Stanced_E46.png"
                 alt="3D Artwork BMW E46"
+                loading="lazy"
                 className="h-64 w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-80 md:h-full"
                 onClick={() => setSelectedImage("/Artwork_Stanced_E46.png")}
               />
@@ -159,6 +162,8 @@ export default function ArtworksPage() {
         attachment={attachment}
         closeContactModal={closeContactModal}
         submitContactForm={submitContactForm}
+        formError={formError}
+        isSubmitted={isSubmitted}
         isSending={isSending}
       />
     </div>
