@@ -7,7 +7,18 @@ import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
 import Reveal from "../components/Reveal";
 import useContactForm from "../hooks/useContactForm";
+import useJsonLd from "../hooks/useJsonLd";
 import faq from "../data/faq";
+
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+};
 
 function FAQItem({ item, isOpen, onToggle }) {
   return (
@@ -47,6 +58,8 @@ function FAQItem({ item, isOpen, onToggle }) {
 
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState(0);
+
+  useJsonLd("faq-structured-data", faqStructuredData);
 
   const {
     contactModalOpen,

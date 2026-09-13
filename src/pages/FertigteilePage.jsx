@@ -7,10 +7,42 @@ import FloatingContactButton from "../components/FloatingContactButton";
 import Reveal from "../components/Reveal";
 import FertigteileSection from "../components/sections/FertigteileSection";
 import useContactForm from "../hooks/useContactForm";
+import useJsonLd from "../hooks/useJsonLd";
 import fertigteile from "../data/fertigteile";
+
+const SITE_URL = "https://glueck-engineering.com";
+
+function parsePrice(price) {
+  return price.replace(/[^\d,]/g, "").replace(",", ".");
+}
+
+const fertigteileStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: fertigteile.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "Product",
+      name: item.name,
+      description: item.text,
+      ...(item.image ? { image: `${SITE_URL}${item.image}` } : {}),
+      url: `${SITE_URL}/fertigteile`,
+      offers: {
+        "@type": "Offer",
+        price: parsePrice(item.price),
+        priceCurrency: "EUR",
+        availability: "https://schema.org/InStock",
+        url: `${SITE_URL}/fertigteile`,
+      },
+    },
+  })),
+};
 
 export default function FertigteilePage() {
   const [activeVehicle, setActiveVehicle] = useState("alle");
+
+  useJsonLd("fertigteile-structured-data", fertigteileStructuredData);
 
   const {
     contactModalOpen,
