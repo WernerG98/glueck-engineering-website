@@ -20,7 +20,6 @@ const steps = [
   {
     title: "Fertigung & Versand",
     description: "Nach der Freigabe wird das Bauteil gedruckt, geprüft, sorgfältig verpackt und versendet.",
-    image: "/3D-Druck_S54_Ergebnis.jpg",
   },
 ];
 
