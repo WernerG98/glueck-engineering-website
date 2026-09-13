@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ACCEPTING_REQUESTS } from "../data/siteStatus";
+import useBodyScrollLock from "../hooks/useBodyScrollLock";
+import useFocusTrap from "../hooks/useFocusTrap";
 
 export default function ContactModal({
   contactModalOpen,
@@ -14,6 +16,8 @@ export default function ContactModal({
   submitContactForm,
   isSending,
 }) {
+  const panelRef = useRef(null);
+
   useEffect(() => {
     if (!contactModalOpen) return undefined;
 
@@ -27,6 +31,9 @@ export default function ContactModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [contactModalOpen, closeContactModal]);
 
+  useBodyScrollLock(contactModalOpen);
+  useFocusTrap(contactModalOpen, panelRef);
+
   if (!contactModalOpen) return null;
 
   if (!ACCEPTING_REQUESTS) {
@@ -36,10 +43,17 @@ export default function ContactModal({
         onClick={closeContactModal}
       >
         <div
-          className="w-full max-w-md rounded-2xl border border-neutral-800 bg-neutral-900 p-6 shadow-2xl shadow-black/50"
+          ref={panelRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-modal-paused-title"
+          tabIndex={-1}
+          className="w-full max-w-md rounded-2xl border border-neutral-800 bg-neutral-900 p-6 shadow-2xl shadow-black/50 outline-none"
           onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="text-xl font-semibold tracking-tight">Anfragen pausiert</h2>
+          <h2 id="contact-modal-paused-title" className="text-xl font-semibold tracking-tight">
+            Anfragen pausiert
+          </h2>
           <p className="mt-3 text-sm leading-relaxed text-neutral-400">
             Wir nehmen aktuell keine neuen Anfragen an, weil wir gerade die vorhandenen abarbeiten.
             Schau in Kürze wieder vorbei oder schreib uns direkt eine E-Mail.
@@ -61,11 +75,18 @@ export default function ContactModal({
       onClick={closeContactModal}
     >
       <div
-        className="w-full max-w-2xl rounded-2xl border border-neutral-800 bg-neutral-900 p-4 shadow-2xl shadow-black/50 sm:p-6"
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contact-modal-title"
+        tabIndex={-1}
+        className="w-full max-w-2xl rounded-2xl border border-neutral-800 bg-neutral-900 p-4 shadow-2xl shadow-black/50 outline-none sm:p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between gap-4 border-b border-neutral-800 pb-4">
-          <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">{requestSubject}</h2>
+          <h2 id="contact-modal-title" className="text-xl font-semibold tracking-tight sm:text-2xl">
+            {requestSubject}
+          </h2>
           <button
             onClick={closeContactModal}
             className="rounded-lg px-3 py-2 text-neutral-400 transition hover:bg-neutral-800 hover:text-white"
