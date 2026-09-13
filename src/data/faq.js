@@ -25,6 +25,8 @@ const faq = [
     question: "Wie läuft eine Anfrage ab?",
     answer:
       "Eine Anfrage über das Kontaktformular ist unverbindlich. Danach gibt es ein individuelles Angebot inklusive Preis. Ein Vertrag kommt erst zustande, wenn dieses Angebot ausdrücklich bestätigt wird. Vorher wird nichts produziert.",
+    linkTo: "/service",
+    linkLabel: "Ablauf im Detail ansehen",
   },
   {
     question: "Wie erfolgt die Zahlung?",
