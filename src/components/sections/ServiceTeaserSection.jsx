@@ -34,11 +34,11 @@ export default function ServiceTeaserSection({ onRequest, onPreview }) {
 
         <div className="group overflow-hidden rounded-2xl border border-neutral-800">
           <img
-            src="/3D-Druck_S54_Ergebnis.jpg"
-            alt="3D-Druck Dienstleistung"
+            src="/3D-Druck_S54_Werkstatt.png"
+            alt="3D-gedruckter S54-Motor auf Montageständer in der Werkstatt"
             className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
             style={{ aspectRatio: "1 / 1" }}
-            onClick={() => onPreview?.("/3D-Druck_S54_Ergebnis.jpg")}
+            onClick={() => onPreview?.("/3D-Druck_S54_Werkstatt.png")}
           />
         </div>
       </Reveal>
