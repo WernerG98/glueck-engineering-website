@@ -25,10 +25,10 @@ export default function ProcessStations({ steps, activeStep, onSelect }) {
             >
               <span
                 className={[
-                  "flex h-9 w-9 shrink-0 items-center justify-center rounded border font-mono text-xs transition",
-                  state === "active" && "border-accent bg-accent text-neutral-950",
-                  state === "done" && "border-accent/60 bg-neutral-900 text-accent",
-                  state === "upcoming" && "border-neutral-700 bg-neutral-900 text-neutral-500",
+                  "flex h-9 w-9 shrink-0 items-center justify-center rounded bg-neutral-900 font-mono text-xs transition",
+                  state === "active" && "border-2 border-accent font-semibold text-accent",
+                  state === "done" && "border border-accent/50 text-accent",
+                  state === "upcoming" && "border border-neutral-700 text-neutral-500",
                 ]
                   .filter(Boolean)
                   .join(" ")}
