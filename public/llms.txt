@@ -1,0 +1,20 @@
+# Glück Engineering
+
+> Werkstatt für individuelle Fertigteile, technische 3D-Drucklösungen und mehrschichtige 3D-Artworks. Inhaber: M.Eng. Werner Glück, Arnstorf, Deutschland.
+
+Glück Engineering fertigt auf Bestellung 3D-gedruckte Bauteile in drei Bereichen: passgenaue Fertigteile für ausgewählte Fahrzeuge (aktuell u. a. VW Bus T3/T4/T5/T6 und Honda XRV750), individuelle 3D-Druck-Dienstleistungen für Prototypen, Ersatzteile und Kleinserien nach eigener Datei oder gemeinsam entwickelter Idee, sowie mehrschichtige 3D-Artworks (Wandbilder mit Tiefenwirkung, aus einem eingereichten Foto gefertigt). Gedruckt wird ausschließlich mit Filamenten von Bambu Lab (PLA, PETG, ASA/ABS, TPU, PC, PA/PET, PPS und faserverstärkte Varianten). Jede Anfrage über das Kontaktformular ist zunächst unverbindlich; ein Vertrag entsteht erst, wenn ein individuelles Angebot mit Preis ausdrücklich bestätigt wird.
+
+## Seiten
+
+- [Startseite](https://glueck-engineering.com/): Überblick über alle drei Leistungsbereiche.
+- [3D-Druck Dienstleistung](https://glueck-engineering.com/service): Individuelle 3D-Drucklösungen für Bauteile, Prototypen und Kleinserien, maximale Bauteilgröße 33 × 32,5 × 32 cm, inklusive Ablauf einer Anfrage.
+- [Fertigteile](https://glueck-engineering.com/fertigteile): Katalog vorgefertigter, sofort bestellbarer Ersatz- und Zubehörteile mit Preisen, aktuell u. a. für VW Bus T3/T4/T5/T6 und Honda XRV750.
+- [3D-Artworks](https://glueck-engineering.com/artworks): Individuelle, mehrschichtige 3D-Wandbilder nach eigenem Motiv, schwarz-weiß ab 9,99 € oder mehrfarbig ab 19,99 €, maximale Größe 30 × 30 cm.
+- [Material-Guide](https://glueck-engineering.com/materialien): Vergleich aller verwendeten Filamente nach Hitzebeständigkeit, Festigkeit, Flexibilität, UV-Beständigkeit, Druckschwierigkeit und Preisklasse.
+- [FAQ](https://glueck-engineering.com/faq): Häufige Fragen zu Dateiformaten, Bauteilgröße, Materialien, Lieferzeit, Ablauf, Zahlung und Widerrufsrecht.
+
+## Kontakt
+
+- E-Mail: info@glueckengineering.com
+- Adresse: Rebenstr. 16, 94424 Arnstorf, Deutschland
+- Impressum: https://glueck-engineering.com/impressum
