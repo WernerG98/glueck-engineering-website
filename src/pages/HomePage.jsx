@@ -66,11 +66,12 @@ export default function HomePage() {
 
           <Reveal delay={150} className="group overflow-hidden rounded-2xl border border-neutral-800">
             <img
-              src="/Artwork_Stanced_E46.png"
+              src="/Artwork_Stanced_E46.webp"
               alt="3D Artwork BMW E46"
+              fetchpriority="high"
               className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
               style={{ aspectRatio: "1 / 1" }}
-              onClick={() => setSelectedImage("/Artwork_Stanced_E46.png")}
+              onClick={() => setSelectedImage("/Artwork_Stanced_E46.webp")}
             />
           </Reveal>
         </section>

@@ -87,11 +87,12 @@ export default function ArtworksPage() {
 
           <Reveal delay={150} className="group overflow-hidden rounded-2xl border border-neutral-800">
             <img
-              src="/Artwork_Praesentation_Wand.jpg"
+              src="/Artwork_Praesentation_Wand.webp"
               alt="Drei fertige 3D-Artworks gerahmt an der Wand"
+              fetchpriority="high"
               className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
               style={{ aspectRatio: "1254 / 970" }}
-              onClick={() => setSelectedImage("/Artwork_Praesentation_Wand.jpg")}
+              onClick={() => setSelectedImage("/Artwork_Praesentation_Wand.webp")}
             />
           </Reveal>
         </section>
@@ -110,11 +111,11 @@ export default function ArtworksPage() {
 
             <div className="group overflow-hidden rounded-2xl border border-neutral-800">
               <img
-                src="/Artwork_Stanced_E46.png"
+                src="/Artwork_Stanced_E46.webp"
                 alt="3D Artwork BMW E46"
                 loading="lazy"
                 className="h-64 w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-80 md:h-full"
-                onClick={() => setSelectedImage("/Artwork_Stanced_E46.png")}
+                onClick={() => setSelectedImage("/Artwork_Stanced_E46.webp")}
               />
             </div>
           </Reveal>
@@ -133,8 +134,8 @@ export default function ArtworksPage() {
 
             <div className="mx-auto mt-8 max-w-2xl">
               <BeforeAfterSlider
-                beforeSrc="/Artwork_Wing_Full.jpg"
-                afterSrc="/Artwork_Wing_Ergebnis_Full.jpg"
+                beforeSrc="/Artwork_Wing_Full.webp"
+                afterSrc="/Artwork_Wing_Ergebnis_Full.webp"
                 beforeLabel="Original"
                 afterLabel="Fertiges Artwork"
                 aspectRatio="1800 / 1454"

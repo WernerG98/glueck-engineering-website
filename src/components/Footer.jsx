@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-5 text-center md:grid md:grid-cols-3 md:items-center md:text-left">
           <div className="flex items-center justify-center gap-3 md:justify-start">
             <img
-              src="/logo.png"
+              src="/logo.webp"
               alt="Glück Engineering Logo"
               loading="lazy"
               className="h-10 w-10 object-contain opacity-90 md:h-12 md:w-12"

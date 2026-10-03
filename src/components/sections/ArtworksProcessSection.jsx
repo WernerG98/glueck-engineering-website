@@ -11,7 +11,7 @@ const steps = [
     title: "Prüfung der Angaben und Vorabentwurf",
     description:
       "Auf Basis der Angaben wird die Umsetzbarkeit geprüft; vor dem Druck wird ein Vorabentwurf inklusive Preis zugesendet. So ist bereits vorab erkennbar, wie das spätere Artwork aussehen wird.",
-    image: "/Artwork_Stanced_E46_6.png",
+    image: "/Artwork_Stanced_E46_6.webp",
     imageAlt: "Vorabentwurf des Artworks",
   },
   {
@@ -23,8 +23,8 @@ const steps = [
     description:
       "Nach erfolgter Freigabe wird das Produkt gefertigt und anschließend sorgfältig verpackt versendet. So wird aus dem Entwurf ein echtes Artwork:",
     beforeAfter: {
-      beforeSrc: "/Artwork_Stanced_E46_6.png",
-      afterSrc: "/Artwork_E46_Ergebnis_Cropped.jpg",
+      beforeSrc: "/Artwork_Stanced_E46_6.webp",
+      afterSrc: "/Artwork_E46_Ergebnis_Cropped.webp",
       beforeLabel: "Entwurf",
       afterLabel: "Fertig gedruckt",
     },

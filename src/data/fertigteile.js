@@ -2,7 +2,7 @@ const fertigteile = [
   {
     id: "vw-t4-fuehrung-blende",
     name: "VW T4 Führung für Blende / unterer Kühlergrill R+L (langer Vorderwagen)",
-    image: "/Fuehrung_Blende_T4.png",
+    image: "/Fuehrung_Blende_T4.webp",
     price: "19,99 €",
     text: "Passgenaue Führung für den unteren Kühlergrill des VW T4 mit langem Vorderwagen für originale Kotflügel. Bei Nachbau-Kotflügeln sind die Laschen oft höher, die Öffnung im Halter kann einfach angepasst werden.",
     vehicles: ["VW T4"],
@@ -11,7 +11,7 @@ const fertigteile = [
   {
     id: "vw-t5-clip-kopfstuetze",
     name: "VW T5 Clip Verstellung Kopfstütze (8 Stück)",
-    image: "/VW_T5_Clip_Verstellung_Kopfstuetze.jpg",
+    image: "/VW_T5_Clip_Verstellung_Kopfstuetze.webp",
     price: "9,99 €",
     text: "Ersatzclip für die Verstellung der Kopfstütze. Standardmäßig in Schwarz, andere Wunschfarbe bitte über eine Anfrage klären.",
     vehicles: ["VW T5"],
@@ -20,7 +20,7 @@ const fertigteile = [
   {
     id: "honda-xrv750-spritzschutz",
     name: "Honda XRV750 RD07 Spritzschutz Schwinge hinten",
-    image: "/Honda_XRV_RD07_Spritzschutz_Schwinge_hinten.jpg",
+    image: "/Honda_XRV_RD07_Spritzschutz_Schwinge_hinten.webp",
     price: "24,99 €",
     text: "Robuster Spritzschutz für die hintere Schwinge. Steifer als das Originalbauteil, dabei aber weiterhin ausreichend flexibel, um Belastungen und Vibrationen im Fahrbetrieb zuverlässig aufzunehmen.",
     vehicles: ["Honda XRV750"],
@@ -29,7 +29,7 @@ const fertigteile = [
   {
     id: "vw-t4-t5-t6-heckklappenaussteller",
     name: "VW T4/T5/T6 Heckklappenaussteller",
-    image: "/Heckklappenaussteller_T4_T5_T6.png",
+    image: "/Heckklappenaussteller_T4_T5_T6.webp",
     price: "9,99 €",
     text: "Erzeugt einen Spalt und hält die Heckklappe leicht geöffnet für Durchzug im Fahrzeug.",
     vehicles: ["VW T4", "VW T5", "VW T6"],
@@ -38,7 +38,7 @@ const fertigteile = [
   {
     id: "vw-t3-heckklappenaussteller",
     name: "VW T3 Heckklappenaussteller",
-    image: "/Heckklappenaussteller_T3.png",
+    image: "/Heckklappenaussteller_T3.webp",
     price: "9,99 €",
     text: "Erzeugt einen Spalt und hält die Heckklappe leicht geöffnet für Durchzug im Fahrzeug.",
     vehicles: ["VW T3"],
@@ -47,7 +47,7 @@ const fertigteile = [
   {
     id: "vw-t5-2-stellmotor-klimaturm",
     name: "VW T5.2 Stellmotor Klimaturm hinten",
-    image: "/Stellmotor_Klimaturm_T5.png",
+    image: "/Stellmotor_Klimaturm_T5.webp",
     price: "34,99 €",
     text: "Stellmotor für den Klimaturm hinten, zuständig für die Warm-/Kaltverstellung sowie die Klappe zur Luftführung in den Dachhimmel oder Fußraum. 1 Stück, passend für VW T5.2.",
     vehicles: ["VW T5"],

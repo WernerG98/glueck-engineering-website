@@ -12,12 +12,12 @@ import useContactForm from "../hooks/useContactForm";
 
 const galleryImages = [
   {
-    src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN250.jpg",
+    src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN250.webp",
     label: "Wäscheschacht DIN 250",
     alt: "Eingebauter weißer 3D-gedruckter Adapterstutzen vor dem Rohr eines Wäscheschachts DIN 250",
   },
   {
-    src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN200.jpg",
+    src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN200.webp",
     label: "Wäscheschacht DIN 200",
     alt: "Eingebauter weißer 3D-gedruckter Adapterstutzen vor dem Rohr eines Wäscheschachts DIN 200",
   },
@@ -89,11 +89,12 @@ export default function ServicePage() {
 
           <Reveal delay={150} className="group overflow-hidden rounded-2xl border border-neutral-800">
             <img
-              src="/3D-Druck_S54_Ergebnis.jpg"
+              src="/3D-Druck_S54_Ergebnis.webp"
               alt="3D-Druck Dienstleistung"
+              fetchpriority="high"
               className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
               style={{ aspectRatio: "1 / 1" }}
-              onClick={() => setSelectedImage("/3D-Druck_S54_Ergebnis.jpg")}
+              onClick={() => setSelectedImage("/3D-Druck_S54_Ergebnis.webp")}
             />
           </Reveal>
         </section>

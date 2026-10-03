@@ -52,7 +52,7 @@ export default function Header({ onOpenContactModal }) {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-b border-neutral-800/80 px-4 py-4 sm:px-6 md:py-5">
         <Link to="/" className="flex items-center gap-3 sm:gap-4" onClick={() => setMenuOpen(false)}>
           <img
-            src="/logo.png"
+            src="/logo.webp"
             alt="Glück Engineering Logo"
             className="h-12 w-12 object-contain sm:h-14 sm:w-14 md:h-16 md:w-16"
           />

@@ -27,18 +27,9 @@ Solange du `onboarding@resend.dev` nutzt, ist das nur für Tests gedacht.
 
 ## Bilder
 
-Lege alle Bilder in den Ordner `public/`:
+Lege alle Bilder im Format WebP in den Ordner `public/`, höchstens 1200 px
+Kantenlänge (das Logo `logo.webp` reicht mit 256 px Breite). Größere Dateien
+verlangsamen die Seite spürbar.
 
-- `logo.png`
-- `Fuehrung_Blende_T4.png`
-- `VW_T5_Clip_Verstellung_Kopfstuetze.jpg`
-- `Honda_XRV_RD07_Spritzschutz_Schwinge_hinten.jpg`
-- `3D-Druck_S54_Ergebnis.jpg`
-- `Artwork_Stanced_E46.png`
-- `Artwork_Stanced_E46_5.png`
-- `Artwork_E87.png`
-- `Artwork_Kein_Leben_bleibt.png`
-- `Artwork_Foggy_Mountains.png`
-- `Artwork_Wave.png`
-- `Artwork_Stanced_E46_6.png`
-- `Artwork_E46_Ergebnis.jpg`
+Wenn eine Bilddatei ersetzt wird, am besten unter neuem Namen speichern:
+Bilder werden vom Browser bis zu 7 Tage zwischengespeichert (siehe `vercel.json`).
