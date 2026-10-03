@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import MagneticButton from "./MagneticButton";
 import MerkzettelDrawer from "./MerkzettelDrawer";
 import { useMerkzettel } from "../context/MerkzettelContext";
 
@@ -85,14 +84,12 @@ export default function Header({ onOpenContactModal }) {
 
           <BookmarkButton count={count} onClick={() => setMerkzettelOpen(true)} className="ml-2" />
 
-          <MagneticButton className="ml-2">
-            <button
-              onClick={handleContactClick}
-              className="rounded-lg bg-accent px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-accent-light"
-            >
-              Kontakt
-            </button>
-          </MagneticButton>
+          <button
+            onClick={handleContactClick}
+            className="ml-2 rounded-lg bg-accent px-5 py-2.5 text-center text-sm font-medium text-neutral-950 transition hover:bg-accent-light"
+          >
+            Kontakt
+          </button>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
