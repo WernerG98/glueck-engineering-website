@@ -10,6 +10,19 @@ import Reveal from "../components/Reveal";
 import ServiceProcessSection from "../components/sections/ServiceProcessSection";
 import useContactForm from "../hooks/useContactForm";
 
+const galleryImages = [
+  {
+    src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN250.jpg",
+    label: "Wäscheschacht DIN 250",
+    alt: "Eingebauter weißer 3D-gedruckter Adapterstutzen vor dem Rohr eines Wäscheschachts DIN 250",
+  },
+  {
+    src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN200.jpg",
+    label: "Wäscheschacht DIN 200",
+    alt: "Eingebauter weißer 3D-gedruckter Adapterstutzen vor dem Rohr eines Wäscheschachts DIN 200",
+  },
+];
+
 export default function ServicePage() {
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -123,30 +136,12 @@ export default function ServicePage() {
 
         <section className="mt-16 sm:mt-20 md:mt-24">
           <Reveal>
-            <span className="eyebrow">Praxisbeispiel</span>
-            <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">
-              Adapterstutzen für Wäscheschächte
-            </h2>
+            <span className="eyebrow">Beispiele</span>
+            <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">Galerie</h2>
           </Reveal>
 
-          <div className="grid max-w-5xl gap-4 sm:grid-cols-3">
-            {[
-              {
-                src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN250_Gesamt.jpg",
-                label: "Wäscheschacht DN 250",
-                alt: "Eingebauter weißer 3D-gedruckter Adapterstutzen vor dem Rohr eines Wäscheschachts DN 250",
-              },
-              {
-                src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN250_Detail.jpg",
-                label: "Wäscheschacht DN 250, Detail",
-                alt: "Detailansicht des 3D-gedruckten Adapterstutzens für einen Wäscheschacht DN 250",
-              },
-              {
-                src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN200.jpg",
-                label: "Wäscheschacht DN 200",
-                alt: "Eingebauter weißer 3D-gedruckter Adapterstutzen vor dem Rohr eines Wäscheschachts DN 200",
-              },
-            ].map((image, index) => (
+          <div className="grid max-w-3xl gap-4 sm:grid-cols-2">
+            {galleryImages.map((image, index) => (
               <Reveal key={image.src} delay={index * 100}>
                 <figure className="group overflow-hidden rounded-2xl border border-neutral-800">
                   <img
