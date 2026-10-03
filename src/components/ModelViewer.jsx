@@ -3,8 +3,34 @@ import { useEffect, useRef, useState } from "react";
 export default function ModelViewer({ src, format, interactive = true }) {
   const containerRef = useRef(null);
   const [status, setStatus] = useState("loading");
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return undefined;
+
+    if (typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return undefined;
+
     let renderer;
     let animationFrame;
     let resizeObserver;
@@ -156,7 +182,7 @@ export default function ModelViewer({ src, format, interactive = true }) {
         renderer.domElement.remove();
       }
     };
-  }, [src, format, interactive]);
+  }, [src, format, interactive, visible]);
 
   return (
     <div className="relative h-full w-full">
