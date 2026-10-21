@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['"Bricolage Grotesque Variable"', "Inter", "system-ui", "sans-serif"],
+      },
       colors: {
         accent: {
           DEFAULT: "#d4af37",

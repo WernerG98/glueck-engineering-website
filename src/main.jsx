@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import App from "./App";
 import { MerkzettelProvider } from "./context/MerkzettelContext";
+import "@fontsource-variable/bricolage-grotesque/wght.css";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(

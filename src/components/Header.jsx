@@ -56,7 +56,7 @@ export default function Header({ onOpenContactModal }) {
             alt="Glück Engineering Logo"
             className="h-12 w-12 object-contain sm:h-14 sm:w-14 md:h-16 md:w-16"
           />
-          <span className="text-lg font-semibold tracking-tight text-white sm:text-xl md:text-2xl">
+          <span className="font-display text-lg font-semibold tracking-tight text-white sm:text-xl md:text-2xl">
             Glück Engineering
           </span>
         </Link>
