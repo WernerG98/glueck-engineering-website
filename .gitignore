@@ -1,10 +1,5 @@
 node_modules
-node_modules - Kopie
 dist
 .vercel
-.env
-.env.local
-.claude/settings.local.json
-
-.vercel
 .env*
+.claude/settings.local.json
