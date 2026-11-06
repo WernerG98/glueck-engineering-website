@@ -34,6 +34,7 @@ export default function PrinterScrollBackground({ stageRef, onProgress }) {
   const onProgressRef = useRef(onProgress);
   onProgressRef.current = onProgress;
   const [hud, setHud] = useState({ layer: 0, phase: phaseFor(0), p: 0 });
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let disposed = false;
@@ -50,6 +51,7 @@ export default function PrinterScrollBackground({ stageRef, onProgress }) {
         setHud,
         onProgress: (p) => onProgressRef.current?.(p),
       });
+      setReady(true);
     });
 
     return () => {
@@ -62,7 +64,12 @@ export default function PrinterScrollBackground({ stageRef, onProgress }) {
 
   return (
     <>
-      <div ref={mountRef} aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-0 h-[100lvh]" />
+      <div
+        ref={mountRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-x-0 top-0 z-0 h-[100lvh] transition-opacity duration-1000"
+        style={{ opacity: ready ? 1 : 0 }}
+      />
       {/* Vignette für Lesbarkeit */}
       <div
         aria-hidden="true"
