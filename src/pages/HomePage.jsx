@@ -150,9 +150,9 @@ export default function HomePage() {
 
       {scene.enabled ? (
         /* Druck-Abschnitt: 400vh Scrollweg, Inhalt bleibt kleben */
-        <section ref={stageRef} className="relative z-10 -mt-24 h-[400vh] md:-mt-28">
+        <section ref={stageRef} className="relative z-10 -mt-16 h-[400vh] md:-mt-[69px]">
           <div className="sticky top-0 h-[100svh] overflow-hidden">
-            <div className="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-10 pt-24 md:items-center md:pb-0 sm:px-6 md:pt-28">
+            <div className="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-10 pt-20 md:items-center md:pb-0 sm:px-6 md:pt-24">
               <div ref={heroRef} className="absolute inset-x-4 max-w-xl rounded-2xl bg-neutral-950/70 p-5 backdrop-blur-md sm:inset-x-6 md:bg-transparent md:p-0 md:backdrop-blur-none">
                 <HeroCopy onCta={openServiceRequest} />
               </div>
@@ -190,7 +190,7 @@ export default function HomePage() {
         </section>
       ) : (
         /* Standbild-Variante: normales Layout ohne Scroll-Animation */
-        <section className="relative z-10 -mt-24 md:-mt-28">
+        <section className="relative z-10 -mt-16 md:-mt-[69px]">
           <div className="mx-auto max-w-7xl px-4 pb-4 pt-32 sm:px-6 md:pt-44">
             <div className="max-w-xl rounded-2xl bg-neutral-950/70 p-5 backdrop-blur-md md:bg-transparent md:p-0 md:backdrop-blur-none">
               <HeroCopy onCta={openServiceRequest} />

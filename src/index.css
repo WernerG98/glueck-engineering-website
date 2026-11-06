@@ -51,6 +51,34 @@ select {
   }
 }
 
+/* Seitenwechsel: weiches Einblenden (nur Deckkraft, damit fixed-Elemente unberührt bleiben) */
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-enter {
+  animation: page-in 0.35s ease-out;
+}
+
+/* Skeleton erscheint erst nach 150 ms, damit schnelle Ladevorgänge nicht flackern */
+@keyframes skeleton-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.skeleton-delay {
+  animation: skeleton-in 0.2s ease-out 0.15s both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
