@@ -142,6 +142,18 @@ export default function ContactModal({
         )}
 
         <div className="mt-6 grid gap-4">
+          {/* Honeypot: für Menschen unsichtbar, Bots füllen es aus */}
+          <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+            <input
+              type="text"
+              name="contact_hp"
+              value={formData.contact_hp}
+              onChange={handleInputChange}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
           <input
             type="text"
             name="name"
@@ -363,7 +375,7 @@ export default function ContactModal({
           {requestType !== "product" && requestType !== "general" && (
             <div className="rounded-xl border border-neutral-700 bg-neutral-950 px-4 py-3">
               <label className="mb-2 block text-sm text-neutral-300">
-                Datei anhängen {requestType === "custom" ? "(empfohlen)" : "(optional)"}
+                Datei anhängen {requestType === "custom" ? "(empfohlen)" : "(optional)"}, bis 4 MB
               </label>
               <input
                 type="file"

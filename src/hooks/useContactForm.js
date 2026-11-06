@@ -15,7 +15,11 @@ const initialFormData = {
   serviceMaterial: "Nach Empfehlung",
   serviceApplication: "",
   serviceQuantity: "1",
+  contact_hp: "", // Honeypot gegen Bots, für Menschen unsichtbar
 };
+
+// Vercel nimmt pro Anfrage nur ca. 4,5 MB an
+const MAX_ATTACHMENT_BYTES = 4 * 1024 * 1024;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -67,6 +71,17 @@ export default function useContactForm() {
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0] || null;
+
+    if (file && file.size > MAX_ATTACHMENT_BYTES) {
+      e.target.value = "";
+      setAttachment(null);
+      setFormError(
+        "Die Datei ist größer als 4 MB. Bitte als ZIP komprimieren oder direkt per E-Mail an info@glueckengineering.com senden."
+      );
+      return;
+    }
+
+    setFormError("");
     setAttachment(file);
   };
 
@@ -146,6 +161,7 @@ export default function useContactForm() {
       body.append("serviceMaterial", formData.serviceMaterial);
       body.append("serviceApplication", formData.serviceApplication);
       body.append("serviceQuantity", formData.serviceQuantity);
+      body.append("contact_hp", formData.contact_hp);
 
       if (attachment && requestType !== "product" && requestType !== "general") {
         body.append("attachment", attachment);
