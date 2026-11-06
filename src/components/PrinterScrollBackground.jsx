@@ -9,7 +9,6 @@ import { useEffect, useRef, useState } from "react";
 
 const TOTAL_LAYERS = 240;
 const PART_HEIGHT = 9;
-const LOOPS = 70; // Umläufe der Düse über die gesamte Druckhöhe
 
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const smooth = (a, b, v) => {
@@ -63,7 +62,7 @@ export default function PrinterScrollBackground({ stageRef, onProgress }) {
 
   return (
     <>
-      <div ref={mountRef} aria-hidden="true" className="pointer-events-none fixed inset-0 z-0" />
+      <div ref={mountRef} aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-0 h-[100lvh]" />
       {/* Vignette für Lesbarkeit */}
       <div
         aria-hidden="true"
@@ -160,7 +159,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const mShell = new THREE.MeshStandardMaterial({ color: 0x3a3d44, metalness: 0.6, roughness: 0.35 });
   const mShellDark = new THREE.MeshStandardMaterial({ color: 0x16171a, metalness: 0.4, roughness: 0.55 });
   const mInner = new THREE.MeshStandardMaterial({ color: 0x1a1b1e, metalness: 0.2, roughness: 0.8 });
-  const mRail = new THREE.MeshStandardMaterial({ color: 0xc9cdd4, metalness: 1, roughness: 0.2 });
+  const mRail = new THREE.MeshStandardMaterial({ color: 0xc9cdd4, metalness: 0.9, roughness: 0.4 });
   const mGold = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.28 });
   const mBrass = new THREE.MeshStandardMaterial({ color: 0xc89b4a, metalness: 1, roughness: 0.25 });
   const mHead = new THREE.MeshStandardMaterial({ color: 0x1f2024, metalness: 0.35, roughness: 0.4 });
@@ -229,7 +228,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   box(1.6, doorH, 1.2, mShell, HW - 0.8, doorMidY, HD - 0.6);
   const door = new THREE.Mesh(new THREE.BoxGeometry(W - 3.4, doorH - 0.4, 0.25), mGlass);
   door.position.set(0, doorMidY, HD - 0.3);
-  door.renderOrder = 2;
+  door.renderOrder = 5;
   scene.add(door);
   // Türrahmen (dünn, dunkel) für Kontur
   const doorFrame = new THREE.LineSegments(
@@ -246,7 +245,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   box(1.6, 0.8, D, mShell, HW - 0.8, Y1 + 0.4, 0);
   const lid = new THREE.Mesh(new THREE.BoxGeometry(W - 3.2, 0.25, D - 3.4), mGlass);
   lid.position.set(0, Y1 + 0.55, -0.5);
-  lid.renderOrder = 2;
+  lid.renderOrder = 3;
   scene.add(lid);
 
   // LED-Leiste innen oben vorn
@@ -293,7 +292,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   box(0.8, 6.5, D - 12, mShell, (W - 6) / 2 - 0.4, 4.4, 0, ams);
   const amsLid = new THREE.Mesh(new THREE.BoxGeometry(W - 6, 0.3, D - 12), mGlass);
   amsLid.position.set(0, 7.8, 0);
-  amsLid.renderOrder = 2;
+  amsLid.renderOrder = 4;
   ams.add(amsLid);
   const spoolColors = [0xd4af37, 0xeeeeee, 0x1b1b1d, 0x7d8088];
   const spools = spoolColors.map((c, i) => {
@@ -396,7 +395,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   bed.add(plate);
 
   // PTFE-Schlauch AMS → Kopf
-  const tubeMat = new THREE.MeshStandardMaterial({ color: 0xf2f2f2, metalness: 0, roughness: 0.4, transparent: true, opacity: 0.85 });
+  const tubeMat = new THREE.MeshStandardMaterial({ color: 0xf2f2f2, metalness: 0, roughness: 0.5 });
   let tube = null;
   const tubeStart = new THREE.Vector3(6, Y1 - 0.5, -HD + 2.5);
   const curve = new THREE.QuadraticBezierCurve3(tubeStart, new THREE.Vector3(), new THREE.Vector3());
@@ -492,6 +491,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   part.add(new THREE.Mesh(gearGeom, mPart));
   part.add(new THREE.Mesh(gearGeom, mCap));
   const hotMesh = new THREE.Mesh(gearGeom, mHot);
+  hotMesh.renderOrder = 1;
   part.add(hotMesh);
   const PART_Z = -1;
   part.position.z = 0; // Bett-Gruppe verschiebt nicht in Z; Teil sitzt mittig auf der Platte
@@ -552,14 +552,19 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
 
   let width = 0;
   let height = 0;
+  let needsRender = true;
   const resize = () => {
-    width = mount.clientWidth;
-    height = mount.clientHeight;
+    const w = mount.clientWidth;
+    const h = mount.clientHeight;
+    if (w === width && h === height) return;
+    width = w;
+    height = h;
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+    needsRender = true;
+    if (raf) frame(); // sofort zeichnen, damit die Fläche nie leer ist
   };
-  resize();
 
   window.addEventListener("scroll", readScroll, { passive: true });
   window.addEventListener("resize", resize);
@@ -572,14 +577,30 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   let raf = 0;
   let lastHud = -1;
   const clock = new THREE.Clock();
+  let nozzleU = 0; // Position der Düse auf der Kontur (Umläufe), läuft zeitbasiert
+  let lastT = 0;
 
   const tick = () => {
     raf = requestAnimationFrame(tick);
+    frame();
+  };
+
+  const frame = () => {
     const t = clock.getElapsedTime();
-    current = reduceMotion ? target : lerp(current, target, 0.08);
-    afterCur = reduceMotion ? after : lerp(afterCur, after, 0.08);
+    const dt = Math.min(0.05, t - lastT);
+    lastT = t;
+    const prevP = current;
+    const prevQ = afterCur;
+    current = reduceMotion ? target : lerp(current, target, 0.1);
+    afterCur = reduceMotion ? after : lerp(afterCur, after, 0.1);
+    if (Math.abs(current - target) < 1e-5) current = target;
+    if (Math.abs(afterCur - after) < 1e-5) afterCur = after;
     const p = current;
     const q = afterCur;
+    const printingNow = p > 0.06 && p < 0.82 && q < 0.999;
+    // Nur zeichnen, wenn sich etwas ändert: Scrollen, Größe oder laufender Druck
+    if (!needsRender && !printingNow && p === prevP && q === prevQ) return;
+    needsRender = false;
 
     const f = printFraction(p);
     const hWorld = f * PART_H;
@@ -601,21 +622,22 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     mCap.color.copy(hotColor).lerp(coolColor, cool);
 
     // Düse auf der Kontur (Teil-Koordinaten → Welt)
-    const [px, pz] = pathPoint(f * LOOPS, f * PART_HEIGHT);
+    // Düse fährt gleichmäßig die Kontur ab (nicht an den Scroll gekoppelt → kein Springen)
+    if (printingNow && !reduceMotion) nozzleU += dt * 0.18;
+    const [px, pz] = pathPoint(nozzleU, f * PART_HEIGHT);
     head.position.x = lerp(px, HW - 8, park);
     gantry.position.z = lerp(pz + PART_Z - HEAD_Z, -HD + 9, park);
     part.position.z = PART_Z;
     updateTube(head.position.x, gantry.position.z + HEAD_Z);
 
-    hotLight.intensity = heat * (printing ? 22 : 12) * (0.85 + 0.15 * Math.sin(t * 9));
+    hotLight.intensity = heat * (printing ? 20 : 12);
     tipGlow.material.opacity = heat;
 
     spools[0].rotation.x = -f * Math.PI * 10;
 
     // Kamera
     const cam = camAt(p);
-    const breathe = reduceMotion ? 0 : Math.sin(t * 0.25) * 0.03;
-    const az = cam.az + breathe + q * 0.55;
+    const az = cam.az + q * 0.55;
     camera.position.set(
       Math.sin(az) * Math.cos(cam.el) * cam.r,
       cam.ty + Math.sin(cam.el) * cam.r,
@@ -648,6 +670,8 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
       setHud({ layer, phase: phaseFor(p), p });
     }
   };
+  resize();
+  frame();
   tick();
 
   return () => {
