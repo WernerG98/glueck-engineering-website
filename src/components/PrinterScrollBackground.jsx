@@ -454,29 +454,41 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const gearGeom = new THREE.ExtrudeGeometry(shape, { depth: PART_HEIGHT, steps: 60, bevelEnabled: false, curveSegments: 18 });
   gearGeom.rotateX(-Math.PI / 2);
   const pos = gearGeom.attributes.position;
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i);
-    const y = pos.getY(i);
-    const z = pos.getZ(i);
-    const a = twistAt(y);
-    pos.setXYZ(i, x * Math.cos(a) - z * Math.sin(a), y, x * Math.sin(a) + z * Math.cos(a));
-  }
+  // Unverdrehte Ausgangspunkte merken: daraus wird das Teil bei jeder Druckhöhe neu "gestaucht"
+  const base = Float32Array.from(pos.array);
+  const applyHeight = (hLocal) => {
+    const arr = pos.array;
+    for (let i = 0; i < arr.length; i += 3) {
+      const x = base[i];
+      const y = Math.min(base[i + 1], hLocal);
+      const z = base[i + 2];
+      const a = twistAt(y);
+      const c = Math.cos(a);
+      const sn = Math.sin(a);
+      arr[i] = x * c - z * sn;
+      arr[i + 1] = y;
+      arr[i + 2] = x * sn + z * c;
+    }
+    pos.needsUpdate = true;
+  };
+  // Normalen einmal am vollständigen Teil berechnen; beim Stauchen bleiben sie gültig
+  applyHeight(PART_HEIGHT);
   gearGeom.computeVertexNormals();
+  gearGeom.computeBoundingSphere();
+  let lastHLocal = PART_HEIGHT;
 
-  const clipTop = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
+  // Echtes, geschlossenes Teil statt Schnittebene + Rückseiten-Trick → kein GPU-abhängiges Flackern
   const clipHotBand = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 
   const mPart = new THREE.MeshStandardMaterial({
     color: 0xd4af37,
     metalness: 0.25,
     roughness: 0.42,
-    clippingPlanes: [clipTop],
   });
-  const mCap = new THREE.MeshBasicMaterial({ color: 0xffa040, side: THREE.BackSide, clippingPlanes: [clipTop] });
-  // Heißes Band: gleiche Geometrie, per polygonOffset vorgezogen statt skaliert → kein Flimmern
+  // Heißes Band an der Oberkante: gleiche Geometrie, gleiche Tiefe, leicht vorgezogen
   const mHot = new THREE.MeshBasicMaterial({
     color: 0xff9a3c,
-    clippingPlanes: [clipTop, clipHotBand],
+    clippingPlanes: [clipHotBand],
     transparent: true,
     opacity: 0.9,
     polygonOffset: true,
@@ -489,7 +501,6 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   part.scale.setScalar(S);
   bed.add(part);
   part.add(new THREE.Mesh(gearGeom, mPart));
-  part.add(new THREE.Mesh(gearGeom, mCap));
   const hotMesh = new THREE.Mesh(gearGeom, mHot);
   hotMesh.renderOrder = 1;
   part.add(hotMesh);
@@ -615,13 +626,17 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     const bedTop = lerp(Y_NOZZLE - hWorld, BED_LOW, park);
     bed.position.y = bedTop;
 
-    const top = bedTop + PART_LIFT + Math.max(hWorld, 0.0001);
-    clipTop.constant = top;
-    clipHotBand.constant = -(top - 0.25);
-    part.visible = hWorld > 0.03;
+    const hLocal = f * PART_HEIGHT;
+    part.visible = hLocal > 0.03;
+    if (part.visible && Math.abs(hLocal - lastHLocal) > 1e-4) {
+      applyHeight(hLocal);
+      lastHLocal = hLocal;
+    }
+    const top = bedTop + PART_LIFT + hWorld;
+    clipHotBand.constant = -(top - 0.3);
     hotMesh.visible = cool < 0.99;
-    mHot.opacity = 0.9 * (1 - cool);
-    mCap.color.copy(hotColor).lerp(coolColor, cool);
+    mHot.opacity = 0.85 * (1 - cool);
+    mHot.color.copy(hotColor).lerp(coolColor, cool);
 
     // Düse auf der Kontur (Teil-Koordinaten → Welt)
     // Düse fährt gleichmäßig die Kontur ab (nicht an den Scroll gekoppelt → kein Springen)
