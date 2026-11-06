@@ -25,7 +25,7 @@ export default function NotFoundPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-neutral-950 text-white">
-      <PageMeta title="Seite nicht gefunden" />
+      <PageMeta title="Seite nicht gefunden" noindex />
       <Header onOpenContactModal={openContactModal} />
 
       <main className="mx-auto flex max-w-3xl flex-1 flex-col items-center justify-center px-4 py-20 text-center sm:px-6">

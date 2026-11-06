@@ -36,7 +36,7 @@ function setCanonical(href) {
   link.setAttribute("href", href);
 }
 
-export default function PageMeta({ title, description }) {
+export default function PageMeta({ title, description, noindex = false }) {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -54,7 +54,14 @@ export default function PageMeta({ title, description }) {
     setMetaByName("twitter:title", ogTitle);
     setMetaByName("twitter:description", pageDescription);
     setCanonical(canonicalUrl);
-  }, [title, description, pathname]);
+
+    const robots = document.querySelector('meta[name="robots"]');
+    if (noindex) {
+      setMetaByName("robots", "noindex, follow");
+    } else if (robots) {
+      robots.remove();
+    }
+  }, [title, description, pathname, noindex]);
 
   return null;
 }
