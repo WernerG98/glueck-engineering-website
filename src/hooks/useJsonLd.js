@@ -2,6 +2,9 @@ import { useEffect } from "react";
 
 export default function useJsonLd(id, data) {
   useEffect(() => {
+    // Die vorgerenderte Seite enthält dieselben Daten bereits statisch (gleiche id): ersetzen statt doppelt
+    document.getElementById(id)?.remove();
+
     const script = document.createElement("script");
     script.type = "application/ld+json";
     script.id = id;
@@ -9,7 +12,7 @@ export default function useJsonLd(id, data) {
     document.head.appendChild(script);
 
     return () => {
-      document.head.removeChild(script);
+      script.remove();
     };
   }, [id, data]);
 }

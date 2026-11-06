@@ -9,16 +9,7 @@ import Reveal from "../components/Reveal";
 import useContactForm from "../hooks/useContactForm";
 import useJsonLd from "../hooks/useJsonLd";
 import faq from "../data/faq";
-
-const faqStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faq.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: { "@type": "Answer", text: item.answer },
-  })),
-};
+import { faqStructuredData } from "../data/structuredData";
 
 function FAQItem({ item, isOpen, onToggle }) {
   return (
