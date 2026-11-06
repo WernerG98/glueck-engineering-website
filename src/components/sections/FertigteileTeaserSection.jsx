@@ -5,7 +5,7 @@ import ModelViewer from "../ModelViewer";
 export default function FertigteileTeaserSection() {
   return (
     <section className="mt-16 sm:mt-20 md:mt-24">
-      <Reveal className="grid gap-6 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:gap-8 sm:p-8 md:grid-cols-2 md:items-center md:p-10">
+      <Reveal className="grid gap-6 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6 backdrop-blur-md sm:gap-8 sm:p-8 md:grid-cols-2 md:items-center md:p-10">
         <div className="text-left">
           <span className="eyebrow">Produkte</span>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Fertigteile</h2>
