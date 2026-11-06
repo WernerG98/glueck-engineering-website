@@ -107,7 +107,7 @@ export default function MaterialQuiz({ onRequest }) {
             ))}
           </div>
 
-          <p className="text-xs uppercase tracking-wide text-neutral-500">
+          <p className="text-xs uppercase tracking-wide text-neutral-450">
             Frage {step + 1} von {QUESTIONS.length}
           </p>
           <p className="mt-2 text-lg font-medium text-white">{QUESTIONS[step].question}</p>
@@ -129,7 +129,7 @@ export default function MaterialQuiz({ onRequest }) {
             <button
               type="button"
               onClick={() => setStep((s) => s - 1)}
-              className="mt-4 text-xs font-medium text-neutral-500 underline hover:text-white"
+              className="mt-4 text-xs font-medium text-neutral-450 underline hover:text-white"
             >
               Zurück
             </button>
@@ -151,7 +151,7 @@ export default function MaterialQuiz({ onRequest }) {
                 <div className="mt-3 space-y-2">
                   {PROPERTY_ROWS.slice(0, 3).map((row) => (
                     <div key={row.key} className="flex items-center justify-between gap-2">
-                      <span className="text-[10px] uppercase tracking-wide text-neutral-500">
+                      <span className="text-[10px] uppercase tracking-wide text-neutral-450">
                         {row.label}
                       </span>
                       <LevelBar level={getLevel(row.key, material[row.key].label)} />
@@ -173,7 +173,7 @@ export default function MaterialQuiz({ onRequest }) {
           <button
             type="button"
             onClick={restart}
-            className="mt-5 text-xs font-medium text-neutral-500 underline hover:text-white"
+            className="mt-5 text-xs font-medium text-neutral-450 underline hover:text-white"
           >
             Quiz neu starten
           </button>

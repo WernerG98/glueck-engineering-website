@@ -35,7 +35,7 @@ const PROPERTY_GLOSSARY = {
 function PropertyRow({ label, value, property }) {
   return (
     <div className="flex items-center justify-between gap-4 py-2.5">
-      <span className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-neutral-500">
+      <span className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-neutral-450">
         {label}
         {PROPERTY_GLOSSARY[label] && <InfoTooltip text={PROPERTY_GLOSSARY[label]} />}
       </span>
@@ -78,11 +78,11 @@ function MaterialCard({ material, onRequest, isComparing, onToggleCompare, compa
       </div>
 
       <div className="mt-4 flex-1">
-        <span className="text-xs uppercase tracking-wide text-neutral-500">Gut geeignet für</span>
+        <span className="text-xs uppercase tracking-wide text-neutral-450">Gut geeignet für</span>
         <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-neutral-300">
           {material.goodFor.map((item) => (
             <li key={item} className="flex gap-2">
-              <span className="text-neutral-600">–</span>
+              <span className="text-neutral-450">–</span>
               <span>{item}</span>
             </li>
           ))}
@@ -106,7 +106,7 @@ function MaterialTable({ groupedMaterials }) {
     <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-800">
       <table className="w-full min-w-[960px] border-collapse text-left text-sm">
         <thead>
-          <tr className="border-b border-neutral-800 bg-neutral-900/80 text-xs uppercase tracking-wide text-neutral-500">
+          <tr className="border-b border-neutral-800 bg-neutral-900/80 text-xs uppercase tracking-wide text-neutral-450">
             <th className="whitespace-nowrap px-4 py-3 font-medium">Material</th>
             {PROPERTY_ROWS.map((row) => (
               <th key={row.key} className="whitespace-nowrap px-4 py-3 font-medium">
@@ -121,7 +121,7 @@ function MaterialTable({ groupedMaterials }) {
               <tr>
                 <td
                   colSpan={PROPERTY_ROWS.length + 1}
-                  className="bg-neutral-950/60 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-500"
+                  className="bg-neutral-950/60 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-450"
                 >
                   {category.label}
                 </td>
@@ -130,7 +130,7 @@ function MaterialTable({ groupedMaterials }) {
                 <tr key={material.id} className="border-b border-neutral-800 last:border-0 hover:bg-neutral-900/60">
                   <td className="whitespace-nowrap px-4 py-3">
                     <span className="font-medium text-white">{material.name}</span>
-                    <span className="ml-2 text-xs text-neutral-500">{material.tagline}</span>
+                    <span className="ml-2 text-xs text-neutral-450">{material.tagline}</span>
                   </td>
                   {PROPERTY_ROWS.map((row) => (
                     <td key={row.key} className="whitespace-nowrap px-4 py-3 text-neutral-300">
@@ -156,7 +156,7 @@ function CompareSection({ selected, onRemove, onClear }) {
           <button
             type="button"
             onClick={onClear}
-            className="text-xs font-medium text-neutral-500 underline hover:text-white"
+            className="text-xs font-medium text-neutral-450 underline hover:text-white"
           >
             Auswahl leeren
           </button>
@@ -181,7 +181,7 @@ function CompareSection({ selected, onRemove, onClear }) {
                   <button
                     type="button"
                     onClick={() => onRemove(material.id)}
-                    className="mb-1 text-xs text-neutral-500 hover:text-white"
+                    className="mb-1 text-xs text-neutral-450 hover:text-white"
                   >
                     ✕ entfernen
                   </button>
@@ -196,7 +196,7 @@ function CompareSection({ selected, onRemove, onClear }) {
                 className="grid items-center gap-3 border-t border-neutral-800 py-3"
                 style={{ gridTemplateColumns: `140px repeat(${selected.length}, 1fr)` }}
               >
-                <span className="text-xs uppercase tracking-wide text-neutral-500">{row.label}</span>
+                <span className="text-xs uppercase tracking-wide text-neutral-450">{row.label}</span>
                 {selected.map((material) => (
                   <div key={material.id} className="flex flex-col items-center gap-1">
                     <span className="text-xs text-neutral-300">{material[row.key].label}</span>
@@ -321,7 +321,7 @@ export default function MaterialienPage() {
                   "rounded-lg border px-3 py-2 transition",
                   view === "karten"
                     ? "border-accent text-accent"
-                    : "border-neutral-800 text-neutral-500 hover:border-neutral-700 hover:text-white",
+                    : "border-neutral-800 text-neutral-450 hover:border-neutral-700 hover:text-white",
                 ].join(" ")}
               >
                 Karten
@@ -332,7 +332,7 @@ export default function MaterialienPage() {
                   "rounded-lg border px-3 py-2 transition",
                   view === "tabelle"
                     ? "border-accent text-accent"
-                    : "border-neutral-800 text-neutral-500 hover:border-neutral-700 hover:text-white",
+                    : "border-neutral-800 text-neutral-450 hover:border-neutral-700 hover:text-white",
                 ].join(" ")}
               >
                 Datenblatt
@@ -372,7 +372,7 @@ export default function MaterialienPage() {
         </section>
 
         <Reveal>
-          <p className="mt-10 text-xs leading-relaxed text-neutral-600">
+          <p className="mt-10 text-xs leading-relaxed text-neutral-450">
             Die Balken sind eine vereinfachte, relative Visualisierung der jeweiligen Textwerte zum schnellen
             Vergleich, keine linear skalierten Messwerte. Werte für Hitzebeständigkeit (HDT bei 0,45 MPa) und
             Festigkeit (Biegefestigkeit XY) laut{" "}

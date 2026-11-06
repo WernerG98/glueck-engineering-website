@@ -169,7 +169,7 @@ export default function AGBPage() {
               <p>Anschrift des/der Verbraucher(s):</p>
               <p>Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier):</p>
               <p>Datum:</p>
-              <p className="text-xs text-neutral-500">(*) Unzutreffendes streichen.</p>
+              <p className="text-xs text-neutral-450">(*) Unzutreffendes streichen.</p>
             </div>
           </section>
 

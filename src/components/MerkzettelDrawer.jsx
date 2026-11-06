@@ -92,7 +92,7 @@ export default function MerkzettelDrawer({ open, onClose, onOpenContactModal }) 
                       <button
                         type="button"
                         onClick={() => removeItem(item.id)}
-                        className="text-xs text-neutral-500 underline transition hover:text-neutral-300"
+                        className="text-xs text-neutral-450 underline transition hover:text-neutral-300"
                       >
                         Entfernen
                       </button>
@@ -114,7 +114,7 @@ export default function MerkzettelDrawer({ open, onClose, onOpenContactModal }) 
             </button>
             <button
               onClick={clear}
-              className="text-center text-xs text-neutral-500 underline transition hover:text-neutral-300"
+              className="text-center text-xs text-neutral-450 underline transition hover:text-neutral-300"
             >
               Merkzettel leeren
             </button>

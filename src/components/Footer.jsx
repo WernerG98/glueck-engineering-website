@@ -6,7 +6,7 @@ export default function Footer() {
 
   return (
     <footer className="mt-20 border-t border-neutral-800/80 sm:mt-28">
-      <div className="mx-auto max-w-7xl px-4 py-10 text-neutral-500 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4 py-10 text-neutral-450 sm:px-6">
         <div className="flex flex-col items-center gap-5 text-center md:grid md:grid-cols-3 md:items-center md:text-left">
           <div className="flex items-center justify-center gap-3 md:justify-start">
             <img
@@ -20,7 +20,7 @@ export default function Footer() {
 
           <div className="text-center text-sm leading-relaxed">
             <div className="text-neutral-300">Inhaber M.Eng. Werner Glück</div>
-            <div className="text-neutral-500">94424 Arnstorf</div>
+            <div className="text-neutral-450">94424 Arnstorf</div>
           </div>
 
           <div className="flex justify-center md:justify-end">
@@ -31,16 +31,16 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-2 border-t border-neutral-900 pt-6 md:justify-start">
-          <Link to="/faq" className="text-xs text-neutral-500 transition hover:text-white">
+          <Link to="/faq" className="text-xs text-neutral-450 transition hover:text-white">
             FAQ
           </Link>
-          <Link to="/impressum" className="text-xs text-neutral-500 transition hover:text-white">
+          <Link to="/impressum" className="text-xs text-neutral-450 transition hover:text-white">
             Impressum
           </Link>
-          <Link to="/datenschutz" className="text-xs text-neutral-500 transition hover:text-white">
+          <Link to="/datenschutz" className="text-xs text-neutral-450 transition hover:text-white">
             Datenschutz
           </Link>
-          <Link to="/agb" className="text-xs text-neutral-500 transition hover:text-white">
+          <Link to="/agb" className="text-xs text-neutral-450 transition hover:text-white">
             AGB &amp; Widerruf
           </Link>
         </div>

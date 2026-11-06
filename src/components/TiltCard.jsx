@@ -12,6 +12,7 @@ export default function TiltCard({ children, className = "", maxTilt = 6, disabl
   function handleMouseMove(e) {
     if (disabled) return;
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();

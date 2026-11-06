@@ -148,7 +148,7 @@ export default function ContactModal({
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Name *"
-            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
           />
 
           <input
@@ -157,7 +157,7 @@ export default function ContactModal({
             value={formData.email}
             onChange={handleInputChange}
             placeholder="E-Mail *"
-            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
           />
 
           <input
@@ -166,7 +166,7 @@ export default function ContactModal({
             value={formData.phone}
             onChange={handleInputChange}
             placeholder="Telefon (optional)"
-            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+            className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
           />
 
           {requestType === "general" && (
@@ -176,7 +176,7 @@ export default function ContactModal({
               onChange={handleInputChange}
               rows={6}
               placeholder="Nachricht *"
-              className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+              className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
             />
           )}
 
@@ -193,7 +193,7 @@ export default function ContactModal({
                   value={formData.quantity}
                   onChange={handleInputChange}
                   placeholder="z. B. 1"
-                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
                 />
               </div>
 
@@ -203,7 +203,7 @@ export default function ContactModal({
                 onChange={handleInputChange}
                 rows={6}
                 placeholder="Weitere Informationen"
-                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
               />
             </>
           )}
@@ -234,7 +234,7 @@ export default function ContactModal({
                     value={formData.artworkQuantity}
                     onChange={handleInputChange}
                     placeholder="z. B. 1"
-                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
                   />
                 </div>
               </div>
@@ -250,7 +250,7 @@ export default function ContactModal({
                     value={formData.artworkWidth}
                     onChange={handleInputChange}
                     placeholder="Breite"
-                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
                   />
                   <span className="text-neutral-400">×</span>
                   <input
@@ -261,7 +261,7 @@ export default function ContactModal({
                     value={formData.artworkHeight}
                     onChange={handleInputChange}
                     placeholder="Höhe"
-                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                    className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
                   />
                 </div>
               </div>
@@ -305,7 +305,7 @@ export default function ContactModal({
                 onChange={handleInputChange}
                 rows={6}
                 placeholder="Motiv / Hinweise"
-                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
               />
             </>
           )}
@@ -320,7 +320,7 @@ export default function ContactModal({
                   value={formData.serviceMaterial}
                   onChange={handleInputChange}
                   placeholder="Nach Empfehlung"
-                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
                 />
               </div>
 
@@ -332,7 +332,7 @@ export default function ContactModal({
                   value={formData.serviceApplication}
                   onChange={handleInputChange}
                   placeholder="z. B. Innenraum, Motorraum, Prototyp, Dekoration"
-                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
                 />
               </div>
 
@@ -345,7 +345,7 @@ export default function ContactModal({
                   value={formData.serviceQuantity}
                   onChange={handleInputChange}
                   placeholder="z. B. 1"
-                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
                 />
               </div>
 
@@ -355,7 +355,7 @@ export default function ContactModal({
                 onChange={handleInputChange}
                 rows={6}
                 placeholder="Weitere Informationen"
-                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-500"
+                className="rounded-xl border border-neutral-700 bg-neutral-950 transition focus:border-accent px-4 py-3 outline-none placeholder:text-neutral-450"
               />
             </>
           )}
@@ -378,7 +378,7 @@ export default function ContactModal({
           )}
         </div>
 
-        <p className="mt-6 text-xs text-neutral-500">
+        <p className="mt-6 text-xs text-neutral-450">
           Mit dem Absenden wird der Verarbeitung der Daten zur Bearbeitung dieser Anfrage zugestimmt.
           Mehr dazu in der{" "}
           <Link to="/datenschutz" className="text-neutral-300 underline hover:text-white">

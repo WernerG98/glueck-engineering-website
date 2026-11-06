@@ -4,10 +4,10 @@ export default function ProcessSteps({ steps }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-800 bg-neutral-950/40 px-6 py-3 sm:px-8">
-        <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-neutral-500">
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-neutral-450">
           Fertigungsbegleitschein
         </span>
-        <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-neutral-500">
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-neutral-450">
           {steps.length} Stationen
         </span>
       </div>
@@ -60,7 +60,7 @@ export default function ProcessSteps({ steps }) {
                     beforeLabel={step.beforeAfter.beforeLabel}
                     afterLabel={step.beforeAfter.afterLabel}
                   />
-                  <p className="mt-3 text-xs text-neutral-500">Zum Vergleichen ziehen</p>
+                  <p className="mt-3 text-xs text-neutral-450">Zum Vergleichen ziehen</p>
                 </div>
               )}
             </div>

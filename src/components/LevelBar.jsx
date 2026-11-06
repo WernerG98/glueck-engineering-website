@@ -1,6 +1,6 @@
 export default function LevelBar({ level }) {
   if (level == null) {
-    return <span className="text-sm text-neutral-600">–</span>;
+    return <span className="text-sm text-neutral-450">–</span>;
   }
   return (
     <div className="flex items-center gap-1">

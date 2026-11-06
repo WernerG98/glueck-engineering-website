@@ -151,7 +151,7 @@ export default function ArtworkPreviewTool({ onRequest }) {
               />
             </div>
 
-            <p className="mt-4 text-xs leading-relaxed text-neutral-600">
+            <p className="mt-4 text-xs leading-relaxed text-neutral-450">
               Vereinfachte Simulation zur groben Orientierung, kein exaktes Abbild des gedruckten
               Ergebnisses. Das tatsächliche Artwork wird individuell für den 3D-Druck aufbereitet.
             </p>

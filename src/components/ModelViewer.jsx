@@ -191,12 +191,12 @@ export default function ModelViewer({ src, format, interactive = true }) {
         className={`h-full w-full ${interactive ? "cursor-grab active:cursor-grabbing" : ""}`}
       />
       {status === "loading" && (
-        <div className="absolute inset-0 flex items-center justify-center text-sm text-neutral-500">
+        <div className="absolute inset-0 flex items-center justify-center text-sm text-neutral-450">
           3D-Modell wird geladen…
         </div>
       )}
       {status === "error" && (
-        <div className="absolute inset-0 flex items-center justify-center px-4 text-center text-sm text-neutral-500">
+        <div className="absolute inset-0 flex items-center justify-center px-4 text-center text-sm text-neutral-450">
           3D-Modell konnte nicht geladen werden.
         </div>
       )}

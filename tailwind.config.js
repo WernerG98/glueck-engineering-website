@@ -7,6 +7,9 @@ export default {
         display: ['"Bricolage Grotesque Variable"', "Inter", "system-ui", "sans-serif"],
       },
       colors: {
+        neutral: {
+          450: "#8c8c8c",
+        },
         accent: {
           DEFAULT: "#d4af37",
           light: "#e3c565",

@@ -27,7 +27,7 @@ function GearSvg({ className = "", teeth = 14 }) {
 
 export default function HeroGear3D({ className = "" }) {
   return (
-    <div className={`${className} text-neutral-500`} style={{ animation: "spin 16s linear infinite" }}>
+    <div className={`${className} text-neutral-450`} style={{ animation: "spin 16s linear infinite" }}>
       <GearSvg className="h-full w-full drop-shadow-[0_0_10px_rgba(212,175,55,0.25)]" />
     </div>
   );

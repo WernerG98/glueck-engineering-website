@@ -41,7 +41,7 @@ function FertigteilCard({ item, onRequest }) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-neutral-950">
-            <span className="text-base font-semibold uppercase tracking-[0.2em] text-neutral-500 sm:text-lg">
+            <span className="text-base font-semibold uppercase tracking-[0.2em] text-neutral-450 sm:text-lg">
               Coming soon
             </span>
           </div>
