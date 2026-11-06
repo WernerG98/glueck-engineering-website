@@ -297,22 +297,34 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const spoolColors = [0xd4af37, 0xeeeeee, 0x1b1b1d, 0x7d8088];
   const spools = spoolColors.map((c, i) => {
     const g = new THREE.Group();
-    g.position.set(-10.5 + i * 7, 4.6, 0);
+    // Spulen stehen nebeneinander, Drehachse = Welt-X (links ↔ rechts) wie im echten AMS
+    g.position.set(-10.5 + i * 7, 4.3, 0);
     ams.add(g);
     const wound = new THREE.Mesh(
-      new THREE.CylinderGeometry(3.4, 3.4, 5.4, 40),
+      new THREE.CylinderGeometry(2.8, 2.8, 5.4, 40),
       new THREE.MeshStandardMaterial({ color: c, metalness: 0.15, roughness: 0.55 })
     );
-    wound.rotation.x = Math.PI / 2;
     wound.rotation.z = Math.PI / 2;
     g.add(wound);
     [-2.9, 2.9].forEach((x) => {
-      const fl = new THREE.Mesh(new THREE.CylinderGeometry(3.9, 3.9, 0.3, 40), mShellDark);
+      const fl = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 3.2, 0.3, 40), mShellDark);
       fl.rotation.z = Math.PI / 2;
       fl.position.x = x;
       g.add(fl);
+      // Speichen + Nabe auf der Außenseite, damit die Drehung sichtbar ist
+      const out = x + Math.sign(x) * 0.18;
+      const hubM = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.9, 0.08, 24), mShell);
+      hubM.rotation.z = Math.PI / 2;
+      hubM.position.x = out;
+      g.add(hubM);
+      for (let k = 0; k < 3; k++) {
+        const spoke = new THREE.Mesh(new THREE.BoxGeometry(0.08, 2.2, 0.45), mShell);
+        const a = (k / 3) * Math.PI * 2;
+        spoke.position.set(out, Math.cos(a) * 1.9, Math.sin(a) * 1.9);
+        spoke.rotation.x = a;
+        g.add(spoke);
+      }
     });
-    g.rotation.y = Math.PI / 2;
     return g;
   });
 
@@ -335,7 +347,26 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const HEAD_Z = 1.0;
   box(4.6, 5.2, 4.4, mHead, 0, RAIL_Y - 2.2, HEAD_Z, head);
   box(4.4, 4.2, 0.3, mHeadCover, 0, RAIL_Y - 2.3, HEAD_Z + 2.3, head);
-  box(1.8, 0.18, 0.05, mGold, 0, RAIL_Y - 0.9, HEAD_Z + 2.48, head);
+  // Logo auf der weißen Frontblende (knapp vor der Fläche + polygonOffset → kein Z-Fighting)
+  const logoTex = new THREE.TextureLoader().load("/logo.webp", (tex) => {
+    logo.scale.set(3.6, (3.6 * tex.image.height) / tex.image.width, 1);
+    logo.visible = true;
+    needsRender = true;
+  });
+  logoTex.colorSpace = THREE.SRGBColorSpace;
+  const logoMat = new THREE.MeshStandardMaterial({
+    map: logoTex,
+    transparent: true,
+    metalness: 0.1,
+    roughness: 0.4,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -1,
+  });
+  const logo = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), logoMat);
+  logo.position.set(0, RAIL_Y - 2.3, HEAD_Z + 2.47);
+  logo.visible = false;
+  head.add(logo);
   box(1.6, 1.0, 1.6, mBrass, 0, Y_NOZZLE + 1.8, HEAD_Z, head);
   const nozzle = new THREE.Mesh(new THREE.ConeGeometry(0.45, 1.0, 16), mBrass);
   nozzle.rotation.x = Math.PI;
