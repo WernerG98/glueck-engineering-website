@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 
 /*
- * Fixierter Hintergrund für die Startseite: ein 3D-Drucker, der beim Scrollen
+ * Fixierter Hintergrund für die Startseite: ein geschlossener CoreXY-Drucker
+ * (angelehnt an die Bambu Lab H2-Bauform), der beim Scrollen
  * ein Pfeilverzahnungs-Zahnrad Schicht für Schicht druckt.
  * Scroll-Fortschritt 0..1 → Aufheizen → Drucken → Fertig.
  */
 
 const TOTAL_LAYERS = 240;
 const PART_HEIGHT = 9;
-const BED_TOP = 3;
 const LOOPS = 70; // Umläufe der Düse über die gesamte Druckhöhe
 
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -40,9 +40,10 @@ export default function PrinterScrollBackground({ stageRef, onProgress }) {
     let disposed = false;
     let cleanup = () => {};
 
-    import("three").then((THREE) => {
+    Promise.all([import("three"), import("three/examples/jsm/environments/RoomEnvironment.js")]).then(([THREE, envMod]) => {
       if (disposed || !mountRef.current) return;
       cleanup = initScene(THREE, {
+        RoomEnvironment: envMod.RoomEnvironment,
         mount: mountRef.current,
         stage: stageRef?.current,
         dimEl: dimRef.current,
@@ -77,6 +78,7 @@ export default function PrinterScrollBackground({ stageRef, onProgress }) {
       {/* Druck-HUD */}
       <div
         ref={hudRef}
+        style={{ opacity: 0 }}
         aria-hidden="true"
         className="pointer-events-none fixed bottom-5 left-4 z-30 hidden w-56 rounded-xl transition-opacity duration-300 border border-neutral-800 bg-neutral-950/70 p-4 font-mono text-[11px] text-neutral-400 backdrop-blur-md sm:left-6 sm:block"
       >
@@ -98,7 +100,7 @@ export default function PrinterScrollBackground({ stageRef, onProgress }) {
   );
 }
 
-function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
+function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud, onProgress }) {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
@@ -107,36 +109,73 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
   renderer.localClippingEnabled = true;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.25;
+  renderer.toneMappingExposure = 1.1;
   mount.appendChild(renderer.domElement);
   renderer.domElement.style.width = "100%";
   renderer.domElement.style.height = "100%";
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x09090a, 90, 190);
+  scene.fog = new THREE.Fog(0x09090a, 150, 320);
 
-  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 300);
+  // Umgebungsreflexionen für Metall und Glas
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environment = envTex;
+  scene.environmentIntensity = 0.55;
+
+  // near = 1 statt 0.1 → deutlich bessere Tiefenauflösung, kein Flimmern
+  const camera = new THREE.PerspectiveCamera(32, 1, 1, 400);
+
+  // ---------- Maße ----------
+  const W = 38; // Außenbreite
+  const D = 38; // Außentiefe
+  const Y0 = 1.2; // Unterkante Gehäuse (Füße darunter)
+  const Y1 = 44; // Oberkante Gehäuse
+  const HW = W / 2;
+  const HD = D / 2;
+  const Y_NOZZLE = 31; // Düsenspitze (CoreXY: Kopf bleibt oben, Bett fährt runter)
+  const RAIL_Y = 37.5;
+  const BED_LOW = 12;
+  const S = 1.35; // Skalierung Druckteil
+  const PART_H = PART_HEIGHT * S;
 
   // ---------- Licht ----------
-  scene.add(new THREE.HemisphereLight(0x9aa3b5, 0x0a0a0c, 1.0));
-  const key = new THREE.DirectionalLight(0xffffff, 2.2);
-  key.position.set(18, 34, 22);
+  scene.add(new THREE.HemisphereLight(0x9aa3b5, 0x0a0a0c, 0.5));
+  const key = new THREE.DirectionalLight(0xffffff, 2.4);
+  key.position.set(40, 70, 60);
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0xd4af37, 2.6);
-  rim.position.set(-24, 18, -26);
+  const rim = new THREE.DirectionalLight(0xd4af37, 2.4);
+  rim.position.set(-50, 40, -60);
   scene.add(rim);
-  const fill = new THREE.DirectionalLight(0x6f86ff, 0.35);
-  fill.position.set(-20, 6, 20);
-  scene.add(fill);
+  const rim2 = new THREE.DirectionalLight(0xd4af37, 1.2);
+  rim2.position.set(60, 20, -40);
+  scene.add(rim2);
+  // Innenbeleuchtung (LED-Leiste oben vorn)
+  const chamber = new THREE.SpotLight(0xfff0dc, 900, 0, 0.85, 0.7, 2);
+  chamber.position.set(0, Y1 - 2.5, HD - 4);
+  chamber.target.position.set(0, 18, -2);
+  scene.add(chamber, chamber.target);
 
   // ---------- Materialien ----------
-  const mFrame = new THREE.MeshStandardMaterial({ color: 0x2a2c31, metalness: 0.6, roughness: 0.38 });
-  const mFrameLight = new THREE.MeshStandardMaterial({ color: 0x2c2e34, metalness: 0.75, roughness: 0.3 });
-  const mRod = new THREE.MeshStandardMaterial({ color: 0xcfd3da, metalness: 1, roughness: 0.18 });
-  const mGold = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.85, roughness: 0.3 });
-  const mBed = new THREE.MeshStandardMaterial({ color: 0x141416, metalness: 0.3, roughness: 0.75 });
+  const mShell = new THREE.MeshStandardMaterial({ color: 0x3a3d44, metalness: 0.6, roughness: 0.35 });
+  const mShellDark = new THREE.MeshStandardMaterial({ color: 0x16171a, metalness: 0.4, roughness: 0.55 });
+  const mInner = new THREE.MeshStandardMaterial({ color: 0x1a1b1e, metalness: 0.2, roughness: 0.8 });
+  const mRail = new THREE.MeshStandardMaterial({ color: 0xc9cdd4, metalness: 1, roughness: 0.2 });
+  const mGold = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.9, roughness: 0.28 });
   const mBrass = new THREE.MeshStandardMaterial({ color: 0xc89b4a, metalness: 1, roughness: 0.25 });
-  const mHead = new THREE.MeshStandardMaterial({ color: 0x232429, metalness: 0.5, roughness: 0.45 });
+  const mHead = new THREE.MeshStandardMaterial({ color: 0x1f2024, metalness: 0.35, roughness: 0.4 });
+  const mHeadCover = new THREE.MeshStandardMaterial({ color: 0xe9e9ea, metalness: 0.1, roughness: 0.35 });
+  const mGlass = new THREE.MeshPhysicalMaterial({
+    color: 0x2a2c30,
+    metalness: 0,
+    roughness: 0.05,
+    transparent: true,
+    opacity: 0.18,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    envMapIntensity: 1.6,
+  });
+  const mLed = new THREE.MeshBasicMaterial({ color: 0xfff3e0 });
 
   const box = (w, h, d, mat, x = 0, y = 0, z = 0, parent = scene) => {
     const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
@@ -144,8 +183,8 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
     parent.add(m);
     return m;
   };
-  const rod = (len, r, mat, x, y, z, axis = "y", parent = scene) => {
-    const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 20), mat);
+  const cyl = (r, len, mat, x, y, z, axis = "y", parent = scene, seg = 20) => {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, seg), mat);
     if (axis === "x") m.rotation.z = Math.PI / 2;
     if (axis === "z") m.rotation.x = Math.PI / 2;
     m.position.set(x, y, z);
@@ -153,110 +192,230 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
     return m;
   };
 
-  // ---------- Grundrahmen & Y-Achse ----------
-  box(6, 1.6, 40, mFrame, -9, 0.8, 0);
-  box(6, 1.6, 40, mFrame, 9, 0.8, 0);
-  box(24, 1.6, 3, mFrame, 0, 0.8, -18.5);
-  box(24, 1.6, 3, mFrame, 0, 0.8, 18.5);
-  rod(38, 0.35, mRod, -5, 2.0, 0, "z");
-  rod(38, 0.35, mRod, 5, 2.0, 0, "z");
-
-  // Bodenplatte / Schatten-Disc
+  // Boden (deutlich unter den Füßen → kein Z-Fighting)
   const floor = new THREE.Mesh(
-    new THREE.CircleGeometry(60, 64),
-    new THREE.MeshStandardMaterial({ color: 0x0c0c0e, metalness: 0.2, roughness: 0.9 })
+    new THREE.CircleGeometry(140, 64),
+    new THREE.MeshStandardMaterial({ color: 0x0b0b0d, metalness: 0.3, roughness: 0.85 })
   );
   floor.rotation.x = -Math.PI / 2;
-  floor.position.y = -0.01;
+  floor.position.y = -0.3;
   scene.add(floor);
 
-  // ---------- Druckbett (bewegt sich in Z) ----------
-  const bed = new THREE.Group();
-  scene.add(bed);
-  box(22, 0.5, 22, mFrameLight, 0, 2.45, 0, bed);
-  box(21, 0.3, 21, mBed, 0, 2.85, 0, bed);
-  const grid = new THREE.GridHelper(20, 20, 0xd4af37, 0xd4af37);
-  grid.material.transparent = true;
-  grid.material.opacity = 0.08;
-  grid.position.y = BED_TOP + 0.01;
-  bed.add(grid);
+  // ---------- Gehäuse ----------
+  const T = 0.9; // Wandstärke
+  [
+    [-HW + 1.5, -HD + 1.5],
+    [HW - 1.5, -HD + 1.5],
+    [-HW + 1.5, HD - 1.5],
+    [HW - 1.5, HD - 1.5],
+  ].forEach(([x, z]) => box(2.4, Y0 + 0.3, 2.4, mShellDark, x, (Y0 + 0.3) / 2 - 0.3 + 0.001, z));
+  const bodyH = Y1 - Y0;
+  const midY = (Y0 + Y1) / 2;
+  box(T, bodyH, D, mShell, -HW + T / 2, midY, 0); // links
+  box(T, bodyH, D, mShell, HW - T / 2, midY, 0); // rechts
+  box(W - 2 * T, bodyH, T, mShell, 0, midY, -HD + T / 2); // hinten
+  box(W - 2 * T, 4.2, D - T, mShellDark, 0, Y0 + 2.1, T / 2 - 0.001); // Unterbau
+  // Innenwände dunkler (leicht nach innen versetzt)
+  box(0.1, bodyH - 6, D - 3, mInner, -HW + T + 0.06, midY + 2, 0);
+  box(0.1, bodyH - 6, D - 3, mInner, HW - T - 0.06, midY + 2, 0);
+  box(W - 3, bodyH - 6, 0.1, mInner, 0, midY + 2, -HD + T + 0.06);
 
-  // ---------- Z-Portal ----------
-  const POST_X = 15;
-  box(2.2, 31, 2.2, mFrame, -POST_X, 15.5, -1.8);
-  box(2.2, 31, 2.2, mFrame, POST_X, 15.5, -1.8);
-  box(32.4, 2.2, 2.2, mFrame, 0, 32, -1.8);
-  rod(29, 0.4, mGold, -POST_X + 2.1, 16, -1.8); // Gewindespindeln
-  rod(29, 0.4, mGold, POST_X - 2.1, 16, -1.8);
-  rod(29, 0.3, mRod, -POST_X + 2.1, 16, 0.2);
-  rod(29, 0.3, mRod, POST_X - 2.1, 16, 0.2);
-  box(4, 3, 4, mHead, -POST_X, 1.5 + 0.01, -1.8); // Motoren
-  box(4, 3, 4, mHead, POST_X, 1.5 + 0.01, -1.8);
+  // Front: Rahmen + Glastür
+  const DOOR_Y0 = Y0 + 4.2;
+  const doorH = Y1 - DOOR_Y0 - 1.6;
+  const doorMidY = DOOR_Y0 + doorH / 2;
+  box(W, 1.6, 1.2, mShell, 0, Y1 - 0.8, HD - 0.6); // obere Blende
+  box(1.6, doorH, 1.2, mShell, -HW + 0.8, doorMidY, HD - 0.6);
+  box(1.6, doorH, 1.2, mShell, HW - 0.8, doorMidY, HD - 0.6);
+  const door = new THREE.Mesh(new THREE.BoxGeometry(W - 3.4, doorH - 0.4, 0.25), mGlass);
+  door.position.set(0, doorMidY, HD - 0.3);
+  door.renderOrder = 2;
+  scene.add(door);
+  // Türrahmen (dünn, dunkel) für Kontur
+  const doorFrame = new THREE.LineSegments(
+    new THREE.EdgesGeometry(new THREE.BoxGeometry(W - 3.4, doorH - 0.4, 0.25)),
+    new THREE.LineBasicMaterial({ color: 0x3a3c42 })
+  );
+  doorFrame.position.copy(door.position);
+  scene.add(doorFrame);
 
-  // ---------- X-Achse (fährt in Z hoch) ----------
-  const gantry = new THREE.Group();
+  // Deckel: Rahmen + Glas
+  box(W, 0.8, 2.2, mShell, 0, Y1 + 0.4, -HD + 1.1);
+  box(W, 0.8, 1.2, mShell, 0, Y1 + 0.4, HD - 0.6);
+  box(1.6, 0.8, D, mShell, -HW + 0.8, Y1 + 0.4, 0);
+  box(1.6, 0.8, D, mShell, HW - 0.8, Y1 + 0.4, 0);
+  const lid = new THREE.Mesh(new THREE.BoxGeometry(W - 3.2, 0.25, D - 3.4), mGlass);
+  lid.position.set(0, Y1 + 0.55, -0.5);
+  lid.renderOrder = 2;
+  scene.add(lid);
+
+  // LED-Leiste innen oben vorn
+  box(W - 6, 0.25, 0.5, mLed, 0, Y1 - 1.75, HD - 1.6);
+
+  // Display unten links (CanvasTexture mit Fortschritt)
+  const screenCanvas = document.createElement("canvas");
+  screenCanvas.width = 256;
+  screenCanvas.height = 144;
+  const sctx = screenCanvas.getContext("2d");
+  const screenTex = new THREE.CanvasTexture(screenCanvas);
+  screenTex.colorSpace = THREE.SRGBColorSpace;
+  const screen = new THREE.Mesh(new THREE.PlaneGeometry(6.4, 3.6), new THREE.MeshBasicMaterial({ map: screenTex }));
+  screen.position.set(-HW + 6.5, Y0 + 2.1, HD + 0.02);
+  scene.add(screen);
+  let lastScreen = -1;
+  const drawScreen = (pct, label) => {
+    sctx.fillStyle = "#0d0e10";
+    sctx.fillRect(0, 0, 256, 144);
+    sctx.fillStyle = "#d4af37";
+    sctx.font = "600 18px Inter, sans-serif";
+    sctx.fillText(label, 18, 34);
+    sctx.font = "700 46px Inter, sans-serif";
+    sctx.fillStyle = "#ffffff";
+    sctx.fillText(`${pct}%`, 18, 92);
+    sctx.fillStyle = "#2a2b2f";
+    sctx.fillRect(18, 112, 220, 8);
+    sctx.fillStyle = "#d4af37";
+    sctx.fillRect(18, 112, 2.2 * pct, 8);
+    screenTex.needsUpdate = true;
+  };
+  drawScreen(0, "Bereit");
+  // Lichtband unten (Statusleiste)
+  const statusBar = box(W - 18, 0.18, 0.1, new THREE.MeshBasicMaterial({ color: 0xd4af37 }), 5, Y0 + 0.9, HD + 0.03);
+
+  // ---------- AMS-Einheit oben ----------
+  const ams = new THREE.Group();
+  ams.position.set(0, Y1 + 0.8, -1);
+  scene.add(ams);
+  box(W - 6, 1.2, D - 12, mShellDark, 0, 0.6, 0, ams);
+  box(W - 6, 6.5, 0.8, mShell, 0, 4.4, -(D - 12) / 2 + 0.4, ams);
+  box(W - 6, 1.6, 0.8, mShell, 0, 2.0, (D - 12) / 2 - 0.4, ams);
+  box(0.8, 6.5, D - 12, mShell, -(W - 6) / 2 + 0.4, 4.4, 0, ams);
+  box(0.8, 6.5, D - 12, mShell, (W - 6) / 2 - 0.4, 4.4, 0, ams);
+  const amsLid = new THREE.Mesh(new THREE.BoxGeometry(W - 6, 0.3, D - 12), mGlass);
+  amsLid.position.set(0, 7.8, 0);
+  amsLid.renderOrder = 2;
+  ams.add(amsLid);
+  const spoolColors = [0xd4af37, 0xeeeeee, 0x1b1b1d, 0x7d8088];
+  const spools = spoolColors.map((c, i) => {
+    const g = new THREE.Group();
+    g.position.set(-10.5 + i * 7, 4.6, 0);
+    ams.add(g);
+    const wound = new THREE.Mesh(
+      new THREE.CylinderGeometry(3.4, 3.4, 5.4, 40),
+      new THREE.MeshStandardMaterial({ color: c, metalness: 0.15, roughness: 0.55 })
+    );
+    wound.rotation.x = Math.PI / 2;
+    wound.rotation.z = Math.PI / 2;
+    g.add(wound);
+    [-2.9, 2.9].forEach((x) => {
+      const fl = new THREE.Mesh(new THREE.CylinderGeometry(3.9, 3.9, 0.3, 40), mShellDark);
+      fl.rotation.z = Math.PI / 2;
+      fl.position.x = x;
+      g.add(fl);
+    });
+    g.rotation.y = Math.PI / 2;
+    return g;
+  });
+
+  // ---------- CoreXY-Bewegungssystem ----------
+  cyl(0.35, D - 6, mRail, -HW + 3, RAIL_Y, 0, "z");
+  cyl(0.35, D - 6, mRail, HW - 3, RAIL_Y, 0, "z");
+  box(1.6, 1.6, D - 5, mShellDark, -HW + 2.2, RAIL_Y + 1.1, 0);
+  box(1.6, 1.6, D - 5, mShellDark, HW - 2.2, RAIL_Y + 1.1, 0);
+
+  const gantry = new THREE.Group(); // fährt in Z
   scene.add(gantry);
-  box(4, 3.6, 3.2, mFrameLight, -POST_X + 2.1, 0, -0.8, gantry);
-  box(4, 3.6, 3.2, mFrameLight, POST_X - 2.1, 0, -0.8, gantry);
-  rod(26, 0.3, mRod, 0, 0.9, -0.3, "x", gantry);
-  rod(26, 0.3, mRod, 0, -0.9, -0.3, "x", gantry);
+  box(W - 5.6, 1.4, 1.6, mShellDark, 0, RAIL_Y, -1.6, gantry);
+  cyl(0.25, W - 6, mRail, 0, RAIL_Y + 0.9, -0.6, "x", gantry);
+  box(2.2, 2.2, 3, mHead, -HW + 3, RAIL_Y, -1.2, gantry);
+  box(2.2, 2.2, 3, mHead, HW - 3, RAIL_Y, -1.2, gantry);
 
-  // Druckkopf (fährt in X)
-  const head = new THREE.Group();
+  const head = new THREE.Group(); // fährt in X
   gantry.add(head);
-  box(3.6, 4.2, 2.6, mHead, 0, 0.3, 0.9, head);
-  box(3.62, 0.25, 2.62, mGold, 0, 2.3, 0.9, head);
-  const fan = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.12, 10, 32), mGold);
-  fan.position.set(0, 0.5, 2.22);
-  head.add(fan);
-  const fanHub = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.1, 16), mRod);
-  fanHub.rotation.x = Math.PI / 2;
-  fanHub.position.set(0, 0.5, 2.22);
-  head.add(fanHub);
-  box(1.4, 0.8, 1.4, mBrass, 0, -2.1, 1.0, head); // Heizblock
-  const nozzle = new THREE.Mesh(new THREE.ConeGeometry(0.42, 0.9, 16), mBrass);
+  // Werkzeugkopf: dunkler Block mit heller Frontblende
+  const HEAD_Z = 1.0;
+  box(4.6, 5.2, 4.4, mHead, 0, RAIL_Y - 2.2, HEAD_Z, head);
+  box(4.4, 4.2, 0.3, mHeadCover, 0, RAIL_Y - 2.3, HEAD_Z + 2.3, head);
+  box(1.8, 0.18, 0.05, mGold, 0, RAIL_Y - 0.9, HEAD_Z + 2.48, head);
+  box(1.6, 1.0, 1.6, mBrass, 0, Y_NOZZLE + 1.8, HEAD_Z, head);
+  const nozzle = new THREE.Mesh(new THREE.ConeGeometry(0.45, 1.0, 16), mBrass);
   nozzle.rotation.x = Math.PI;
-  nozzle.position.set(0, -2.95, 1.0);
+  nozzle.position.set(0, Y_NOZZLE + 0.55, HEAD_Z);
   head.add(nozzle);
-  const NOZZLE_DROP = 3.4; // Kopf-Ursprung → Düsenspitze
-  const NOZZLE_Z = 1.0;
-
-  const hotLight = new THREE.PointLight(0xff8a2a, 0, 9, 2);
-  hotLight.position.set(0, -3.2, 1.0);
+  const hotLight = new THREE.PointLight(0xff8a2a, 0, 12, 2);
+  hotLight.position.set(0, Y_NOZZLE - 0.3, HEAD_Z);
   head.add(hotLight);
   const tipGlow = new THREE.Mesh(
-    new THREE.SphereGeometry(0.16, 12, 12),
+    new THREE.SphereGeometry(0.17, 12, 12),
     new THREE.MeshBasicMaterial({ color: 0xffb35c, transparent: true, opacity: 0 })
   );
-  tipGlow.position.set(0, -3.42, 1.0);
+  tipGlow.position.set(0, Y_NOZZLE, HEAD_Z);
   head.add(tipGlow);
 
-  // ---------- Filamentrolle ----------
-  const spool = new THREE.Group();
-  spool.position.set(0, 36.4, -1.8);
-  scene.add(spool);
-  const flange = new THREE.CylinderGeometry(3.6, 3.6, 0.3, 48);
-  [-1.7, 1.7].forEach((x) => {
-    const f = new THREE.Mesh(flange, mFrameLight);
-    f.rotation.z = Math.PI / 2;
-    f.position.x = x;
-    spool.add(f);
-  });
-  const filamentWound = new THREE.Mesh(
-    new THREE.CylinderGeometry(3.0, 3.0, 3.1, 48),
-    new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.35, roughness: 0.5 })
-  );
-  filamentWound.rotation.z = Math.PI / 2;
-  spool.add(filamentWound);
-  box(1, 3.2, 1, mFrame, -3, 34.6, -1.8);
-  box(1, 3.2, 1, mFrame, 3, 34.6, -1.8);
+  // Hotend-Wechselstation (hinten links)
+  for (let i = 0; i < 6; i++) {
+    const x = -HW + 4 + i * 2.3;
+    box(1.6, 2.4, 1.6, mHead, x, RAIL_Y - 3.2, -HD + 3.2);
+    cyl(0.32, 0.9, mBrass, x, RAIL_Y - 4.8, -HD + 3.2, "y", scene, 12);
+  }
+  box(14.5, 0.6, 2.4, mShellDark, -HW + 9.8, RAIL_Y - 1.8, -HD + 3.2);
 
-  // Filamentstrang Rolle → Kopf
-  const FIL_PTS = 24;
-  const filGeom = new THREE.BufferGeometry();
-  filGeom.setAttribute("position", new THREE.BufferAttribute(new Float32Array(FIL_PTS * 3), 3));
-  const filament = new THREE.Line(filGeom, new THREE.LineBasicMaterial({ color: 0xd4af37 }));
-  scene.add(filament);
+  // ---------- Z-Achse & Druckbett ----------
+  [
+    [-HW + 4, -HD + 4],
+    [HW - 4, -HD + 4],
+    [0, -HD + 2.8],
+  ].forEach(([x, z]) => cyl(0.4, 30, mGold, x, Y0 + 4.2 + 15, z));
+
+  const bed = new THREE.Group();
+  scene.add(bed);
+  box(W - 7, 0.7, D - 8, mShellDark, 0, -0.95, -1, bed);
+  // Druckplatte mit dezentem Raster (Textur statt GridHelper → kein Z-Fighting)
+  const plateCanvas = document.createElement("canvas");
+  plateCanvas.width = plateCanvas.height = 512;
+  const pctx = plateCanvas.getContext("2d");
+  pctx.fillStyle = "#15161a";
+  pctx.fillRect(0, 0, 512, 512);
+  pctx.strokeStyle = "rgba(212,175,55,0.14)";
+  pctx.lineWidth = 2;
+  for (let i = 0; i <= 512; i += 32) {
+    pctx.beginPath();
+    pctx.moveTo(i, 0);
+    pctx.lineTo(i, 512);
+    pctx.moveTo(0, i);
+    pctx.lineTo(512, i);
+    pctx.stroke();
+  }
+  const plateTex = new THREE.CanvasTexture(plateCanvas);
+  plateTex.colorSpace = THREE.SRGBColorSpace;
+  plateTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const mPlate = new THREE.MeshStandardMaterial({ color: 0xffffff, map: plateTex, metalness: 0.3, roughness: 0.6 });
+  const plateMats = [mShellDark, mShellDark, mPlate, mShellDark, mShellDark, mShellDark];
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(W - 9, 0.5, D - 10), plateMats);
+  plate.position.set(0, -0.25, -1);
+  bed.add(plate);
+
+  // PTFE-Schlauch AMS → Kopf
+  const tubeMat = new THREE.MeshStandardMaterial({ color: 0xf2f2f2, metalness: 0, roughness: 0.4, transparent: true, opacity: 0.85 });
+  let tube = null;
+  const tubeStart = new THREE.Vector3(6, Y1 - 0.5, -HD + 2.5);
+  const curve = new THREE.QuadraticBezierCurve3(tubeStart, new THREE.Vector3(), new THREE.Vector3());
+  let lastTubeKey = "";
+  const updateTube = (hx, hz) => {
+    const key = `${hx.toFixed(1)}|${hz.toFixed(1)}`;
+    if (key === lastTubeKey) return;
+    lastTubeKey = key;
+    curve.v1.set((hx + tubeStart.x) / 2 + 3, Y1 + 0.2, (hz + tubeStart.z) / 2);
+    curve.v2.set(hx, RAIL_Y + 0.6, hz);
+    const g = new THREE.TubeGeometry(curve, 32, 0.18, 8, false);
+    if (tube) {
+      tube.geometry.dispose();
+      tube.geometry = g;
+    } else {
+      tube = new THREE.Mesh(g, tubeMat);
+      scene.add(tube);
+    }
+  };
 
   // ---------- Druckteil: Pfeilverzahntes Zahnrad ----------
   const TEETH = 22;
@@ -290,11 +449,11 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
     shape.holes.push(h);
   }
 
-  const TWIST = 0.05; // rad pro Einheit Höhe
+  const TWIST = 0.05;
   const twistAt = (y) => TWIST * (y < PART_HEIGHT / 2 ? y : PART_HEIGHT - y);
 
   const gearGeom = new THREE.ExtrudeGeometry(shape, { depth: PART_HEIGHT, steps: 60, bevelEnabled: false, curveSegments: 18 });
-  gearGeom.rotateX(-Math.PI / 2); // Extrusion zeigt jetzt nach +Y
+  gearGeom.rotateX(-Math.PI / 2);
   const pos = gearGeom.attributes.position;
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i);
@@ -305,38 +464,40 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
   }
   gearGeom.computeVertexNormals();
 
-  const clipTop = new THREE.Plane(new THREE.Vector3(0, -1, 0), BED_TOP);
-  const clipHotBand = new THREE.Plane(new THREE.Vector3(0, 1, 0), -BED_TOP);
+  const clipTop = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
+  const clipHotBand = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 
   const mPart = new THREE.MeshStandardMaterial({
     color: 0xd4af37,
     metalness: 0.25,
     roughness: 0.42,
     clippingPlanes: [clipTop],
-    side: THREE.FrontSide,
   });
-  // Rückseiten als "Deckel" → frische Schicht glüht
   const mCap = new THREE.MeshBasicMaterial({ color: 0xffa040, side: THREE.BackSide, clippingPlanes: [clipTop] });
-  // dünnes, heißes Band an der Oberkante
+  // Heißes Band: gleiche Geometrie, per polygonOffset vorgezogen statt skaliert → kein Flimmern
   const mHot = new THREE.MeshBasicMaterial({
     color: 0xff9a3c,
     clippingPlanes: [clipTop, clipHotBand],
     transparent: true,
     opacity: 0.9,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -2,
+    depthWrite: false,
   });
 
   const part = new THREE.Group();
-  part.position.y = BED_TOP;
+  part.scale.setScalar(S);
   bed.add(part);
   part.add(new THREE.Mesh(gearGeom, mPart));
   part.add(new THREE.Mesh(gearGeom, mCap));
   const hotMesh = new THREE.Mesh(gearGeom, mHot);
-  hotMesh.scale.set(1.004, 1, 1.004);
   part.add(hotMesh);
+  const PART_Z = -1;
+  part.position.z = 0; // Bett-Gruppe verschiebt nicht in Z; Teil sitzt mittig auf der Platte
 
-  // Düsenpfad = Außenkontur
   const outline = shape.getSpacedPoints(260).map((v) => new THREE.Vector2(v.x, -v.y));
-  const pathPoint = (u, y) => {
+  const pathPoint = (u, yLocal) => {
     const n = outline.length - 1;
     const f = (((u % 1) + 1) % 1) * n;
     const i = Math.floor(f);
@@ -345,17 +506,17 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
     const b = outline[Math.min(i + 1, n)];
     const x = lerp(a.x, b.x, t);
     const z = lerp(a.y, b.y, t);
-    const tw = twistAt(y);
-    return [x * Math.cos(tw) - z * Math.sin(tw), x * Math.sin(tw) + z * Math.cos(tw)];
+    const tw = twistAt(yLocal);
+    return [(x * Math.cos(tw) - z * Math.sin(tw)) * S, (x * Math.sin(tw) + z * Math.cos(tw)) * S];
   };
 
-  // ---------- Kamera-Keyframes (Fortschritt → Kugelkoordinaten) ----------
+  // ---------- Kamera-Keyframes ----------
   const keys = [
-    { p: 0.0, r: 82, az: -0.62, el: 0.16, ty: 17 },
-    { p: 0.22, r: 58, az: -0.32, el: 0.3, ty: 12 },
-    { p: 0.55, r: 50, az: 0.35, el: 0.55, ty: 9 },
-    { p: 0.8, r: 60, az: 0.9, el: 0.3, ty: 13 },
-    { p: 1.0, r: 48, az: 1.45, el: 0.36, ty: 10 },
+    { p: 0.0, r: 150, az: -0.5, el: 0.14, ty: 27 },
+    { p: 0.22, r: 105, az: -0.28, el: 0.22, ty: 28 },
+    { p: 0.55, r: 78, az: 0.12, el: 0.36, ty: 28 },
+    { p: 0.8, r: 115, az: 0.36, el: 0.22, ty: 26 },
+    { p: 1.0, r: 125, az: 0.5, el: 0.16, ty: 25 },
   ];
   const camAt = (p) => {
     let k = 0;
@@ -369,7 +530,7 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
   // ---------- Scroll / Resize ----------
   let target = 0;
   let current = 0;
-  let after = 0; // Fortschritt nach dem Druck-Abschnitt (0..1)
+  let after = 0;
   let afterCur = 0;
   const readScroll = () => {
     const vh = window.innerHeight;
@@ -387,6 +548,7 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
   };
   readScroll();
   current = target;
+  afterCur = after;
 
   let width = 0;
   let height = 0;
@@ -407,7 +569,6 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
   // ---------- Loop ----------
   const hotColor = new THREE.Color(0xffa040);
   const coolColor = new THREE.Color(0xb8952c);
-  const tmpColor = new THREE.Color();
   let raf = 0;
   let lastHud = -1;
   const clock = new THREE.Clock();
@@ -421,63 +582,40 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
     const q = afterCur;
 
     const f = printFraction(p);
-    const h = f * PART_HEIGHT;
+    const hWorld = f * PART_H;
     const printing = p > 0.06 && p < 0.82;
     const heat = smooth(0.0, 0.06, p) * (1 - smooth(0.82, 0.9, p));
     const cool = smooth(0.8, 0.95, p);
+    const park = smooth(0.82, 0.97, p);
 
-    // Clipping auf aktuelle Schichthöhe
-    const worldTop = BED_TOP + Math.max(h, 0.0001);
-    clipTop.constant = worldTop;
-    clipHotBand.constant = -(worldTop - 0.22);
-    part.visible = h > 0.02;
-    hotMesh.visible = h > 0.01 && cool < 0.99;
+    // Bett: Oberkante folgt der Druckhöhe nach unten, am Ende fährt es zur Präsentation runter
+    const bedTop = lerp(Y_NOZZLE - hWorld, BED_LOW, park);
+    bed.position.y = bedTop;
+
+    const top = bedTop + Math.max(hWorld, 0.0001);
+    clipTop.constant = top;
+    clipHotBand.constant = -(top - 0.25);
+    part.visible = hWorld > 0.03;
+    hotMesh.visible = cool < 0.99;
     mHot.opacity = 0.9 * (1 - cool);
-    tmpColor.copy(hotColor).lerp(coolColor, cool);
-    mCap.color.copy(tmpColor);
+    mCap.color.copy(hotColor).lerp(coolColor, cool);
 
-    // Düse auf der Kontur
-    const u = f * LOOPS;
-    const [px, pz] = pathPoint(u, h);
-    // Am Ende: Kopf fährt zur Seite, Bett nach vorn
-    const park = smooth(0.82, 0.95, p);
-    const headX = lerp(px, -10, park);
-    head.position.x = headX;
-    bed.position.z = lerp(NOZZLE_Z - pz, 6, park);
-    gantry.position.y = lerp(worldTop + NOZZLE_DROP, BED_TOP + PART_HEIGHT + NOZZLE_DROP + 6, park);
-    gantry.position.z = 0;
+    // Düse auf der Kontur (Teil-Koordinaten → Welt)
+    const [px, pz] = pathPoint(f * LOOPS, f * PART_HEIGHT);
+    head.position.x = lerp(px, HW - 8, park);
+    gantry.position.z = lerp(pz + PART_Z - HEAD_Z, -HD + 9, park);
+    part.position.z = PART_Z;
+    updateTube(head.position.x, gantry.position.z + HEAD_Z);
 
-    // Glühen
-    hotLight.intensity = heat * (printing ? 14 : 8) * (0.85 + 0.15 * Math.sin(t * 9));
+    hotLight.intensity = heat * (printing ? 22 : 12) * (0.85 + 0.15 * Math.sin(t * 9));
     tipGlow.material.opacity = heat;
 
-    // Spule dreht sich mit dem Fortschritt
-    spool.rotation.x = -f * Math.PI * 14;
-
-    // Filament: Rolle → Kopf (quadratische Kurve)
-    const fp = filGeom.attributes.position;
-    const sx = 0;
-    const sy = 33.6;
-    const sz = 1.0;
-    const ex = head.position.x;
-    const ey = gantry.position.y + 2.4;
-    const ez = 0.9;
-    const cx = (sx + ex) / 2;
-    const cy = Math.max(sy, ey) + 3;
-    const cz = 4;
-    for (let i = 0; i < FIL_PTS; i++) {
-      const s = i / (FIL_PTS - 1);
-      const a = (1 - s) * (1 - s);
-      const b = 2 * (1 - s) * s;
-      const c = s * s;
-      fp.setXYZ(i, a * sx + b * cx + c * ex, a * sy + b * cy + c * ey, a * sz + b * cz + c * ez);
-    }
-    fp.needsUpdate = true;
+    spools[0].rotation.x = -f * Math.PI * 10;
 
     // Kamera
     const cam = camAt(p);
-    const breathe = reduceMotion ? 0 : Math.sin(t * 0.25) * 0.04;
-    const az = cam.az + breathe + q * 1.6;
+    const breathe = reduceMotion ? 0 : Math.sin(t * 0.25) * 0.03;
+    const az = cam.az + breathe + q * 0.55;
     camera.position.set(
       Math.sin(az) * Math.cos(cam.el) * cam.r,
       cam.ty + Math.sin(cam.el) * cam.r,
@@ -485,7 +623,6 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
     );
     camera.lookAt(0, cam.ty, 0);
 
-    // Auf breiten Bildschirmen steht der Drucker im Hero rechts neben dem Text
     const wide = width >= 768;
     const shift = wide ? 0.2 * (1 - smooth(0.0, 0.1, q)) : 0;
     if (shift > 0.001) camera.setViewOffset(width, height, -width * shift, 0, width, height);
@@ -495,13 +632,19 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
 
     const dim = smooth(0.0, 0.12, q);
     if (dimEl) dimEl.style.opacity = String(dim * 0.55);
-    if (hudEl) hudEl.style.opacity = String(1 - smooth(0.0, 0.05, q));
+    if (hudEl) hudEl.style.opacity = String(smooth(0.03, 0.09, p) * (1 - smooth(0.0, 0.05, q)));
     onProgress(p);
 
     const layer = Math.round(f * TOTAL_LAYERS);
-    const key = layer * 10 + Math.round(p * 100);
-    if (key !== lastHud) {
-      lastHud = key;
+    const pct = Math.round(f * 100);
+    if (pct !== lastScreen) {
+      lastScreen = pct;
+      drawScreen(pct, phaseFor(p).split(" · ")[0]);
+      statusBar.material.color.set(p >= 0.9 ? 0x4caf50 : 0xd4af37);
+    }
+    const hudKey = layer * 10 + Math.round(p * 100);
+    if (hudKey !== lastHud) {
+      lastHud = hudKey;
       setHud({ layer, phase: phaseFor(p), p });
     }
   };
@@ -518,6 +661,10 @@ function initScene(THREE, { mount, stage, dimEl, hudEl, setHud, onProgress }) {
       if (Array.isArray(m)) m.forEach((x) => x.dispose());
       else m?.dispose();
     });
+    plateTex.dispose();
+    screenTex.dispose();
+    envTex.dispose();
+    pmrem.dispose();
     renderer.dispose();
     renderer.domElement.remove();
   };
