@@ -494,7 +494,9 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   hotMesh.renderOrder = 1;
   part.add(hotMesh);
   const PART_Z = -1;
-  part.position.z = 0; // Bett-Gruppe verschiebt nicht in Z; Teil sitzt mittig auf der Platte
+  // Unterseite minimal über der Druckplatte → kein Z-Fighting zwischen Platte und Teilboden
+  const PART_LIFT = 0.12;
+  part.position.y = PART_LIFT;
 
   const outline = shape.getSpacedPoints(260).map((v) => new THREE.Vector2(v.x, -v.y));
   const pathPoint = (u, yLocal) => {
@@ -613,7 +615,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     const bedTop = lerp(Y_NOZZLE - hWorld, BED_LOW, park);
     bed.position.y = bedTop;
 
-    const top = bedTop + Math.max(hWorld, 0.0001);
+    const top = bedTop + PART_LIFT + Math.max(hWorld, 0.0001);
     clipTop.constant = top;
     clipHotBand.constant = -(top - 0.25);
     part.visible = hWorld > 0.03;
