@@ -351,17 +351,32 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
 
   // Markenschild oben auf der Frontblende
   const brandCanvas = document.createElement("canvas");
-  brandCanvas.width = 512;
-  brandCanvas.height = 64;
+  brandCanvas.width = 1024;
+  brandCanvas.height = 128;
   {
+    // Text wird Zeichen für Zeichen mit eigenem Abstand gesetzt und vorher vermessen,
+    // damit er garantiert vollständig in die Textur passt (kein abgeschnittenes "G").
     const b = brandCanvas.getContext("2d");
-    b.clearRect(0, 0, 512, 64);
+    const text = "GLÜCK ENGINEERING";
+    const maxW = 1024 * 0.9;
+    let size = 64;
+    let spacing = 0;
+    let total = 0;
+    for (; size > 20; size -= 2) {
+      b.font = `600 ${size}px Inter, sans-serif`;
+      spacing = size * 0.32;
+      total = [...text].reduce((w, ch) => w + b.measureText(ch).width, 0) + spacing * (text.length - 1);
+      if (total <= maxW) break;
+    }
+    b.clearRect(0, 0, 1024, 128);
     b.fillStyle = "#d4af37";
-    b.font = "600 34px Inter, sans-serif";
-    b.textAlign = "center";
+    b.textAlign = "left";
     b.textBaseline = "middle";
-    b.letterSpacing = "10px";
-    b.fillText("GLÜCK ENGINEERING", 256, 34);
+    let x = (1024 - total) / 2;
+    for (const ch of text) {
+      b.fillText(ch, x, 66);
+      x += b.measureText(ch).width + spacing;
+    }
   }
   const brandTex = new THREE.CanvasTexture(brandCanvas);
   brandTex.colorSpace = THREE.SRGBColorSpace;
