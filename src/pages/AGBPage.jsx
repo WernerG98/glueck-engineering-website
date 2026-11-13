@@ -1,5 +1,6 @@
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
+import PageBackdrop from "../components/PageBackdrop";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
@@ -23,14 +24,15 @@ export default function AGBPage() {
   } = useContactForm();
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="relative min-h-screen bg-neutral-950 text-white">
+      <PageBackdrop />
       <PageMeta
         title="AGB & Widerrufsbelehrung"
         description="Allgemeine Geschäftsbedingungen und Widerrufsbelehrung von Glück Engineering."
       />
       <Header onOpenContactModal={openContactModal} />
 
-      <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 md:py-20">
+      <main className="relative z-10 mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 md:py-20">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           AGB &amp; Widerrufsbelehrung
         </h1>

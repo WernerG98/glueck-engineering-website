@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
+import PageBackdrop from "../components/PageBackdrop";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
@@ -43,14 +44,15 @@ export default function ServicePage() {
   } = useContactForm();
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="relative min-h-screen bg-neutral-950 text-white">
+      <PageBackdrop />
       <PageMeta
         title="3D-Druck Dienstleistung"
         description="Individuelle 3D-Drucklösungen für funktionale Bauteile, Prototypen und Kleinserien – von der Beratung bis zur fertigen Bauteilproduktion."
       />
       <Header onOpenContactModal={openContactModal} />
 
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
+      <main className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
         <section className="grid items-center gap-10 md:grid-cols-2 md:gap-12">
           <Reveal>
             <span className="eyebrow">Dienstleistung</span>

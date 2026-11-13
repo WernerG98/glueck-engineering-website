@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
+import PageBackdrop from "../components/PageBackdrop";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
@@ -69,14 +70,15 @@ export default function FAQPage() {
   } = useContactForm();
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="relative min-h-screen bg-neutral-950 text-white">
+      <PageBackdrop />
       <PageMeta
         title="Häufige Fragen"
         description="Antworten auf häufige Fragen zu Lieferzeit, Materialien, Ablauf und Bestellung bei Glück Engineering."
       />
       <Header onOpenContactModal={openContactModal} />
 
-      <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
+      <main className="relative z-10 mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
         <Reveal>
           <span className="eyebrow">Support</span>
           <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">

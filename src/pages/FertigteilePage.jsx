@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
+import PageBackdrop from "../components/PageBackdrop";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
@@ -44,14 +45,15 @@ export default function FertigteilePage() {
   }, [activeVehicle]);
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="relative min-h-screen bg-neutral-950 text-white">
+      <PageBackdrop />
       <PageMeta
         title="Fertigteile"
         description="Passgenaue Ersatz- und Zubehörteile für VW Bus (T3/T4/T5/T6) und weitere Fahrzeuge, direkt ab Lager fertigbar."
       />
       <Header onOpenContactModal={openContactModal} />
 
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
+      <main className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
         <section>
           <Reveal>
             <span className="eyebrow">Produkte</span>

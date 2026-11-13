@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
+import PageBackdrop from "../components/PageBackdrop";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
@@ -32,14 +33,15 @@ export default function ArtworksPage() {
   } = useContactForm();
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="relative min-h-screen bg-neutral-950 text-white">
+      <PageBackdrop />
       <PageMeta
         title="3D-Artworks"
         description="Individuelle, mehrschichtige 3D-Artworks mit ausgeprägter Tiefenwirkung, schwarz-weiß oder mehrfarbig nach deinem Motiv."
       />
       <Header onOpenContactModal={openContactModal} />
 
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
+      <main className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
         <section className="grid items-center gap-10 md:grid-cols-2 md:gap-12">
           <Reveal>
             <span className="eyebrow">3D-Artworks</span>

@@ -1,6 +1,7 @@
 import { Fragment, useMemo, useState } from "react";
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
+import PageBackdrop from "../components/PageBackdrop";
 import Footer from "../components/Footer";
 import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
@@ -259,14 +260,15 @@ export default function MaterialienPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="relative min-h-screen bg-neutral-950 text-white">
+      <PageBackdrop />
       <PageMeta
         title="Material-Guide"
         description="Vergleich aller verwendeten 3D-Druck-Filamente nach Hitzebeständigkeit, Festigkeit, Flexibilität, UV-Beständigkeit und Preisklasse."
       />
       <Header onOpenContactModal={openContactModal} />
 
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
+      <main className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
         <section>
           <Reveal>
             <span className="eyebrow">Material-Guide</span>
@@ -280,6 +282,18 @@ export default function MaterialienPage() {
               von den Herstellerangaben und helfen dir bei der Einschätzung, welches Material zu deinem Vorhaben
               passt. Unsicher? Wir beraten dich gerne bei der Anfrage.
             </p>
+
+            <div className="mt-6 flex flex-wrap gap-2 font-mono text-xs text-neutral-400">
+              <span className="rounded-full border border-neutral-800 bg-neutral-900/60 px-3 py-1.5">
+                <span className="text-accent">{materials.length}</span> Materialien
+              </span>
+              <span className="rounded-full border border-neutral-800 bg-neutral-900/60 px-3 py-1.5">
+                <span className="text-accent">7</span> Materialfamilien
+              </span>
+              <span className="rounded-full border border-neutral-800 bg-neutral-900/60 px-3 py-1.5">
+                Stand: November 2026
+              </span>
+            </div>
           </Reveal>
         </section>
 

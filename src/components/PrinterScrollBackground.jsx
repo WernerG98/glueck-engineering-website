@@ -116,6 +116,8 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.1;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   mount.appendChild(renderer.domElement);
   renderer.domElement.style.width = "100%";
   renderer.domElement.style.height = "100%";
@@ -149,6 +151,16 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   scene.add(new THREE.HemisphereLight(0x9aa3b5, 0x0a0a0c, 0.5));
   const key = new THREE.DirectionalLight(0xffffff, 2.4);
   key.position.set(40, 70, 60);
+  key.castShadow = true;
+  key.shadow.mapSize.set(2048, 2048);
+  key.shadow.camera.left = -55;
+  key.shadow.camera.right = 55;
+  key.shadow.camera.top = 65;
+  key.shadow.camera.bottom = -25;
+  key.shadow.camera.near = 10;
+  key.shadow.camera.far = 220;
+  key.shadow.bias = -0.0004;
+  key.shadow.normalBias = 0.06;
   scene.add(key);
   const rim = new THREE.DirectionalLight(0xd4af37, 2.4);
   rim.position.set(-50, 40, -60);
@@ -158,6 +170,10 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   scene.add(rim2);
   // Innenbeleuchtung (LED-Leiste oben vorn)
   const chamber = new THREE.SpotLight(0xfff0dc, 900, 0, 0.85, 0.7, 2);
+  chamber.castShadow = true;
+  chamber.shadow.mapSize.set(1024, 1024);
+  chamber.shadow.bias = -0.0005;
+  chamber.shadow.normalBias = 0.05;
   chamber.position.set(0, Y1 - 2.5, HD - 4);
   chamber.target.position.set(0, 18, -2);
   scene.add(chamber, chamber.target);
@@ -174,18 +190,24 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const mGlass = new THREE.MeshPhysicalMaterial({
     color: 0x2a2c30,
     metalness: 0,
-    roughness: 0.05,
+    roughness: 0.04,
     transparent: true,
-    opacity: 0.18,
+    opacity: 0.16,
     depthWrite: false,
     side: THREE.DoubleSide,
-    envMapIntensity: 1.6,
+    envMapIntensity: 1.8,
+    clearcoat: 1,
+    clearcoatRoughness: 0.08,
   });
+  const mRubber = new THREE.MeshStandardMaterial({ color: 0x0c0c0e, metalness: 0.1, roughness: 0.95 });
+  const mScrew = new THREE.MeshStandardMaterial({ color: 0x55585f, metalness: 1, roughness: 0.35 });
   const mLed = new THREE.MeshBasicMaterial({ color: 0xfff3e0 });
 
   const box = (w, h, d, mat, x = 0, y = 0, z = 0, parent = scene) => {
     const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
     m.position.set(x, y, z);
+    m.castShadow = true;
+    m.receiveShadow = true;
     parent.add(m);
     return m;
   };
@@ -194,17 +216,58 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     if (axis === "x") m.rotation.z = Math.PI / 2;
     if (axis === "z") m.rotation.x = Math.PI / 2;
     m.position.set(x, y, z);
+    m.castShadow = true;
+    m.receiveShadow = true;
     parent.add(m);
     return m;
   };
 
-  // Boden (deutlich unter den Füßen → kein Z-Fighting)
+  // Boden: dunkler Industrieboden mit Lichtpool unter dem Drucker und feinen Kratzern
+  const floorCanvas = document.createElement("canvas");
+  floorCanvas.width = floorCanvas.height = 1024;
+  {
+    const f = floorCanvas.getContext("2d");
+    const g = f.createRadialGradient(512, 512, 40, 512, 512, 512);
+    g.addColorStop(0, "#1c1b18");
+    g.addColorStop(0.35, "#121113");
+    g.addColorStop(1, "#0a0a0c");
+    f.fillStyle = g;
+    f.fillRect(0, 0, 1024, 1024);
+    // feine Kratzer
+    for (let i = 0; i < 160; i++) {
+      const x = Math.random() * 1024;
+      const y = Math.random() * 1024;
+      const a = Math.random() * Math.PI;
+      const len = 20 + Math.random() * 90;
+      f.strokeStyle = `rgba(255,255,255,${0.015 + Math.random() * 0.03})`;
+      f.lineWidth = 0.8;
+      f.beginPath();
+      f.moveTo(x, y);
+      f.lineTo(x + Math.cos(a) * len, y + Math.sin(a) * len);
+      f.stroke();
+    }
+    // dezente Bodenplatten-Fugen
+    f.strokeStyle = "rgba(0,0,0,0.5)";
+    f.lineWidth = 3;
+    for (let i = 128; i < 1024; i += 256) {
+      f.beginPath();
+      f.moveTo(i, 0);
+      f.lineTo(i, 1024);
+      f.moveTo(0, i);
+      f.lineTo(1024, i);
+      f.stroke();
+    }
+  }
+  const floorTex = new THREE.CanvasTexture(floorCanvas);
+  floorTex.colorSpace = THREE.SRGBColorSpace;
+  floorTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
   const floor = new THREE.Mesh(
     new THREE.CircleGeometry(140, 64),
-    new THREE.MeshStandardMaterial({ color: 0x0b0b0d, metalness: 0.3, roughness: 0.85 })
+    new THREE.MeshStandardMaterial({ map: floorTex, color: 0xffffff, metalness: 0.45, roughness: 0.55 })
   );
   floor.rotation.x = -Math.PI / 2;
   floor.position.y = -0.3;
+  floor.receiveShadow = true;
   scene.add(floor);
 
   // ---------- Gehäuse ----------
@@ -257,6 +320,58 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
 
   // LED-Leiste innen oben vorn
   box(W - 6, 0.25, 0.5, mLed, 0, Y1 - 1.75, HD - 1.6);
+
+  // Gummifüße unter den Standfüßen
+  [
+    [-HW + 1.5, -HD + 1.5],
+    [HW - 1.5, -HD + 1.5],
+    [-HW + 1.5, HD - 1.5],
+    [HW - 1.5, HD - 1.5],
+  ].forEach(([x, z]) => cyl(1.1, 0.35, mRubber, x, -0.18, z, "y", scene, 18));
+
+  // Lüftungsschlitze unten in beiden Seitenwänden
+  for (let i = 0; i < 7; i++) {
+    const z = -9 + i * 3;
+    box(0.25, 0.5, 2.2, mShellDark, -HW - 0.03, Y0 + 2.1, z);
+    box(0.25, 0.5, 2.2, mShellDark, HW + 0.03, Y0 + 2.1, z);
+  }
+  // Abluftgitter hinten oben
+  for (let i = 0; i < 5; i++) box(3.2, 0.4, 0.2, mShellDark, HW - 6, Y1 - 4 - i * 1.1, -HD - 0.04);
+
+  // Schrauben an den Frontpfosten
+  [DOOR_Y0 + 2, doorMidY, Y1 - 3.4].forEach((y) => {
+    cyl(0.22, 0.12, mScrew, -HW + 0.8, y, HD - 0.02 + 0.06, "z", scene, 12);
+    cyl(0.22, 0.12, mScrew, HW - 0.8, y, HD - 0.02 + 0.06, "z", scene, 12);
+  });
+
+  // Türgriff (vertikale Goldleiste) + Scharniere
+  box(0.5, 7, 0.5, mGold, HW - 2.6, doorMidY, HD + 0.12);
+  box(0.6, 1.6, 0.7, mShellDark, -HW + 1.9, doorMidY + doorH / 2 - 2, HD - 0.25);
+  box(0.6, 1.6, 0.7, mShellDark, -HW + 1.9, doorMidY - doorH / 2 + 2, HD - 0.25);
+
+  // Markenschild oben auf der Frontblende
+  const brandCanvas = document.createElement("canvas");
+  brandCanvas.width = 512;
+  brandCanvas.height = 64;
+  {
+    const b = brandCanvas.getContext("2d");
+    b.clearRect(0, 0, 512, 64);
+    b.fillStyle = "#d4af37";
+    b.font = "600 34px Inter, sans-serif";
+    b.textAlign = "center";
+    b.textBaseline = "middle";
+    b.letterSpacing = "10px";
+    b.fillText("GLÜCK ENGINEERING", 256, 34);
+  }
+  const brandTex = new THREE.CanvasTexture(brandCanvas);
+  brandTex.colorSpace = THREE.SRGBColorSpace;
+  brandTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const brand = new THREE.Mesh(
+    new THREE.PlaneGeometry(13, 1.62),
+    new THREE.MeshBasicMaterial({ map: brandTex, transparent: true, opacity: 0.92 })
+  );
+  brand.position.set(0, Y1 - 0.8, HD + 0.01);
+  scene.add(brand);
 
   // Display unten links (CanvasTexture mit Fortschritt)
   const screenCanvas = document.createElement("canvas");
@@ -344,6 +459,9 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const gantry = new THREE.Group(); // fährt in Z
   scene.add(gantry);
   box(W - 5.6, 1.4, 1.6, mShellDark, 0, RAIL_Y, -1.6, gantry);
+  // Zahnriemen entlang der X-Achse
+  box(W - 7, 0.18, 0.5, mRubber, 0, RAIL_Y + 0.55, -1.95, gantry);
+  box(W - 7, 0.18, 0.5, mRubber, 0, RAIL_Y - 0.55, -1.95, gantry);
   cyl(0.25, W - 6, mRail, 0, RAIL_Y + 0.9, -0.6, "x", gantry);
   box(2.2, 2.2, 3, mHead, -HW + 3, RAIL_Y, -1.2, gantry);
   box(2.2, 2.2, 3, mHead, HW - 3, RAIL_Y, -1.2, gantry);
@@ -374,6 +492,34 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   logo.position.set(0, RAIL_Y - 2.3, HEAD_Z + 2.47);
   logo.visible = false;
   head.add(logo);
+  // Kühlrippen am Hotend
+  for (let i = 0; i < 4; i++) box(2.0, 0.14, 2.0, mScrew, 0, Y_NOZZLE + 2.6 + i * 0.3, HEAD_Z, head);
+  // Bauteillüfter seitlich
+  const fanRing = new THREE.Mesh(new THREE.TorusGeometry(0.95, 0.14, 10, 28), mShellDark);
+  fanRing.rotation.y = Math.PI / 2;
+  fanRing.position.set(2.42, RAIL_Y - 2.4, HEAD_Z);
+  fanRing.castShadow = true;
+  head.add(fanRing);
+  const fanHub = cyl(0.34, 0.1, mScrew, 2.46, RAIL_Y - 2.4, HEAD_Z, "x", head, 14);
+  // Status-LED am Kopf
+  const headLed = new THREE.Mesh(new THREE.SphereGeometry(0.14, 10, 10), new THREE.MeshBasicMaterial({ color: 0x4caf50 }));
+  headLed.position.set(1.6, RAIL_Y - 0.6, HEAD_Z + 2.35);
+  head.add(headLed);
+  // Kabelschlaufe am Kopf nach hinten oben
+  {
+    const cablePts = [
+      new THREE.Vector3(0.8, RAIL_Y + 0.4, HEAD_Z - 1.6),
+      new THREE.Vector3(1.6, RAIL_Y + 2.2, HEAD_Z - 3.2),
+      new THREE.Vector3(0.4, RAIL_Y + 2.6, HEAD_Z - 4.6),
+      new THREE.Vector3(-1.2, RAIL_Y + 1.4, HEAD_Z - 4.2),
+    ];
+    const cable = new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cablePts), 24, 0.14, 8, false),
+      mRubber
+    );
+    cable.castShadow = true;
+    head.add(cable);
+  }
   box(1.6, 1.0, 1.6, mBrass, 0, Y_NOZZLE + 1.8, HEAD_Z, head);
   const nozzle = new THREE.Mesh(new THREE.ConeGeometry(0.45, 1.0, 16), mBrass);
   nozzle.rotation.x = Math.PI;
@@ -489,7 +635,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const TWIST = 0.05;
   const twistAt = (y) => TWIST * (y < PART_HEIGHT / 2 ? y : PART_HEIGHT - y);
 
-  const gearGeom = new THREE.ExtrudeGeometry(shape, { depth: PART_HEIGHT, steps: 60, bevelEnabled: false, curveSegments: 18 });
+  const gearGeom = new THREE.ExtrudeGeometry(shape, { depth: PART_HEIGHT, steps: 110, bevelEnabled: false, curveSegments: 18 });
   gearGeom.rotateX(-Math.PI / 2);
   const pos = gearGeom.attributes.position;
   // Unverdrehte Ausgangspunkte merken: daraus wird das Teil bei jeder Druckhöhe neu "gestaucht"
@@ -497,9 +643,11 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const applyHeight = (hLocal) => {
     const arr = pos.array;
     for (let i = 0; i < arr.length; i += 3) {
-      const x = base[i];
       const y = Math.min(base[i + 1], hLocal);
-      const z = base[i + 2];
+      // Feine Rippen: sichtbare Druckschichten an den Flanken
+      const rib = 1 + 0.0042 * Math.sin(y * 30);
+      const x = base[i] * rib;
+      const z = base[i + 2] * rib;
       const a = twistAt(y);
       const c = Math.cos(a);
       const sn = Math.sin(a);
@@ -520,8 +668,8 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
 
   const mPart = new THREE.MeshStandardMaterial({
     color: 0xd4af37,
-    metalness: 0.25,
-    roughness: 0.42,
+    metalness: 0.3,
+    roughness: 0.38,
   });
   // Heißes Band an der Oberkante: gleiche Geometrie, gleiche Tiefe, leicht vorgezogen
   const mHot = new THREE.MeshBasicMaterial({
@@ -546,6 +694,19 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   // Unterseite minimal über der Druckplatte → kein Z-Fighting zwischen Platte und Teilboden
   const PART_LIFT = 0.12;
   part.position.y = PART_LIFT;
+  part.children.forEach((c) => {
+    c.castShadow = true;
+    c.receiveShadow = true;
+  });
+  // Skirt: dünne Umrisslinie auf der Platte, wie beim echten Druckstart
+  const skirt = new THREE.Mesh(
+    new THREE.RingGeometry(R_TIP * S + 1.1, R_TIP * S + 1.45, 64),
+    new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.25, roughness: 0.45 })
+  );
+  skirt.rotation.x = -Math.PI / 2;
+  skirt.position.set(0, 0.05, PART_Z);
+  skirt.visible = false;
+  bed.add(skirt);
 
   const outline = shape.getSpacedPoints(260).map((v) => new THREE.Vector2(v.x, -v.y));
   const pathPoint = (u, yLocal) => {
@@ -666,6 +827,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
 
     const hLocal = f * PART_HEIGHT;
     part.visible = hLocal > 0.03;
+    skirt.visible = p > 0.055 && park < 0.5;
     if (part.visible && Math.abs(hLocal - lastHLocal) > 1e-4) {
       applyHeight(hLocal);
       lastHLocal = hLocal;
