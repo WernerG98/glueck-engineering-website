@@ -27,6 +27,11 @@ const galleryImages = [
     label: "Teelichthalter Blüte",
     alt: "3D-gedruckter Teelichthalter in Blütenform aus mehreren Blattlagen mit Teelicht",
   },
+  {
+    src: "/3D-Druck_Teelicht_Sonne_quer.webp",
+    label: "Teelichthalter Sonnenblume in Holz-Optik",
+    alt: "3D-gedruckter Teelichthalter in Sonnenblumenform in Holz-Optik mit Teelicht",
+  },
 ];
 
 export default function ServicePage() {
@@ -148,7 +153,7 @@ export default function ServicePage() {
             <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">Galerie</h2>
           </Reveal>
 
-          <div className="grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid max-w-5xl gap-4 sm:grid-cols-2">
             {galleryImages.map((image, index) => (
               <Reveal key={image.src} delay={index * 100}>
                 <figure className="group overflow-hidden rounded-2xl border border-neutral-800">
