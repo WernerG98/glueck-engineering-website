@@ -41,7 +41,7 @@ const STEPS = [
 ];
 
 function fade(p, [a, b]) {
-  const edge = 0.05;
+  const edge = 0.08;
   const fin = Math.min(1, Math.max(0, (p - a) / edge));
   const fout = b > 1 ? 1 : Math.min(1, Math.max(0, (b - p) / edge));
   return Math.min(fin, fout);
@@ -160,10 +160,9 @@ export default function HomePage() {
       <Header onOpenContactModal={openContactModal} />
 
       {scene.enabled ? (
-        /* Druck-Abschnitt: 400vh Scrollweg, Inhalt bleibt kleben.
-           Nicht kürzer machen: mit dem Mausrad springt die Animation sonst pro Raste zu weit.
-           Abkürzung für Eilige ist der Link "Zu den Leistungen" im Hero. */
-        <section ref={stageRef} className="relative z-10 -mt-16 h-[400vh] md:-mt-[69px]">
+        /* Druck-Abschnitt: 250vh Scrollweg, Inhalt bleibt kleben.
+           Texte blenden mit breiterem Übergang (siehe fade), damit sie auch mit dem Mausrad weich wirken. */
+        <section ref={stageRef} className="relative z-10 -mt-16 h-[250vh] md:-mt-[69px]">
           <div className="sticky top-0 h-[100svh] overflow-hidden">
             <div className="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-10 pt-20 md:items-center md:pb-0 sm:px-6 md:pt-24">
               <div ref={heroRef} className="absolute inset-x-4 max-w-xl rounded-2xl bg-neutral-950/70 p-5 backdrop-blur-md sm:inset-x-6 md:bg-transparent md:p-0 md:backdrop-blur-none">
