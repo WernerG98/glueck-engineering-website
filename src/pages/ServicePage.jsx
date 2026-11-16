@@ -22,6 +22,11 @@ const galleryImages = [
     label: "Wäscheschacht DIN 200",
     alt: "Eingebauter weißer 3D-gedruckter Adapterstutzen vor dem Rohr eines Wäscheschachts DIN 200",
   },
+  {
+    src: "/3D-Druck_Teelicht_Bluete_80_quer.webp",
+    label: "Teelichthalter zum 80. Geburtstag",
+    alt: "3D-gedruckter Teelichthalter in Blütenform mit der Zahl 80 und brennendem Teelicht",
+  },
 ];
 
 export default function ServicePage() {
@@ -143,7 +148,7 @@ export default function ServicePage() {
             <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">Galerie</h2>
           </Reveal>
 
-          <div className="grid max-w-3xl gap-4 sm:grid-cols-2">
+          <div className="grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {galleryImages.map((image, index) => (
               <Reveal key={image.src} delay={index * 100}>
                 <figure className="group overflow-hidden rounded-2xl border border-neutral-800">
