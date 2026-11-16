@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
+// interactive: drehbar mit Maus/Finger, dreht sich langsam von selbst.
+// interactive={false}: Modell wird einmal gezeichnet und als Standbild angezeigt,
+// danach wird der WebGL-Kontext wieder freigegeben (spart Leistung, z. B. auf der Startseite).
 export default function ModelViewer({ src, format, interactive = true }) {
   const containerRef = useRef(null);
   const [status, setStatus] = useState("loading");
   const [visible, setVisible] = useState(false);
+  const [snapshot, setSnapshot] = useState(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -34,7 +38,17 @@ export default function ModelViewer({ src, format, interactive = true }) {
     let renderer;
     let animationFrame;
     let resizeObserver;
+    let screenObserver;
+    let onScreen = true;
     let disposed = false;
+
+    const disposeRenderer = () => {
+      if (!renderer) return;
+      renderer.dispose();
+      renderer.forceContextLoss?.();
+      renderer.domElement.remove();
+      renderer = null;
+    };
 
     async function init() {
       const container = containerRef.current;
@@ -88,7 +102,7 @@ export default function ModelViewer({ src, format, interactive = true }) {
         object.position.sub(center);
 
         const maxDim = Math.max(size.x, size.y, size.z) || 1;
-        const distance = maxDim / (2 * Math.tan((Math.PI * camera.fov) / 360)) * 1.6;
+        const distance = maxDim / (2 * Math.tan((Math.PI * camera.fov) / 360)) * 1.4;
 
         camera.position.set(distance * 0.6, distance * 0.5, distance);
         camera.near = distance / 100;
@@ -109,6 +123,14 @@ export default function ModelViewer({ src, format, interactive = true }) {
 
       let spinner = null;
 
+      // Standbild: einmal rendern, als Bild übernehmen, Renderer freigeben
+      const captureStill = () => {
+        if (interactive || disposed || !renderer) return;
+        renderer.render(scene, camera);
+        setSnapshot(renderer.domElement.toDataURL("image/png"));
+        disposeRenderer();
+      };
+
       try {
         if (format === "3mf") {
           const loader = new loaderModule.ThreeMFLoader();
@@ -123,6 +145,7 @@ export default function ModelViewer({ src, format, interactive = true }) {
               fitCameraToObject(object);
               spinner = object;
               setStatus("ready");
+              captureStill();
             },
             undefined,
             () => setStatus("error")
@@ -139,6 +162,7 @@ export default function ModelViewer({ src, format, interactive = true }) {
               fitCameraToObject(mesh);
               spinner = mesh;
               setStatus("ready");
+              captureStill();
             },
             undefined,
             () => setStatus("error")
@@ -148,19 +172,24 @@ export default function ModelViewer({ src, format, interactive = true }) {
         setStatus("error");
       }
 
+      if (!interactive) return;
+
+      // Außerhalb des Bildschirms nicht rendern (mehrere Viewer auf einer Seite)
+      screenObserver = new IntersectionObserver(([entry]) => {
+        onScreen = entry.isIntersecting;
+      });
+      screenObserver.observe(container);
+
       function animate() {
-        if (controls) {
-          controls.update();
-        } else if (spinner) {
-          spinner.rotation.y += 0.006;
-        }
-        renderer.render(scene, camera);
         animationFrame = requestAnimationFrame(animate);
+        if (!onScreen || !renderer) return;
+        controls.update();
+        renderer.render(scene, camera);
       }
       animate();
 
       resizeObserver = new ResizeObserver(() => {
-        if (!container) return;
+        if (!container || !renderer) return;
         const w = container.clientWidth;
         const h = container.clientHeight;
         if (w === 0 || h === 0) return;
@@ -177,10 +206,8 @@ export default function ModelViewer({ src, format, interactive = true }) {
       disposed = true;
       if (animationFrame) cancelAnimationFrame(animationFrame);
       if (resizeObserver) resizeObserver.disconnect();
-      if (renderer) {
-        renderer.dispose();
-        renderer.domElement.remove();
-      }
+      if (screenObserver) screenObserver.disconnect();
+      disposeRenderer();
     };
   }, [src, format, interactive, visible]);
 
@@ -189,7 +216,9 @@ export default function ModelViewer({ src, format, interactive = true }) {
       <div
         ref={containerRef}
         className={`h-full w-full ${interactive ? "cursor-grab active:cursor-grabbing" : ""}`}
-      />
+      >
+        {snapshot && <img src={snapshot} alt="" className="h-full w-full object-contain" />}
+      </div>
       {status === "loading" && (
         <div className="absolute inset-0 flex items-center justify-center text-sm text-neutral-450">
           3D-Modell wird geladen…

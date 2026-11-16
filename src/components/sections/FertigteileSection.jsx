@@ -5,8 +5,9 @@ import TiltCard from "../TiltCard";
 import { useMerkzettel } from "../../context/MerkzettelContext";
 
 function FertigteilCard({ item, onRequest }) {
-  const [show3D, setShow3D] = useState(false);
   const hasModel = Boolean(item.model);
+  // 3D-Ansicht ist Standard, das Foto lässt sich per Button einblenden
+  const [show3D, setShow3D] = useState(hasModel);
   const { isSaved, toggleItem } = useMerkzettel();
   const saved = isSaved(item.id);
 

@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import Reveal from "../Reveal";
+import ModelViewer from "../ModelViewer";
 import fertigteile from "../../data/fertigteile";
 
-// Vorschau: die ersten Teile mit Foto als Produktkarten
-const PREVIEW = fertigteile.filter((item) => item.image).slice(0, 4);
+// Vorschau: die ersten vier Teile, mit 3D-Modell als Standbild (sonst Foto)
+const PREVIEW = fertigteile.filter((item) => item.model || item.image).slice(0, 4);
 
 export default function FertigteileTeaserSection() {
   return (
@@ -36,13 +37,12 @@ export default function FertigteileTeaserSection() {
                 to="/fertigteile"
                 className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/70 backdrop-blur-md transition hover:border-neutral-600"
               >
-                <div className="aspect-square overflow-hidden bg-neutral-950">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
-                  />
+                <div className="aspect-square overflow-hidden bg-neutral-950 transition duration-700 ease-out group-hover:scale-105">
+                  {item.model ? (
+                    <ModelViewer src={item.model.src} format={item.model.format} interactive={false} />
+                  ) : (
+                    <img src={item.image} alt={item.name} loading="lazy" className="h-full w-full object-cover" />
+                  )}
                 </div>
                 <div className="flex flex-1 flex-col p-4">
                   <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-450">
