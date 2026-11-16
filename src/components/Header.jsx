@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import MerkzettelDrawer from "./MerkzettelDrawer";
+import LogoMark from "./LogoMark";
 import { useMerkzettel } from "../context/MerkzettelContext";
 
 // Desktop: schlanke Textlinks, aktive Seite mit dünner Akzentlinie
@@ -62,11 +63,7 @@ export default function Header({ onOpenContactModal }) {
     <header className="sticky top-0 z-40 bg-neutral-950/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-b border-neutral-800/80 px-4 py-3 sm:px-6">
         <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
-          <img
-            src="/logo.webp"
-            alt="Glück Engineering Logo"
-            className="h-10 w-10 object-contain md:h-11 md:w-11"
-          />
+          <LogoMark className="h-10 w-10 md:h-11 md:w-11" />
           <span className="font-display text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">
             Glück Engineering
           </span>

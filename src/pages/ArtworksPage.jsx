@@ -50,11 +50,11 @@ export default function ArtworksPage() {
               Individuelle 3D-Artworks
             </h1>
 
-            <p className="mt-6 max-w-3xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+            <p className="mt-6 max-w-3xl text-base leading-relaxed text-neutral-300">
               {artworkIntroText}
             </p>
 
-            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+            <p className="mt-4 max-w-3xl text-base leading-relaxed text-neutral-300">
               Auf Fotos wirkt ein fertiges Artwork wie ein normaler Druck – tatsächlich ist es ein
               echtes Höhenbild: Durch unterschiedliche Materialstärke entsteht eine reliefartige,
               spürbar dreidimensionale Oberfläche, die sich im Licht je nach Blickwinkel
@@ -106,7 +106,7 @@ export default function ArtworksPage() {
             <div className="text-left">
               <h2 className="text-2xl font-semibold tracking-tight">Wichtige Informationen</h2>
 
-              <div className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-400 sm:text-base">
+              <div className="mt-4 whitespace-pre-line text-base leading-relaxed text-neutral-300">
                 {artworkInfoText}
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function ArtworksPage() {
             <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
               Vom Originalfoto zum 3D-Artwork
             </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-neutral-300">
               Ziehe den Regler, um das eingereichte Originalfoto mit dem fertigen, gedruckten
               Artwork zu vergleichen.
             </p>

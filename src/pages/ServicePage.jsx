@@ -65,7 +65,7 @@ export default function ServicePage() {
               Datei einreichen. Bauteil erhalten. Den Rest übernehmen wir.
             </p>
 
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-neutral-300">
               Individuelle 3D-Drucklösungen für funktionale Bauteile, Prototypen und Kleinserien, vom fertigen
               Modell bis zur Idee, die erst gemeinsam zum druckbaren Bauteil wird. Nicht nur für Technik-Profis:
               genauso gefragt sind Ersatzteile für Haushaltsgeräte, individuelle Halterungen oder ausgefallene
@@ -109,7 +109,7 @@ export default function ServicePage() {
           <div className="mt-6 grid gap-4 sm:mt-8 sm:grid-cols-3">
             <Reveal className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6">
               <h3 className="text-lg font-semibold">Von der Idee zum Produkt</h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-400">
+              <p className="mt-2 text-sm leading-relaxed text-neutral-300">
                 Technische Beratung, Konstruktion und Optimierung, auch ohne fertige Datei. Egal ob defektes
                 Haushaltsteil, spontane Geschenkidee oder technisches Bauteil.
               </p>
@@ -117,7 +117,7 @@ export default function ServicePage() {
 
             <Reveal delay={100} className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6">
               <h3 className="text-lg font-semibold">Passender Werkstoff</h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-400">
+              <p className="mt-2 text-sm leading-relaxed text-neutral-300">
                 Auswahl nach mechanischer Belastung, Temperatur und Umgebung wie UV oder Feuchtigkeit.
               </p>
               <Link
@@ -130,7 +130,7 @@ export default function ServicePage() {
 
             <Reveal delay={200} className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6">
               <h3 className="text-lg font-semibold">Bauteilgröße</h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-400">
+              <p className="mt-2 text-sm leading-relaxed text-neutral-300">
                 Maximale Bauteilgröße 33 × 32,5 × 32 cm. Größere Teile bei Bedarf auf Anfrage in Segmenten.
               </p>
             </Reveal>
@@ -168,7 +168,7 @@ export default function ServicePage() {
 
         <Reveal className="mt-16 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 text-center sm:mt-20 sm:p-10 md:mt-24">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Bereit für dein Projekt?</h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+          <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-neutral-300">
             Datei einreichen oder Idee schildern. Der Rest wird gemeinsam geklärt.
           </p>
           <div className="mt-6">

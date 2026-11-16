@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LogoMark from "./LogoMark";
 
 const CONTACT_EMAIL = "info@glueckengineering.com";
 
@@ -40,17 +41,10 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr] lg:gap-x-8">
           <div className="col-span-2 lg:col-span-1">
             <Link to="/" className="inline-flex items-center gap-3">
-              <img
-                src="/logo.webp"
-                alt=""
-                width="40"
-                height="40"
-                loading="lazy"
-                className="h-10 w-10 object-contain opacity-90"
-              />
+              <LogoMark className="h-10 w-10" />
               <span className="font-display text-lg font-semibold tracking-tight text-white">Glück Engineering</span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-400">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-300">
               Fertigteile, technischer 3D-Druck und mehrschichtige 3D-Artworks aus einer Hand.
             </p>
           </div>

@@ -9,7 +9,7 @@ export default function ServiceTeaserSection({ onRequest, onPreview }) {
           <span className="eyebrow">Dienstleistung</span>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">3D-Druck Dienstleistung</h2>
 
-          <p className="mt-4 text-sm leading-relaxed text-neutral-400 sm:text-base">
+          <p className="mt-4 text-base leading-relaxed text-neutral-300">
             Datei einreichen, Bauteil erhalten, oder von der Idee bis zum fertigen Produkt: technische
             Beratung, Werkstoffauswahl und Fertigung aus einer Hand. Egal ob Ersatzteil für zuhause,
             individuelles Bauteil oder technischer Prototyp.

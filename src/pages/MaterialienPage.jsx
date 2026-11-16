@@ -277,7 +277,7 @@ export default function MaterialienPage() {
               Welches Material passt zu deinem Projekt?
             </h1>
 
-            <p className="mt-6 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-neutral-300">
               Wir drucken überwiegend mit Filamenten von Bambu Lab. Die technischen Werte hier stammen direkt
               von den Herstellerangaben und helfen dir bei der Einschätzung, welches Material zu deinem Vorhaben
               passt. Unsicher? Wir beraten dich gerne bei der Anfrage.

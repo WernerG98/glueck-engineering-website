@@ -20,7 +20,7 @@ export default function ArtworksTeaserSection({ onRequest }) {
           <span className="eyebrow">Artworks</span>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Individuelle 3D-Artworks</h2>
 
-          <p className="mt-4 text-sm leading-relaxed text-neutral-400 sm:text-base">
+          <p className="mt-4 text-base leading-relaxed text-neutral-300">
             Jedes Motiv wird in ein mehrschichtiges 3D-Artwork mit ausgeprägter Tiefenwirkung verwandelt. Möglich sind schwarz-weiße und mehrfarbige Ausführungen mit bis zu sechs Farben.
             <br />
             <br />

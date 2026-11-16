@@ -32,7 +32,7 @@ export default function ImpressumPage() {
       <main className="relative z-10 mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 md:py-20">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Impressum</h1>
 
-        <div className="mt-10 space-y-8 text-sm leading-relaxed text-neutral-400 sm:text-base">
+        <div className="mt-10 space-y-8 text-base leading-relaxed text-neutral-300">
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">Angaben gemäß § 5 DDG</h2>
             <p>

@@ -35,7 +35,7 @@ export default function DatenschutzPage() {
       <main className="relative z-10 mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 md:py-20">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Datenschutzerklärung</h1>
 
-        <div className="mt-10 space-y-8 text-sm leading-relaxed text-neutral-400 sm:text-base">
+        <div className="mt-10 space-y-8 text-base leading-relaxed text-neutral-300">
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">1. Verantwortlicher</h2>
             <p>

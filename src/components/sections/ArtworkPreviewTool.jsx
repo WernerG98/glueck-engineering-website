@@ -95,7 +95,7 @@ export default function ArtworkPreviewTool({ onRequest }) {
         <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
           So könnte dein Motiv aussehen
         </h2>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-neutral-300">
           Foto hochladen und direkt im Browser eine vereinfachte Simulation des Schicht-Looks sehen,
           ganz ohne Anfrage. Das Bild wird nicht hochgeladen oder gespeichert, alles läuft lokal auf
           diesem Gerät.

@@ -10,6 +10,8 @@ import HeroGear3D from "../components/HeroGear3D";
 import FertigteileTeaserSection from "../components/sections/FertigteileTeaserSection";
 import ServiceTeaserSection from "../components/sections/ServiceTeaserSection";
 import ArtworksTeaserSection from "../components/sections/ArtworksTeaserSection";
+import FactsBar from "../components/sections/FactsBar";
+import WerkstattGallery from "../components/sections/WerkstattGallery";
 import useContactForm from "../hooks/useContactForm";
 import usePrinterScene from "../hooks/usePrinterScene";
 
@@ -59,17 +61,26 @@ function HeroCopy({ onCta }) {
         <span className="text-neutral-400">Designs, die auffallen.</span>
       </h1>
 
-      <p className="mt-6 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+      <p className="mt-6 max-w-2xl text-base leading-relaxed text-neutral-300">
         Individuelle Fertigteile, technische 3D-Drucklösungen und mehrschichtige 3D-Artworks aus einer Hand.
       </p>
 
-      <div className="mt-8">
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
         <button
           onClick={onCta}
           className="rounded-lg bg-accent px-6 py-3 font-medium text-neutral-950 transition hover:bg-accent-light"
         >
           Datei hochladen &amp; Angebot erhalten
         </button>
+        <a
+          href="#leistungen"
+          className="group inline-flex items-center justify-center gap-2 py-2 text-sm font-medium text-neutral-300 transition hover:text-white"
+        >
+          Zu den Leistungen
+          <svg viewBox="0 0 24 24" className="h-4 w-4 transition group-hover:translate-y-0.5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m0 0l-6-6m6 6l6-6" />
+          </svg>
+        </a>
       </div>
     </Reveal>
   );
@@ -149,8 +160,8 @@ export default function HomePage() {
       <Header onOpenContactModal={openContactModal} />
 
       {scene.enabled ? (
-        /* Druck-Abschnitt: 400vh Scrollweg, Inhalt bleibt kleben */
-        <section ref={stageRef} className="relative z-10 -mt-16 h-[400vh] md:-mt-[69px]">
+        /* Druck-Abschnitt: 280vh Scrollweg, Inhalt bleibt kleben */
+        <section ref={stageRef} className="relative z-10 -mt-16 h-[280vh] md:-mt-[69px]">
           <div className="sticky top-0 h-[100svh] overflow-hidden">
             <div className="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-10 pt-20 md:items-center md:pb-0 sm:px-6 md:pt-24">
               <div ref={heroRef} className="absolute inset-x-4 max-w-xl rounded-2xl bg-neutral-950/70 p-5 backdrop-blur-md sm:inset-x-6 md:bg-transparent md:p-0 md:backdrop-blur-none">
@@ -220,10 +231,11 @@ export default function HomePage() {
         </section>
       )}
 
-      <main className="relative z-10 mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 md:pb-24">
-
+      <main id="leistungen" className="relative z-10 mx-auto max-w-7xl scroll-mt-20 px-4 pb-12 sm:px-6 sm:pb-16 md:pb-24">
+        <FactsBar />
         <ServiceTeaserSection onRequest={openContactModal} onPreview={setSelectedImage} />
         <FertigteileTeaserSection />
+        <WerkstattGallery onPreview={setSelectedImage} />
         <ArtworksTeaserSection onRequest={openContactModal} onPreview={setSelectedImage} />
       </main>
 

@@ -61,7 +61,7 @@ export default function ContactModal({
           <h2 id="contact-modal-success-title" className="mt-4 text-xl font-semibold tracking-tight">
             Anfrage gesendet
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+          <p className="mt-3 text-sm leading-relaxed text-neutral-300">
             Die Anfrage wurde erfolgreich übermittelt. Die Antwort kommt per E-Mail.
           </p>
           <button
@@ -93,7 +93,7 @@ export default function ContactModal({
           <h2 id="contact-modal-paused-title" className="text-xl font-semibold tracking-tight">
             Anfragen pausiert
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+          <p className="mt-3 text-sm leading-relaxed text-neutral-300">
             Wir nehmen aktuell keine neuen Anfragen an, weil wir gerade die vorhandenen abarbeiten.
             Schau in Kürze wieder vorbei oder schreib uns direkt eine E-Mail.
           </p>

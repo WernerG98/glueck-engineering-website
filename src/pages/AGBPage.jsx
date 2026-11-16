@@ -37,7 +37,7 @@ export default function AGBPage() {
           AGB &amp; Widerrufsbelehrung
         </h1>
 
-        <div className="mt-10 space-y-8 text-sm leading-relaxed text-neutral-400 sm:text-base">
+        <div className="mt-10 space-y-8 text-base leading-relaxed text-neutral-300">
           <section>
             <h2 className="mb-2 text-lg font-semibold text-white">1. Geltungsbereich</h2>
             <p>

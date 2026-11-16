@@ -62,7 +62,7 @@ export default function FertigteilePage() {
               Fertigteile
             </h1>
 
-            <p className="mt-6 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-neutral-300">
               Passgenaue Ersatz- und Zubehörteile für ausgewählte Fahrzeuge, direkt ab Lager fertigbar.
               Bei Bedarf an anderen Farben oder Stückzahlen einfach in der Anfrage angeben.
             </p>

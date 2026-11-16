@@ -47,7 +47,7 @@ export default function MerkzettelDrawer({ open, onClose, onOpenContactModal }) 
 
         <div className="flex-1 overflow-y-auto px-5 py-4">
           {items.length === 0 ? (
-            <p className="text-sm leading-relaxed text-neutral-400">
+            <p className="text-sm leading-relaxed text-neutral-300">
               Noch keine Teile gemerkt. Über das Lesezeichen-Symbol auf einer Fertigteile-Karte kannst du
               Teile hier sammeln und gemeinsam anfragen.
             </p>

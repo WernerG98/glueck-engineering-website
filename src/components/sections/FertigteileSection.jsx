@@ -61,7 +61,7 @@ function FertigteilCard({ item, onRequest }) {
       <div className="mt-4 flex flex-1 flex-col">
         <h3 className="text-base text-neutral-200 sm:text-lg">{item.name}</h3>
         <p className="mt-2 text-lg font-semibold text-white">{item.price}</p>
-        <p className="mt-2 text-sm leading-relaxed text-neutral-400">{item.text}</p>
+        <p className="mt-2 text-sm leading-relaxed text-neutral-300">{item.text}</p>
 
         <div className="mt-auto pt-6">
           <button

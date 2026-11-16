@@ -35,7 +35,7 @@ function FAQItem({ item, isOpen, onToggle }) {
       </button>
 
       {isOpen && (
-        <div className="px-5 pb-5 text-sm leading-relaxed text-neutral-400 sm:px-6 sm:pb-6 sm:text-base">
+        <div className="px-5 pb-5 text-sm leading-relaxed text-neutral-300 sm:px-6 sm:pb-6 sm:text-base">
           <p>{item.answer}</p>
           {item.linkTo && (
             <Link to={item.linkTo} className="mt-2 inline-block text-accent underline hover:text-accent-light">
@@ -84,7 +84,7 @@ export default function FAQPage() {
           <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
             Häufig gestellte Fragen
           </h1>
-          <p className="mt-6 text-sm leading-relaxed text-neutral-400 sm:text-base">
+          <p className="mt-6 text-base leading-relaxed text-neutral-300">
             Antworten auf die wichtigsten Fragen rund um Anfrage, Material und Lieferung. Etwas fehlt? Einfach
             direkt anfragen.
           </p>
@@ -104,7 +104,7 @@ export default function FAQPage() {
 
         <Reveal className="mt-10 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 text-center sm:mt-12 sm:p-8">
           <h2 className="text-lg font-semibold sm:text-xl">Frage nicht dabei?</h2>
-          <p className="mt-2 text-sm leading-relaxed text-neutral-400 sm:text-base">
+          <p className="mt-2 text-base leading-relaxed text-neutral-300">
             Einfach direkt melden, die Antwort kommt persönlich.
           </p>
           <div className="mt-5">

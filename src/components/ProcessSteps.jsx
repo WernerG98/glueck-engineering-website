@@ -25,7 +25,7 @@ export default function ProcessSteps({ steps }) {
 
             <div className="min-w-0 flex-1 pt-1">
               <h3 className="text-lg font-semibold sm:text-xl">{step.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-400 sm:text-base">{step.description}</p>
+              <p className="mt-2 text-base leading-relaxed text-neutral-300">{step.description}</p>
 
               {step.bullets && (
                 <ul className="mt-4 space-y-2 text-sm text-neutral-300 sm:text-base">
