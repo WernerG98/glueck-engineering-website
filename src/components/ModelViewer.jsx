@@ -92,6 +92,11 @@ export default function ModelViewer({ src, format, interactive = true }) {
         controls.dampingFactor = 0.08;
         controls.autoRotate = true;
         controls.autoRotateSpeed = 2.2;
+        // Nur drehen: kein Zoom (Mausrad scrollt die Seite) und kein Verschieben
+        controls.enableZoom = false;
+        controls.enablePan = false;
+        // Am Handy: senkrecht wischen scrollt die Seite, waagrecht wischen dreht das Modell
+        renderer.domElement.style.touchAction = "pan-y";
       }
 
       function fitCameraToObject(object) {

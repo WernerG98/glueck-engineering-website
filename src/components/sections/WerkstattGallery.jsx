@@ -3,7 +3,9 @@ import Reveal from "../Reveal";
 // Echte Fotos fertiger Arbeiten – horizontal wischbar, Klick öffnet die Großansicht
 const ITEMS = [
   { src: "/3D-Druck_S54_Ergebnis.webp", title: "BMW S54 Motormodell", tag: "3D-Druck" },
+  { src: "/3D-Druck_Teelicht_Bluete_80.webp", title: "Teelichthalter Blüte zum 80. Geburtstag", tag: "Geschenk" },
   { src: "/Artwork_Wing_Ergebnis_Full.webp", title: "BMW E46 als 3D-Artwork", tag: "Artwork" },
+  { src: "/3D-Druck_Teelicht_Sonne.webp", title: "Teelichthalter Sonne mit Relief", tag: "Deko" },
   { src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN200.webp", title: "Adapterstutzen Wäscheschacht DN200", tag: "Sonderanfertigung" },
   { src: "/Honda_XRV_RD07_Spritzschutz_Schwinge_hinten.webp", title: "Spritzschutz Honda XRV750", tag: "Fertigteil" },
   { src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN250.webp", title: "Adapterstutzen Wäscheschacht DN250", tag: "Sonderanfertigung" },
