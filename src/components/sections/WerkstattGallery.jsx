@@ -4,7 +4,7 @@ import Reveal from "../Reveal";
 const ITEMS = [
   { src: "/3D-Druck_Teelicht_Bluete_80.webp", title: "Teelichthalter Blüte zum 80. Geburtstag", tag: "Geschenk" },
   { src: "/Artwork_E46_Wand.webp", title: "BMW E46 als 3D-Artwork an der Wand", tag: "Artwork" },
-  { src: "/3D-Druck_Teelicht_Sonne.webp", title: "Teelichthalter Sonne mit Relief", tag: "Deko" },
+  { src: "/3D-Druck_Teelicht_Sonne.webp", title: "Teelichthalter Sonnenblume in Holz-Optik", tag: "Deko" },
   { src: "/3D-Druck_Adapterstutzen_Waescheschacht_DN200.webp", title: "Adapterstutzen Wäscheschacht DN200", tag: "Sonderanfertigung" },
   { src: "/Honda_XRV_RD07_Spritzschutz_Schwinge_hinten.webp", title: "Spritzschutz Honda XRV750", tag: "Fertigteil" },
   { src: "/Stellmotor_Klimaturm_T5.webp", title: "Stellmotor Klimaturm VW T5.2", tag: "Fertigteil" },
