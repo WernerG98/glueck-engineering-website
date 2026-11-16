@@ -7,7 +7,6 @@ import ContactModal from "../components/ContactModal";
 import FloatingContactButton from "../components/FloatingContactButton";
 import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
-import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import ArtworksProcessSection from "../components/sections/ArtworksProcessSection";
 import ArtworkPreviewTool from "../components/sections/ArtworkPreviewTool";
 import useContactForm from "../hooks/useContactForm";
@@ -118,29 +117,6 @@ export default function ArtworksPage() {
                 loading="lazy"
                 className="h-64 w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-80 md:h-full"
                 onClick={() => setSelectedImage("/Artwork_Stanced_E46.webp")}
-              />
-            </div>
-          </Reveal>
-        </section>
-
-        <section className="mt-16 sm:mt-20">
-          <Reveal className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:p-8 md:p-10">
-            <span className="eyebrow">Beispiel</span>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-              Vom Originalfoto zum 3D-Artwork
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-neutral-300">
-              Ziehe den Regler, um das eingereichte Originalfoto mit dem fertigen, gedruckten
-              Artwork zu vergleichen.
-            </p>
-
-            <div className="mx-auto mt-8 max-w-2xl">
-              <BeforeAfterSlider
-                beforeSrc="/Artwork_Wing_Full.webp"
-                afterSrc="/Artwork_Wing_Ergebnis_Full.webp"
-                beforeLabel="Original"
-                afterLabel="Fertiges Artwork"
-                aspectRatio="1800 / 1454"
               />
             </div>
           </Reveal>
