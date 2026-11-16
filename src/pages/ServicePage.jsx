@@ -23,9 +23,9 @@ const galleryImages = [
     alt: "Eingebauter weißer 3D-gedruckter Adapterstutzen vor dem Rohr eines Wäscheschachts DIN 200",
   },
   {
-    src: "/3D-Druck_Teelicht_Bluete_80_quer.webp",
-    label: "Teelichthalter zum 80. Geburtstag",
-    alt: "3D-gedruckter Teelichthalter in Blütenform mit der Zahl 80 und brennendem Teelicht",
+    src: "/3D-Druck_Teelicht_Bluete_quer.webp",
+    label: "Teelichthalter Blüte",
+    alt: "3D-gedruckter Teelichthalter in Blütenform aus mehreren Blattlagen mit Teelicht",
   },
 ];
 
