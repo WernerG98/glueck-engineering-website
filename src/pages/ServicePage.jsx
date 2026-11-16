@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
@@ -36,6 +36,19 @@ const galleryImages = [
 
 export default function ServicePage() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const galleryRef = useRef(null);
+  // Pfeile nur zeigen, wenn die Bildleiste breiter ist als der Bildschirm
+  const [galleryScrollable, setGalleryScrollable] = useState(false);
+
+  useEffect(() => {
+    const el = galleryRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return undefined;
+    const check = () => setGalleryScrollable(el.scrollWidth > el.clientWidth + 4);
+    const observer = new ResizeObserver(check);
+    observer.observe(el);
+    check();
+    return () => observer.disconnect();
+  }, []);
 
   const {
     contactModalOpen,
@@ -149,29 +162,57 @@ export default function ServicePage() {
 
         <section className="mt-16 sm:mt-20 md:mt-24">
           <Reveal>
-            <span className="eyebrow">Beispiele</span>
-            <h2 className="mb-6 mt-2 text-2xl font-semibold tracking-tight sm:mb-8 sm:text-3xl">Galerie</h2>
+            <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
+              <div>
+                <span className="eyebrow">Beispiele</span>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Galerie</h2>
+              </div>
+              <div className={`flex gap-2 ${galleryScrollable ? "" : "hidden"}`}>
+                {[
+                  { dir: -1, label: "Vorherige Bilder", d: "M15 18l-6-6 6-6" },
+                  { dir: 1, label: "Weitere Bilder", d: "M9 6l6 6-6 6" },
+                ].map((btn) => (
+                  <button
+                    key={btn.dir}
+                    type="button"
+                    aria-label={btn.label}
+                    onClick={() => galleryRef.current?.scrollBy({ left: btn.dir * 320, behavior: "smooth" })}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 text-neutral-300 transition hover:border-accent hover:text-accent"
+                  >
+                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d={btn.d} />
+                    </svg>
+                  </button>
+                ))}
+              </div>
+            </div>
           </Reveal>
 
-          <div className="grid max-w-5xl gap-4 sm:grid-cols-2">
-            {galleryImages.map((image, index) => (
-              <Reveal key={image.src} delay={index * 100}>
+          {/* Horizontal wischbar, Pfeile scrollen um ein Bild weiter */}
+          <ul
+            ref={galleryRef}
+            className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-4 [scrollbar-color:#3f3f46_transparent] [scrollbar-width:thin] sm:-mx-6 sm:scroll-px-6 sm:px-6"
+          >
+            {galleryImages.map((image) => (
+              <li key={image.src} className="w-64 shrink-0 snap-start sm:w-72">
                 <figure className="group overflow-hidden rounded-2xl border border-neutral-800">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    loading="lazy"
-                    className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
-                    style={{ aspectRatio: "800 / 667" }}
-                    onClick={() => setSelectedImage(image.src)}
-                  />
+                  <div className="overflow-hidden">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      loading="lazy"
+                      className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
+                      style={{ aspectRatio: "800 / 667" }}
+                      onClick={() => setSelectedImage(image.src)}
+                    />
+                  </div>
                   <figcaption className="border-t border-neutral-800 bg-neutral-900/60 px-4 py-2 font-mono text-xs uppercase tracking-wide text-neutral-400">
                     {image.label}
                   </figcaption>
                 </figure>
-              </Reveal>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
 
         <ServiceProcessSection />
