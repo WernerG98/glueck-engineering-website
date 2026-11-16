@@ -1,5 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 
+// Heller "Studio"-Hintergrund: Lichtkegel von oben, feines Raster wie ein Druckbett
+const STUDIO_BG = {
+  backgroundColor: "#1c1c20",
+  backgroundImage: [
+    "radial-gradient(ellipse 70% 60% at 50% 38%, rgba(255,255,255,0.16), rgba(255,255,255,0.04) 55%, transparent 75%)",
+    "radial-gradient(ellipse 60% 18% at 50% 88%, rgba(212,175,55,0.14), transparent 70%)",
+    "linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px)",
+    "linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px)",
+  ].join(","),
+  backgroundSize: "100% 100%, 100% 100%, 22px 22px, 22px 22px",
+  backgroundPosition: "center, center, center, center",
+};
+
 // interactive: drehbar mit Maus/Finger, dreht sich langsam von selbst.
 // interactive={false}: Modell wird einmal gezeichnet und als Standbild angezeigt,
 // danach wird der WebGL-Kontext wieder freigegeben (spart Leistung, z. B. auf der Startseite).
@@ -77,13 +90,17 @@ export default function ModelViewer({ src, format, interactive = true }) {
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
 
-      scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-      const key = new THREE.DirectionalLight(0xffffff, 1.2);
+      // Studio-Licht: Himmel/Boden, Hauptlicht, Aufhellung und goldenes Kantenlicht von hinten
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x3f3f46, 0.9));
+      const key = new THREE.DirectionalLight(0xffffff, 1.6);
       key.position.set(2, 3, 4);
       scene.add(key);
-      const fill = new THREE.DirectionalLight(0xffffff, 0.5);
+      const fill = new THREE.DirectionalLight(0xffffff, 0.45);
       fill.position.set(-3, -1, -2);
       scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xd4af37, 1.1);
+      rim.position.set(-2, 2.5, -4);
+      scene.add(rim);
 
       let controls = null;
       if (interactive) {
@@ -217,7 +234,7 @@ export default function ModelViewer({ src, format, interactive = true }) {
   }, [src, format, interactive, visible]);
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full" style={STUDIO_BG}>
       <div
         ref={containerRef}
         className={`h-full w-full ${interactive ? "cursor-grab active:cursor-grabbing" : ""}`}

@@ -48,20 +48,47 @@ function FertigteilCard({ item, onRequest }) {
           </div>
         )}
 
-        {hasModel && (
+        {show3D && hasModel && (
+          <span className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-full bg-neutral-950/70 px-2.5 py-1 text-[11px] font-medium text-neutral-300 backdrop-blur-sm">
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4" />
+            </svg>
+            Ziehen zum Drehen
+          </span>
+        )}
+
+        {hasModel && item.image && (
           <button
             type="button"
             onClick={() => setShow3D((v) => !v)}
-            className="absolute bottom-3 right-3 rounded-full bg-neutral-950/80 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition hover:bg-neutral-900"
+            aria-label={show3D ? "Foto ansehen" : "3D-Modell ansehen"}
+            className="absolute bottom-3 left-3 z-10 flex items-center gap-2 rounded-xl border border-neutral-700 bg-neutral-950/80 p-1 pr-3 text-xs font-medium text-white backdrop-blur-sm transition hover:border-accent"
           >
-            {show3D ? "Foto ansehen" : "In 3D ansehen"}
+            {show3D ? (
+              <img src={item.image} alt="" loading="lazy" className="h-10 w-10 rounded-lg object-cover" />
+            ) : (
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-800 font-mono text-[11px] text-accent">
+                3D
+              </span>
+            )}
+            {show3D ? "Foto" : "3D-Modell"}
           </button>
         )}
       </div>
 
       <div className="mt-4 flex flex-1 flex-col">
-        <h3 className="text-base text-neutral-200 sm:text-lg">{item.name}</h3>
-        <p className="mt-2 text-lg font-semibold text-white">{item.price}</p>
+        <div className="flex flex-wrap gap-1.5">
+          {item.vehicles.map((vehicle) => (
+            <span
+              key={vehicle}
+              className="rounded-md border border-accent/30 bg-accent/10 px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider text-accent"
+            >
+              {vehicle}
+            </span>
+          ))}
+        </div>
+        <h3 className="mt-3 text-base font-medium leading-snug text-white sm:text-lg">{item.name}</h3>
+        <p className="mt-2 font-display text-2xl font-semibold text-accent">{item.price}</p>
         <p className="mt-2 text-sm leading-relaxed text-neutral-300">{item.text}</p>
 
         <div className="mt-auto pt-6">

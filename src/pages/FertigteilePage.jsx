@@ -66,6 +66,19 @@ export default function FertigteilePage() {
               Passgenaue Ersatz- und Zubehörteile für ausgewählte Fahrzeuge, direkt ab Lager fertigbar.
               Bei Bedarf an anderen Farben oder Stückzahlen einfach in der Anfrage angeben.
             </p>
+
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-300">
+              {["Direkt ab Lager fertigbar", "Andere Farben auf Anfrage", "Jedes Teil in 3D drehbar"].map((point) => (
+                <li key={point} className="flex items-center gap-2">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent/15 text-accent" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 12l5 5L19 7" />
+                    </svg>
+                  </span>
+                  {point}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </section>
 
