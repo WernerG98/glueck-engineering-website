@@ -34,12 +34,12 @@ export default function ServiceTeaserSection({ onRequest, onPreview }) {
 
         <div className="group overflow-hidden rounded-2xl border border-neutral-800">
           <img
-            src="/3D-Druck_S54_Werkstatt.webp"
-            alt="3D-gedruckter S54-Motor auf Montageständer in der Werkstatt"
+            src="/3D-Druck_Adapterstutzen_Waescheschacht_DN250.webp"
+            alt="3D-gedruckter Adapterstutzen DN250 für einen Wäscheschacht, eingebaut in der Wand"
             loading="lazy"
             className="w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
             style={{ aspectRatio: "1 / 1" }}
-            onClick={() => onPreview?.("/3D-Druck_S54_Werkstatt.webp")}
+            onClick={() => onPreview?.("/3D-Druck_Adapterstutzen_Waescheschacht_DN250.webp")}
           />
         </div>
       </Reveal>
