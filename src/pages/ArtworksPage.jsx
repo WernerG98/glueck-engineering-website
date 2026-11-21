@@ -9,8 +9,9 @@ import ImageModal from "../components/ImageModal";
 import Reveal from "../components/Reveal";
 import ArtworksProcessSection from "../components/sections/ArtworksProcessSection";
 import ArtworkPreviewTool from "../components/sections/ArtworkPreviewTool";
+import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import useContactForm from "../hooks/useContactForm";
-import { artworkInfoText, artworkIntroText } from "../data/artworks";
+import { artworkInfos, artworkIntroText } from "../data/artworks";
 
 export default function ArtworksPage() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -53,15 +54,6 @@ export default function ArtworksPage() {
               {artworkIntroText}
             </p>
 
-            <p className="mt-4 max-w-3xl text-base leading-relaxed text-neutral-300">
-              Auf Fotos wirkt ein fertiges Artwork wie ein normaler Druck – tatsächlich ist es ein
-              echtes Höhenbild: Durch unterschiedliche Materialstärke entsteht eine reliefartige,
-              spürbar dreidimensionale Oberfläche, die sich im Licht je nach Blickwinkel
-              verändert. Aus der Distanz wirkt es wie ein hochauflösendes Foto, aus der Nähe wird
-              die Struktur sichtbar und das Bild bekommt durch die Höhenunterschiede eine fast
-              technische Anmutung.
-            </p>
-
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <button
                 onClick={() => openContactModal("Individuelles 3D-Artwork", "custom")}
@@ -75,13 +67,6 @@ export default function ArtworksPage() {
                 className="inline-block rounded-lg border border-neutral-700 px-6 py-3 text-center transition hover:border-neutral-500 hover:bg-neutral-900"
               >
                 Vorschau ausprobieren
-              </a>
-
-              <a
-                href="#ablauf-artworks"
-                className="inline-block rounded-lg border border-neutral-700 px-6 py-3 text-center transition hover:border-neutral-500 hover:bg-neutral-900"
-              >
-                Zum Ablauf
               </a>
             </div>
           </Reveal>
@@ -105,19 +90,24 @@ export default function ArtworksPage() {
             <div className="text-left">
               <h2 className="text-2xl font-semibold tracking-tight">Wichtige Informationen</h2>
 
-              <div className="mt-4 whitespace-pre-line text-base leading-relaxed text-neutral-300">
-                {artworkInfoText}
-              </div>
+              <dl className="mt-5 space-y-4">
+                {artworkInfos.map((info) => (
+                  <div key={info.label}>
+                    <dt className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-accent">{info.label}</dt>
+                    <dd className="mt-1 text-base leading-relaxed text-neutral-300">{info.text}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
 
-            <div className="group overflow-hidden rounded-2xl border border-neutral-800">
-              <img
-                src="/Artwork_Stanced_E46.webp"
-                alt="3D Artwork BMW E46"
-                loading="lazy"
-                className="h-64 w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105 sm:h-80 md:h-full"
-                onClick={() => setSelectedImage("/Artwork_Stanced_E46.webp")}
+            <div className="mx-auto w-full max-w-md">
+              <BeforeAfterSlider
+                beforeSrc="/Artwork_Stanced_E46_6.webp"
+                afterSrc="/Artwork_E46_Ergebnis_Cropped.webp"
+                beforeLabel="Entwurf"
+                afterLabel="Fertig gedruckt"
               />
+              <p className="mt-3 text-xs text-neutral-450">Entwurf und fertiges Artwork – zum Vergleichen ziehen</p>
             </div>
           </Reveal>
         </section>

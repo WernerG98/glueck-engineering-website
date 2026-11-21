@@ -1,8 +1,8 @@
 export const artworkIntroText =
-  "Jedes Motiv wird in ein mehrschichtiges 3D-Artwork mit ausgeprägter Tiefenwirkung verwandelt. Durch den schichtweisen Druck mit variierender Materialstärke entsteht eine plastische, dreidimensionale Oberfläche. Realisierbar sind sowohl schwarz-weiße Ausführungen als auch mehrfarbige Varianten mit bis zu sechs Farben.";
+  "Jedes Motiv wird zu einem mehrschichtigen 3D-Artwork: einem echten Höhenbild, dessen reliefartige Oberfläche sich im Licht je nach Blickwinkel verändert. Aus der Distanz wirkt es wie ein Foto, aus der Nähe wird die Struktur sichtbar – schwarz-weiß oder mehrfarbig mit bis zu sechs Farben.";
 
-export const artworkInfoText = `Maximale Abmessungen: 30 × 30 cm.
-
-Preise ab 9,99 € für Schwarz-Weiß beziehungsweise ab 19,99 € zzgl. Versand für mehrfarbige Ausführungen.
-
-Die Übermittlung des Bildes erfolgt per Anfrage. Mit der Übermittlung wird bestätigt, dass die erforderlichen Nutzungsrechte am Motiv vorliegen.`;
+export const artworkInfos = [
+  { label: "Größe", text: "bis maximal 30 × 30 cm" },
+  { label: "Preis", text: "ab 9,99 € (Schwarz-Weiß) bzw. ab 19,99 € (mehrfarbig), jeweils zzgl. Versand" },
+  { label: "Bildrechte", text: "Mit der Anfrage wird bestätigt, dass die Nutzungsrechte am Motiv vorliegen." },
+];
