@@ -41,6 +41,24 @@ export default function ArtworksProcessSection() {
         </h2>
       </Reveal>
 
+      <Reveal className="mb-8 sm:mb-10">
+        <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60">
+          <video
+            src="/Artwork_Ablauf_Video.mp4"
+            poster="/Artwork_Ablauf_Video_Poster.webp"
+            controls
+            preload="none"
+            playsInline
+            aria-label="Video: Ablauf vom Foto-Upload bis zum Versand des 3D-Artworks"
+            className="block w-full bg-neutral-950"
+            style={{ aspectRatio: "16 / 9" }}
+          />
+        </div>
+        <p className="mt-3 text-xs text-neutral-450">
+          Der Ablauf in einer Minute: vom Foto über das individuelle Angebot bis zum fertigen Artwork.
+        </p>
+      </Reveal>
+
       <Reveal>
         <ProcessSteps steps={steps} />
       </Reveal>
