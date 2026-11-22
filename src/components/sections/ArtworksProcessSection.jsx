@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import Reveal from "../Reveal";
 
 const steps = [
@@ -7,7 +8,51 @@ const steps = [
   { title: "Fertigung & Versand", text: "Das Artwork wird gefertigt, sorgfältig verpackt und versendet." },
 ];
 
+// Spielt das Video stumm ab, sobald es zur Hälfte sichtbar ist, und pausiert beim Wegscrollen.
+// Hat jemand selbst pausiert, startet es nicht wieder von allein.
+function useAutoplayInView(ref) {
+  useEffect(() => {
+    const video = ref.current;
+    if (!video || typeof IntersectionObserver === "undefined") return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+    let autoPaused = false;
+    let userPaused = false;
+    const onPause = () => {
+      if (!autoPaused && !video.ended) userPaused = true;
+      autoPaused = false;
+    };
+    const onPlay = () => {
+      userPaused = false;
+    };
+    video.addEventListener("pause", onPause);
+    video.addEventListener("play", onPlay);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!userPaused && video.paused && !video.ended) video.play().catch(() => {});
+        } else if (!video.paused) {
+          autoPaused = true;
+          video.pause();
+        }
+      },
+      { threshold: 0.5 },
+    );
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+      video.removeEventListener("pause", onPause);
+      video.removeEventListener("play", onPlay);
+    };
+  }, [ref]);
+}
+
 export default function ArtworksProcessSection() {
+  const videoRef = useRef(null);
+  useAutoplayInView(videoRef);
+
   return (
     <section id="ablauf-artworks" className="mt-16 sm:mt-20 md:mt-24">
       <Reveal>
@@ -20,9 +65,11 @@ export default function ArtworksProcessSection() {
       <Reveal>
         <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60">
           <video
+            ref={videoRef}
             src="/Artwork_Ablauf_Video.mp4"
             poster="/Artwork_Ablauf_Video_Poster.webp"
             controls
+            muted
             preload="none"
             playsInline
             aria-label="Video: Ablauf vom Foto-Upload bis zum Versand des 3D-Artworks"
