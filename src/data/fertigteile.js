@@ -21,7 +21,7 @@ const fertigteile = [
   },
   {
     id: "honda-xrv750-spritzschutz",
-    studio: { image: "/fertigteile/honda-xrv750-spritzschutz.webp?v=2" },
+    studio: { image: "/fertigteile/honda-xrv750-spritzschutz.webp?v=3" },
     name: "Honda XRV750 RD07 Spritzschutz Schwinge hinten",
     image: "/Honda_XRV_RD07_Spritzschutz_Schwinge_hinten.webp",
     price: "24,99 €",

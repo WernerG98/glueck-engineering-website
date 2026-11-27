@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import PageMeta from "../components/PageMeta";
 import Header from "../components/Header";
 import PageBackdrop from "../components/PageBackdrop";
@@ -12,23 +12,6 @@ import ArtworkPreviewTool from "../components/sections/ArtworkPreviewTool";
 import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import useContactForm from "../hooks/useContactForm";
 import { artworkInfos, artworkIntroText } from "../data/artworks";
-
-// Stummes Schleifenvideo, das nur läuft, solange es sichtbar ist
-function AutoplayVideo({ src, poster, label, className }) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const video = ref.current;
-    if (!video || typeof IntersectionObserver === "undefined") return undefined;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
-    const observer = new IntersectionObserver(
-      ([entry]) => (entry.isIntersecting ? video.play().catch(() => {}) : video.pause()),
-      { threshold: 0.35 }
-    );
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
-  return <video ref={ref} src={src} poster={poster} muted loop playsInline preload="none" aria-label={label} className={className} />;
-}
 
 export default function ArtworksPage() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -140,30 +123,31 @@ export default function ArtworksPage() {
             </p>
           </Reveal>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            <Reveal className="overflow-hidden rounded-2xl border border-neutral-800">
-              <AutoplayVideo
-                src="/artworks/e46_licht.mp4"
-                poster="/artworks/e46_detail.webp"
-                label="Video: Licht wandert über das Relief eines 3D-Artworks"
-                className="aspect-square w-full object-cover"
+            <Reveal className="group overflow-hidden rounded-2xl border border-neutral-800">
+              <img
+                src="/artworks/e46_frontal.webp?v=2"
+                alt="3D-Artwork mit gedrucktem Rahmen, an die Wand gelehnt, im Fensterlicht"
+                loading="lazy"
+                className="aspect-square w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
+                onClick={() => setSelectedImage("/artworks/e46_frontal.webp?v=2")}
               />
             </Reveal>
               <Reveal delay={100} className="group overflow-hidden rounded-2xl border border-neutral-800">
                 <img
-                  src="/artworks/e46_wand.webp"
+                  src="/artworks/e46_wand.webp?v=2"
                   alt="3D-Artwork im Schattenfugenrahmen an der Wand über einem Sideboard, beleuchtet von einer Bilderleuchte"
                   loading="lazy"
                   className="aspect-square w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
-                  onClick={() => setSelectedImage("/artworks/e46_wand.webp")}
+                  onClick={() => setSelectedImage("/artworks/e46_wand.webp?v=2")}
                 />
               </Reveal>
               <Reveal delay={200} className="group overflow-hidden rounded-2xl border border-neutral-800">
                 <img
-                  src="/artworks/e46_detail.webp"
+                  src="/artworks/e46_detail.webp?v=2"
                   alt="Nahaufnahme im Streiflicht: die Höhenstufen des Reliefs werden sichtbar"
                   loading="lazy"
                   className="aspect-square w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
-                  onClick={() => setSelectedImage("/artworks/e46_detail.webp")}
+                  onClick={() => setSelectedImage("/artworks/e46_detail.webp?v=2")}
                 />
               </Reveal>
           </div>

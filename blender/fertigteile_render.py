@@ -30,7 +30,7 @@ SAMPLES = int(argv[argv.index("--samples") + 1]) if "--samples" in argv else 128
 TEILE = {
     "vw-t4-fuehrung-blende": ("vw-t4-fuehrung-blende.stl", "#2a2c30", 0.5, (0, 0, 0), 32),
     "vw-t5-clip-kopfstuetze": ("vw-t5-clip-kopfstuetze.stl", "#2a2c30", 0.5, (0, 0, 0), 30),
-    "honda-xrv750-spritzschutz": ("honda-xrv750-spritzschutz.3mf", "#8c9097", 0.62, (0, 0, 0), 40),
+    "honda-xrv750-spritzschutz": ("honda-xrv750-spritzschutz.3mf", "#2a2c30", 0.5, (0, 0, 0), 40),
     "vw-t4-t5-t6-heckklappenaussteller": ("heckklappenaussteller-t4-t5-t6.stl", "#2a2c30", 0.5, (0, 0, 0), 38),
     "vw-t3-heckklappenaussteller": ("heckklappenaussteller-t3.stl", "#2a2c30", 0.5, (0, 0, 0), 38),
 }
