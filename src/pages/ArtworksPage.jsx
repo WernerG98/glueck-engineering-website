@@ -143,11 +143,11 @@ export default function ArtworksPage() {
               </Reveal>
               <Reveal delay={200} className="group overflow-hidden rounded-2xl border border-neutral-800">
                 <img
-                  src="/artworks/e46_detail.webp?v=2"
+                  src="/artworks/e46_detail.webp?v=3"
                   alt="Nahaufnahme im Streiflicht: die Höhenstufen des Reliefs werden sichtbar"
                   loading="lazy"
                   className="aspect-square w-full cursor-pointer object-cover transition duration-700 ease-out group-hover:scale-105"
-                  onClick={() => setSelectedImage("/artworks/e46_detail.webp?v=2")}
+                  onClick={() => setSelectedImage("/artworks/e46_detail.webp?v=3")}
                 />
               </Reveal>
           </div>

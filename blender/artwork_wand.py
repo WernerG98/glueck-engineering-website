@@ -79,6 +79,19 @@ def relief_material(start, swaps):
         mix.inputs["B"].default_value = st.hexcol(c)
         cur = mix.outputs["Result"]
     nt.links.new(cur, p.inputs["Base Color"])
+    # Druckschichten (0,08 mm) als feine Stufen: Wellenbänder entlang der Reliefhöhe.
+    # Bump-Distanz in Weltmaß: Szene ist 1:1000 skaliert → 0,03 mm = 0.00003
+    wave = nt.nodes.new("ShaderNodeTexWave")
+    wave.wave_type = "BANDS"
+    wave.bands_direction = "Z"
+    wave.wave_profile = "SAW"
+    wave.inputs["Scale"].default_value = (2 * math.pi / 20) / 0.08
+    nt.links.new(tc.outputs["Object"], wave.inputs["Vector"])
+    bump = nt.nodes.new("ShaderNodeBump")
+    bump.inputs["Strength"].default_value = 1.0
+    bump.inputs["Distance"].default_value = 0.00003
+    nt.links.new(wave.outputs["Fac"], bump.inputs["Height"])
+    nt.links.new(bump.outputs["Normal"], p.inputs["Normal"])
     return m
 
 
@@ -376,16 +389,42 @@ def render_still(cam, size, fname, samples=SAMPLES):
     print("Bild:", scene.render.filepath)
 
 
+ONLY_DETAIL = "--nur-detail" in argv
 # 1) Wohnraum: ganzes Sideboard-Arrangement, leicht von links
 c1 = Vector((-110, -1180, TOP + 210))
-render_still(camera(c1, Vector((40, -110, TOP + 140)), 60, focus=(ART_C - c1).length, fstop=4.0, name="Wohnraum"), 1400, f"{NAME}_wand.webp")
-# 2) Nahaufnahme: ganzes Artwork schräg im Streiflicht, Umgebung unscharf
-c2 = Vector((ART_X + 250, -400, TOP + 85))
-render_still(camera(c2, ART_C + Vector((10, 0, -4)), 50, focus=(ART_C - c2).length, fstop=2.8, name="Detail"), 1200, f"{NAME}_detail.webp")
+if not ONLY_DETAIL:
+    render_still(camera(c1, Vector((40, -110, TOP + 140)), 60, focus=(ART_C - c1).length, fstop=4.0, name="Wohnraum"), 1400, f"{NAME}_wand.webp")
+
+# 2) Nahaufnahme: dicht an Auto und Halle, flaches Streiflicht von links → jede 0,08-mm-Stufe wirft einen Schatten
+art.data.update()
+bpy.context.view_layer.update()
+Mloc = Matrix.Translation(art.location) @ art.rotation_euler.to_matrix().to_4x4()  # Artwork-Lage in mm (vor Maßstab)
+P = Mloc @ Vector((8, 0.33 * H, 2.0))          # Bildpunkt: Front des Autos
+ux = (Mloc.to_3x3() @ Vector((1, 0, 0))).normalized()   # Bild-Waagerechte
+nrm = (Mloc.to_3x3() @ Vector((0, 0, 1))).normalized()  # Flächennormale (zeigt in den Raum)
+up = (Mloc.to_3x3() @ Vector((0, 1, 0))).normalized()
+rake = bpy.data.lights.new("Streiflicht", "SPOT")
+rake.energy = 14
+rake.color = (1.0, 0.86, 0.68)
+rake.spot_size = math.radians(55)
+rake.spot_blend = 0.5
+rake.shadow_soft_size = 0.002
+rk = st.link(bpy.data.objects.new("Streiflicht", rake))
+rk.parent = ROOT
+rk_loc = P - ux * 240 + nrm * 9 + up * 60      # fast in der Bildebene → sehr flacher Einfall
+rk.location = rk_loc
+rk.rotation_euler = (P - rk_loc).to_track_quat("-Z", "Y").to_euler()
+sun_energy = sun.energy
+sun.energy = sun_energy * 0.2
+c2 = P + nrm * 95 + ux * 140 - up * 20
+render_still(camera(c2, P + ux * 6, 60, focus=(P - c2).length, fstop=8.0, name="Detail"), 1200, f"{NAME}_detail.webp")
+sun.energy = sun_energy
+bpy.data.objects.remove(rk)
 
 # 3) Frontal: Artwork mit Fensterlicht, Sideboard und Wand angeschnitten
 c3 = Vector((ART_X - 90, -560, TOP + 120))
-render_still(camera(c3, ART_C, 58, focus=(ART_C - c3).length, fstop=4.0, name="Frontal"), 1200, f"{NAME}_frontal.webp")
+if not ONLY_DETAIL:
+    render_still(camera(c3, ART_C, 58, focus=(ART_C - c3).length, fstop=4.0, name="Frontal"), 1200, f"{NAME}_frontal.webp")
 
 if not NO_VIDEO:
     # 3) Sonnenlicht wandert über das Relief (nahtlose Hin-und-her-Schleife)
