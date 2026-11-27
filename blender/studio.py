@@ -249,6 +249,12 @@ def prepare_part(ob, target_size=10.0, smooth_angle=35):
     bm.free()
     me.shade_smooth()
     me.set_sharp_from_angle(angle=math.radians(smooth_angle))
+    # Grob aufgelöste CAD-Exporte: große flache Dreiecke neben Rundungen würden sonst schräg verschmiert
+    # schattiert → Normalen nach Flächengröße gewichten (flache Flächen bleiben flach)
+    wn = ob.modifiers.new("Gewichtete_Normalen", "WEIGHTED_NORMAL")
+    wn.mode = "FACE_AREA"
+    wn.keep_sharp = True
+    wn.weight = 100
     # Ursprung in die Mitte der Unterseite
     xs = [v.co.x for v in me.vertices]
     ys = [v.co.y for v in me.vertices]

@@ -33,7 +33,6 @@ M = {
     "pla-pure": ("PLA Pure", "#efe9dc", 0.42, 0.0, {}),
     "pla-silk": ("PLA Silk+", "#d4a92e", 0.2, 0.55, {"look": "silk"}),
     "pla-translucent": ("PLA Transl.", "#3e9ad8", 0.12, 0.0, {"trans": 0.8}),
-    "pla-palette": ("PLA Palette", "#d94f70", 0.38, 0.0, {"look": "palette"}),
     "pla-tough": ("PLA Tough+", "#2c67ad", 0.4, 0.0, {}),
     "pla-aero": ("PLA Aero", "#e6e4df", 0.95, 0.0, {"look": "foam"}),
     "pla-marble": ("PLA Marble", "#e7e5e0", 0.55, 0.0, {"look": "marble"}),

@@ -2,7 +2,7 @@
 Studio-Renderings der Fertigteile: je Teil ein Standbild (WebP) und ein 360°-Drehvideo (MP4, Schleife).
 
 Aufruf:
-  blender -b -P fertigteile_render.py -- [--nur id1,id2] [--kein-video] [--samples 128]
+  blender -b -P fertigteile_render.py -- [--nur id1,id2] [--mit-video] [--samples 128]
 
 Quelle sind die Modelle aus public/models (dieselben wie im 3D-Viewer), Ausgabe nach
 public/fertigteile/<id>.webp und <id>.mp4. Neues Teil: Eintrag in TEILE ergänzen, Skript laufen lassen.
@@ -23,14 +23,14 @@ OUT = st.out_dir(REPO, "public", "fertigteile")
 
 argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
 ONLY = argv[argv.index("--nur") + 1].split(",") if "--nur" in argv else None
-NO_VIDEO = "--kein-video" in argv
+NO_VIDEO = "--mit-video" not in argv  # Drehvideo nur auf Wunsch (Standbild wirkt ruhiger)
 SAMPLES = int(argv[argv.index("--samples") + 1]) if "--samples" in argv else 128
 
 # id: (Datei, Farbe, Rauheit, Darstellung: Drehung um X/Y vor dem Rendern (Grad), Kamerahöhe in Grad)
 TEILE = {
     "vw-t4-fuehrung-blende": ("vw-t4-fuehrung-blende.stl", "#2a2c30", 0.5, (0, 0, 0), 32),
     "vw-t5-clip-kopfstuetze": ("vw-t5-clip-kopfstuetze.stl", "#2a2c30", 0.5, (0, 0, 0), 30),
-    "honda-xrv750-spritzschutz": ("honda-xrv750-spritzschutz.3mf", "#8c9097", 0.48, (0, 0, 0), 34),
+    "honda-xrv750-spritzschutz": ("honda-xrv750-spritzschutz.3mf", "#8c9097", 0.62, (0, 0, 0), 40),
     "vw-t4-t5-t6-heckklappenaussteller": ("heckklappenaussteller-t4-t5-t6.stl", "#2a2c30", 0.5, (0, 0, 0), 38),
     "vw-t3-heckklappenaussteller": ("heckklappenaussteller-t3.stl", "#2a2c30", 0.5, (0, 0, 0), 38),
 }
@@ -48,6 +48,10 @@ def build(pid):
     dims, s = st.prepare_part(ob, target_size=10.0)
     ob.data.materials.clear()
     ob.data.materials.append(st.printed_mat("PETG", color, rough=rough, layer=0.2, layer_strength=0.5))
+    # Bump-Höhe in Weltmaßen: ~0,03 mm Schichtwulst × Skalierung (sonst kippen Normalen → schwarze Flächen)
+    for n in ob.data.materials[0].node_tree.nodes:
+        if n.type == "BUMP":
+            n.inputs["Distance"].default_value = 0.03 * s
 
     # Drehteller: Teil hängt an einem Empty, das sich um Z dreht
     turn = st.link(bpy.data.objects.new("Drehteller", None))
@@ -55,7 +59,9 @@ def build(pid):
     turn.rotation_euler = (math.radians(rot[0]), math.radians(rot[1]), math.radians(-30))
     h = dims.z * s
 
-    st.cyclorama(width=300, depth=160, height=120, radius=40, color="#131315", rough=0.32)
+    # groß genug, dass glatte Flächen keine Hintergrundkante spiegeln
+    cyc = st.cyclorama(width=1400, depth=700, height=700, radius=60, color="#131315", rough=0.32)
+    cyc.location.y = 40  # Rundung beginnt weit hinter dem Teil (sonst schneidet sie durch flache Teile)
     # dezenter Goldring auf dem Boden unter dem Teil
     import bmesh
 
@@ -74,6 +80,8 @@ def build(pid):
     st.area("Gold_links", (-22, 16, 9), c, 6, 14, 16000, st.GOLD)
     st.area("Gold_rechts", (22, 14, 7), c, 6, 14, 12000, st.GOLD)
     st.area("Aufhellung", (8, -26, 4), c, 20, 4, 3500, (0.9, 0.93, 1.0))
+    # großes weiches Oberlicht: hellt Schlagschatten auf (sonst wirken sie auf hellen Teilen wie Löcher)
+    st.area("Oberlicht", (0, -4, 40), (0, 0, 0), 40, 40, 9000, (1, 0.98, 0.95))
     st.area("Hintergrund", (0, 20, 2), (0, 45, 25), 40, 10, 9000, (1.0, 0.82, 0.5))
 
     dist = 42.0

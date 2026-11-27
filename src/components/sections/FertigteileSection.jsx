@@ -1,40 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Reveal from "../Reveal";
 import ModelViewer from "../ModelViewer";
 import TiltCard from "../TiltCard";
 import { useMerkzettel } from "../../context/MerkzettelContext";
-
-// Studio-Drehvideo (Blender, blender/fertigteile_render.py): läuft stumm, solange die Karte sichtbar ist
-function StudioSpin({ studio, name }) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const video = ref.current;
-    if (!video || typeof IntersectionObserver === "undefined") return undefined;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) video.play().catch(() => {});
-        else video.pause();
-      },
-      { threshold: 0.35 }
-    );
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
-  return (
-    <video
-      ref={ref}
-      src={studio.spin}
-      poster={studio.image}
-      muted
-      loop
-      playsInline
-      preload="none"
-      aria-label={`${name} – Studioansicht, 360° gedreht`}
-      className="h-full w-full object-cover"
-    />
-  );
-}
 
 const VIEW_LABELS = { studio: "Studio", "3d": "3D", foto: "Foto" };
 
@@ -68,7 +36,13 @@ function FertigteilCard({ item, onRequest }) {
         </button>
 
         {view === "studio" ? (
-          <StudioSpin studio={item.studio} name={item.name} />
+          // Studio-Rendering aus Blender (blender/fertigteile_render.py)
+          <img
+            src={item.studio.image}
+            alt={`${item.name} – Studioaufnahme`}
+            loading="lazy"
+            className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+          />
         ) : show3D && hasModel ? (
           <ModelViewer src={item.model.src} format={item.model.format} />
         ) : item.image ? (
