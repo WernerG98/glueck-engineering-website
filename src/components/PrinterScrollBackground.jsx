@@ -40,22 +40,34 @@ export default function PrinterScrollBackground({ stageRef, onProgress }) {
     let disposed = false;
     let cleanup = () => {};
 
-    Promise.all([import("three"), import("three/examples/jsm/environments/RoomEnvironment.js")]).then(([THREE, envMod]) => {
+    let fallbackTimer = 0;
+    Promise.all([
+      import("three"),
+      import("three/examples/jsm/environments/RoomEnvironment.js"),
+      import("three/examples/jsm/loaders/GLTFLoader.js"),
+      import("three/examples/jsm/loaders/DRACOLoader.js"),
+    ]).then(([THREE, envMod, gltfMod, dracoMod]) => {
       if (disposed || !mountRef.current) return;
+      const show = () => !disposed && setReady(true);
       cleanup = initScene(THREE, {
         RoomEnvironment: envMod.RoomEnvironment,
+        GLTFLoader: gltfMod.GLTFLoader,
+        DRACOLoader: dracoMod.DRACOLoader,
         mount: mountRef.current,
         stage: stageRef?.current,
         dimEl: dimRef.current,
         hudEl: hudRef.current,
         setHud,
         onProgress: (p) => onProgressRef.current?.(p),
+        onModelReady: show,
       });
-      setReady(true);
+      // Falls das detaillierte Modell hängt: nach 5 s die einfache Szene zeigen
+      fallbackTimer = window.setTimeout(show, 5000);
     });
 
     return () => {
       disposed = true;
+      window.clearTimeout(fallbackTimer);
       cleanup();
     };
   }, []);
@@ -106,7 +118,7 @@ export default function PrinterScrollBackground({ stageRef, onProgress }) {
   );
 }
 
-function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud, onProgress }) {
+function initScene(THREE, { RoomEnvironment, GLTFLoader, DRACOLoader, mount, stage, dimEl, hudEl, setHud, onProgress, onModelReady }) {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
@@ -138,7 +150,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const W = 38; // Außenbreite
   const D = 38; // Außentiefe
   const Y0 = 1.2; // Unterkante Gehäuse (Füße darunter)
-  const Y1 = 44; // Oberkante Gehäuse
+  const Y1 = 49; // Oberkante Gehäuse (H2C-Proportionen, Kopfband 6 hoch)
   const HW = W / 2;
   const HD = D / 2;
   const Y_NOZZLE = 31; // Düsenspitze (CoreXY: Kopf bleibt oben, Bett fährt runter)
@@ -203,7 +215,12 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const mScrew = new THREE.MeshStandardMaterial({ color: 0x55585f, metalness: 1, roughness: 0.35 });
   const mLed = new THREE.MeshBasicMaterial({ color: 0xfff3e0 });
 
-  const box = (w, h, d, mat, x = 0, y = 0, z = 0, parent = scene) => {
+  // Einfache Ersatzgeometrie: wird durch das Blender-Modell (public/models/drucker.glb) ersetzt,
+  // sobald es geladen ist. Ohne Modell (Fehler/zu langsam) bleibt sie stehen.
+  const legacy = new THREE.Group();
+  scene.add(legacy);
+
+  const box = (w, h, d, mat, x = 0, y = 0, z = 0, parent = legacy) => {
     const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
     m.position.set(x, y, z);
     m.castShadow = true;
@@ -211,7 +228,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     parent.add(m);
     return m;
   };
-  const cyl = (r, len, mat, x, y, z, axis = "y", parent = scene, seg = 20) => {
+  const cyl = (r, len, mat, x, y, z, axis = "y", parent = legacy, seg = 20) => {
     const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, seg), mat);
     if (axis === "x") m.rotation.z = Math.PI / 2;
     if (axis === "z") m.rotation.x = Math.PI / 2;
@@ -222,39 +239,89 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     return m;
   };
 
-  // Boden: dunkler Industrieboden mit Lichtpool unter dem Drucker und feinen Kratzern
+  // ---------- Studio: Boden mit Goldraster, Rundhorizont mit Lichtleisten, Lichtkegel, Staub ----------
+  // Boden: dunkler, leicht glänzender Studioboden. Feines Konstruktionsraster in Gold, das zur Mitte hin
+  // sichtbar ist und nach außen ausläuft, plus ein leuchtender Bühnenring um den Drucker.
+  const FLOOR_R = 140;
+  const FN = 2048;
+  const unit = FN / (2 * FLOOR_R); // Pixel pro Szenen-Einheit
   const floorCanvas = document.createElement("canvas");
-  floorCanvas.width = floorCanvas.height = 1024;
+  floorCanvas.width = floorCanvas.height = FN;
   {
     const f = floorCanvas.getContext("2d");
-    const g = f.createRadialGradient(512, 512, 40, 512, 512, 512);
-    g.addColorStop(0, "#1c1b18");
-    g.addColorStop(0.35, "#121113");
-    g.addColorStop(1, "#0a0a0c");
+    const c = FN / 2;
+    const g = f.createRadialGradient(c, c, 0, c, c, c);
+    g.addColorStop(0, "#1d1b16");
+    g.addColorStop(0.18, "#131215");
+    g.addColorStop(1, "#08080a");
     f.fillStyle = g;
-    f.fillRect(0, 0, 1024, 1024);
-    // feine Kratzer
-    for (let i = 0; i < 160; i++) {
-      const x = Math.random() * 1024;
-      const y = Math.random() * 1024;
-      const a = Math.random() * Math.PI;
-      const len = 20 + Math.random() * 90;
-      f.strokeStyle = `rgba(255,255,255,${0.015 + Math.random() * 0.03})`;
-      f.lineWidth = 0.8;
-      f.beginPath();
-      f.moveTo(x, y);
-      f.lineTo(x + Math.cos(a) * len, y + Math.sin(a) * len);
-      f.stroke();
+    f.fillRect(0, 0, FN, FN);
+
+    const grid = document.createElement("canvas");
+    grid.width = grid.height = FN;
+    const q = grid.getContext("2d");
+    const lines = (step, alpha, width) => {
+      q.strokeStyle = `rgba(212,175,55,${alpha})`;
+      q.lineWidth = width;
+      q.beginPath();
+      for (let k = -FLOOR_R; k <= FLOOR_R; k += step) {
+        const p = c + k * unit;
+        q.moveTo(p, 0);
+        q.lineTo(p, FN);
+        q.moveTo(0, p);
+        q.lineTo(FN, p);
+      }
+      q.stroke();
+    };
+    lines(2, 0.07, 1);
+    lines(10, 0.22, 1.6);
+    // kleine Kreuze an den Hauptlinien
+    q.strokeStyle = "rgba(240,210,120,0.45)";
+    q.lineWidth = 2;
+    for (let i = -FLOOR_R; i <= FLOOR_R; i += 10) {
+      for (let j = -FLOOR_R; j <= FLOOR_R; j += 10) {
+        const x = c + i * unit;
+        const y = c + j * unit;
+        q.beginPath();
+        q.moveTo(x - 5, y);
+        q.lineTo(x + 5, y);
+        q.moveTo(x, y - 5);
+        q.lineTo(x, y + 5);
+        q.stroke();
+      }
     }
-    // dezente Bodenplatten-Fugen
-    f.strokeStyle = "rgba(0,0,0,0.5)";
+    // Raster nach außen ausblenden
+    q.globalCompositeOperation = "destination-in";
+    const m = q.createRadialGradient(c, c, 22 * unit, c, c, 95 * unit);
+    m.addColorStop(0, "rgba(0,0,0,1)");
+    m.addColorStop(1, "rgba(0,0,0,0)");
+    q.fillStyle = m;
+    q.fillRect(0, 0, FN, FN);
+    f.drawImage(grid, 0, 0);
+
+    // Bühnenring + feiner Innenring
+    f.shadowColor = "rgba(212,175,55,0.9)";
+    f.shadowBlur = 18;
+    f.strokeStyle = "rgba(226,190,80,0.85)";
     f.lineWidth = 3;
-    for (let i = 128; i < 1024; i += 256) {
+    f.beginPath();
+    f.arc(c, c, 33 * unit, 0, Math.PI * 2);
+    f.stroke();
+    f.shadowBlur = 0;
+    f.strokeStyle = "rgba(212,175,55,0.25)";
+    f.lineWidth = 1.5;
+    f.beginPath();
+    f.arc(c, c, 35.5 * unit, 0, Math.PI * 2);
+    f.stroke();
+    // Skalenstriche auf dem Ring
+    f.strokeStyle = "rgba(212,175,55,0.35)";
+    for (let i = 0; i < 120; i++) {
+      const a = (i / 120) * Math.PI * 2;
+      const r0 = 35.5 * unit;
+      const r1 = r0 + (i % 10 === 0 ? 2.2 : 0.9) * unit;
       f.beginPath();
-      f.moveTo(i, 0);
-      f.lineTo(i, 1024);
-      f.moveTo(0, i);
-      f.lineTo(1024, i);
+      f.moveTo(c + Math.cos(a) * r0, c + Math.sin(a) * r0);
+      f.lineTo(c + Math.cos(a) * r1, c + Math.sin(a) * r1);
       f.stroke();
     }
   }
@@ -262,13 +329,138 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   floorTex.colorSpace = THREE.SRGBColorSpace;
   floorTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
   const floor = new THREE.Mesh(
-    new THREE.CircleGeometry(140, 64),
-    new THREE.MeshStandardMaterial({ map: floorTex, color: 0xffffff, metalness: 0.45, roughness: 0.55 })
+    new THREE.CircleGeometry(FLOOR_R, 96),
+    new THREE.MeshStandardMaterial({ map: floorTex, color: 0xffffff, metalness: 0.55, roughness: 0.38 })
   );
   floor.rotation.x = -Math.PI / 2;
   floor.position.y = -0.3;
   floor.receiveShadow = true;
   scene.add(floor);
+
+  // Rundhorizont hinter dem Drucker: dunkle Wand mit senkrechten Gold-Lichtleisten
+  {
+    const BW = 2048;
+    const BH = 512;
+    const bc = document.createElement("canvas");
+    bc.width = BW;
+    bc.height = BH;
+    const b = bc.getContext("2d");
+    const g = b.createLinearGradient(0, 0, 0, BH);
+    g.addColorStop(0, "#060607");
+    g.addColorStop(0.75, "#0e0d0f");
+    g.addColorStop(1, "#141210");
+    b.fillStyle = g;
+    b.fillRect(0, 0, BW, BH);
+    // feine Paneelfugen
+    b.fillStyle = "rgba(0,0,0,0.55)";
+    for (let x = 0; x < BW; x += BW / 32) b.fillRect(x, 0, 2, BH);
+    // Lichtleisten (mit Glühen, oben und unten ausgeblendet)
+    const SLATS = 11;
+    for (let i = 0; i < SLATS; i++) {
+      const x = ((i + 0.5) / SLATS) * BW;
+      const lg = b.createLinearGradient(0, BH * 0.12, 0, BH * 0.92);
+      lg.addColorStop(0, "rgba(212,175,55,0)");
+      lg.addColorStop(0.35, "rgba(232,196,90,0.55)");
+      lg.addColorStop(0.7, "rgba(232,196,90,0.45)");
+      lg.addColorStop(1, "rgba(212,175,55,0)");
+      b.shadowColor = "rgba(212,175,55,0.8)";
+      b.shadowBlur = 24;
+      b.fillStyle = lg;
+      b.fillRect(x - 2, BH * 0.12, 4, BH * 0.8);
+    }
+    b.shadowBlur = 0;
+    // Bodenlinie, wo Wand und Boden sich treffen
+    const fl = b.createLinearGradient(0, BH - 40, 0, BH);
+    fl.addColorStop(0, "rgba(212,175,55,0)");
+    fl.addColorStop(1, "rgba(212,175,55,0.18)");
+    b.fillStyle = fl;
+    b.fillRect(0, BH - 40, BW, 40);
+    const tex = new THREE.CanvasTexture(bc);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    // Bogen gegenüber den Kamerapositionen (Azimut -0.5 … 1.1) → von hinten links bis hinten rechts
+    const wall = new THREE.Mesh(
+      new THREE.CylinderGeometry(125, 125, 140, 128, 1, true, 1.75, 3.3),
+      new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide, fog: false })
+    );
+    wall.position.y = 70 - 0.3;
+    scene.add(wall);
+  }
+
+  // Lichtkegel von oben (additiv, sehr dezent) + schwebender Staub darin
+  const gradTex = (() => {
+    const c = document.createElement("canvas");
+    c.width = 4;
+    c.height = 256;
+    const g = c.getContext("2d");
+    const lg = g.createLinearGradient(0, 0, 0, 256);
+    lg.addColorStop(0, "rgba(255,255,255,1)");
+    lg.addColorStop(0.6, "rgba(255,255,255,0.25)");
+    lg.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = lg;
+    g.fillRect(0, 0, 4, 256);
+    return new THREE.CanvasTexture(c);
+  })();
+  [
+    [-34, -42, 0.16, 0.055],
+    [38, -36, -0.12, 0.045],
+    [0, 8, 0.0, 0.03],
+  ].forEach(([x, z, tilt, op]) => {
+    const cone = new THREE.Mesh(
+      new THREE.ConeGeometry(24, 110, 48, 1, true),
+      new THREE.MeshBasicMaterial({
+        color: 0xe6c36a,
+        map: gradTex,
+        transparent: true,
+        opacity: op,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        fog: false,
+      })
+    );
+    cone.position.set(x, 54, z);
+    cone.rotation.z = tilt;
+    cone.renderOrder = 8;
+    scene.add(cone);
+  });
+
+  const dustTex = (() => {
+    const c = document.createElement("canvas");
+    c.width = c.height = 32;
+    const g = c.getContext("2d");
+    const rg = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+    rg.addColorStop(0, "rgba(255,255,255,1)");
+    rg.addColorStop(0.35, "rgba(255,240,200,0.5)");
+    rg.addColorStop(1, "rgba(255,240,200,0)");
+    g.fillStyle = rg;
+    g.fillRect(0, 0, 32, 32);
+    return new THREE.CanvasTexture(c);
+  })();
+  const DUST = 420;
+  const dustPos = new Float32Array(DUST * 3);
+  for (let i = 0; i < DUST; i++) {
+    dustPos[i * 3] = (Math.random() - 0.5) * 140;
+    dustPos[i * 3 + 1] = Math.random() * 90;
+    dustPos[i * 3 + 2] = -60 + Math.random() * 80;
+  }
+  const dustGeom = new THREE.BufferGeometry();
+  dustGeom.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
+  const dust = new THREE.Points(
+    dustGeom,
+    new THREE.PointsMaterial({
+      size: 0.55,
+      map: dustTex,
+      color: 0xf0d58c,
+      transparent: true,
+      opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      sizeAttenuation: true,
+    })
+  );
+  dust.renderOrder = 9;
+  scene.add(dust);
 
   // ---------- Gehäuse ----------
   const T = 0.9; // Wandstärke
@@ -299,14 +491,14 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const door = new THREE.Mesh(new THREE.BoxGeometry(W - 3.4, doorH - 0.4, 0.25), mGlass);
   door.position.set(0, doorMidY, HD - 0.3);
   door.renderOrder = 5;
-  scene.add(door);
+  legacy.add(door);
   // Türrahmen (dünn, dunkel) für Kontur
   const doorFrame = new THREE.LineSegments(
     new THREE.EdgesGeometry(new THREE.BoxGeometry(W - 3.4, doorH - 0.4, 0.25)),
     new THREE.LineBasicMaterial({ color: 0x3a3c42 })
   );
   doorFrame.position.copy(door.position);
-  scene.add(doorFrame);
+  legacy.add(doorFrame);
 
   // Deckel: Rahmen + Glas
   box(W, 0.8, 2.2, mShell, 0, Y1 + 0.4, -HD + 1.1);
@@ -316,7 +508,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const lid = new THREE.Mesh(new THREE.BoxGeometry(W - 3.2, 0.25, D - 3.4), mGlass);
   lid.position.set(0, Y1 + 0.55, -0.5);
   lid.renderOrder = 3;
-  scene.add(lid);
+  legacy.add(lid);
 
   // LED-Leiste innen oben vorn
   box(W - 6, 0.25, 0.5, mLed, 0, Y1 - 1.75, HD - 1.6);
@@ -327,7 +519,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     [HW - 1.5, -HD + 1.5],
     [-HW + 1.5, HD - 1.5],
     [HW - 1.5, HD - 1.5],
-  ].forEach(([x, z]) => cyl(1.1, 0.35, mRubber, x, -0.18, z, "y", scene, 18));
+  ].forEach(([x, z]) => cyl(1.1, 0.35, mRubber, x, -0.18, z, "y", legacy, 18));
 
   // Lüftungsschlitze unten in beiden Seitenwänden
   for (let i = 0; i < 7; i++) {
@@ -340,8 +532,8 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
 
   // Schrauben an den Frontpfosten
   [DOOR_Y0 + 2, doorMidY, Y1 - 3.4].forEach((y) => {
-    cyl(0.22, 0.12, mScrew, -HW + 0.8, y, HD - 0.02 + 0.06, "z", scene, 12);
-    cyl(0.22, 0.12, mScrew, HW - 0.8, y, HD - 0.02 + 0.06, "z", scene, 12);
+    cyl(0.22, 0.12, mScrew, -HW + 0.8, y, HD - 0.02 + 0.06, "z", legacy, 12);
+    cyl(0.22, 0.12, mScrew, HW - 0.8, y, HD - 0.02 + 0.06, "z", legacy, 12);
   });
 
   // Türgriff (vertikale Goldleiste) + Scharniere
@@ -386,7 +578,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     new THREE.MeshBasicMaterial({ map: brandTex, transparent: true, opacity: 0.92 })
   );
   brand.position.set(0, Y1 - 0.8, HD + 0.01);
-  scene.add(brand);
+  legacy.add(brand);
 
   // Display unten links (CanvasTexture mit Fortschritt)
   const screenCanvas = document.createElement("canvas");
@@ -395,8 +587,9 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   const sctx = screenCanvas.getContext("2d");
   const screenTex = new THREE.CanvasTexture(screenCanvas);
   screenTex.colorSpace = THREE.SRGBColorSpace;
-  const screen = new THREE.Mesh(new THREE.PlaneGeometry(6.4, 3.6), new THREE.MeshBasicMaterial({ map: screenTex }));
-  screen.position.set(-HW + 6.5, Y0 + 2.1, HD + 0.02);
+  const screen = new THREE.Mesh(new THREE.PlaneGeometry(6.6, 3.7), new THREE.MeshBasicMaterial({ map: screenTex }));
+  // Display sitzt wie beim H2C oben links im schwarzen Kopfband
+  screen.position.set(-HW + 6.2, Y1 - 2.9, HD + 0.06);
   scene.add(screen);
   let lastScreen = -1;
   const drawScreen = (pct, label) => {
@@ -416,12 +609,12 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   };
   drawScreen(0, "Bereit");
   // Lichtband unten (Statusleiste)
-  const statusBar = box(W - 18, 0.18, 0.1, new THREE.MeshBasicMaterial({ color: 0xd4af37 }), 5, Y0 + 0.9, HD + 0.03);
+  const statusBar = box(W - 18, 0.18, 0.1, new THREE.MeshBasicMaterial({ color: 0xd4af37 }), 5, Y0 + 0.9, HD + 0.03, scene);
 
   // ---------- AMS-Einheit oben ----------
   const ams = new THREE.Group();
   ams.position.set(0, Y1 + 0.8, -1);
-  scene.add(ams);
+  legacy.add(ams);
   box(W - 6, 1.2, D - 12, mShellDark, 0, 0.6, 0, ams);
   box(W - 6, 6.5, 0.8, mShell, 0, 4.4, -(D - 12) / 2 + 0.4, ams);
   box(W - 6, 1.6, 0.8, mShell, 0, 2.0, (D - 12) / 2 - 0.4, ams);
@@ -432,7 +625,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   amsLid.renderOrder = 4;
   ams.add(amsLid);
   const spoolColors = [0xd4af37, 0xeeeeee, 0x1b1b1d, 0x7d8088];
-  const spools = spoolColors.map((c, i) => {
+  let spools = spoolColors.map((c, i) => {
     const g = new THREE.Group();
     // Spulen stehen nebeneinander, Drehachse = Welt-X (links ↔ rechts) wie im echten AMS
     g.position.set(-10.5 + i * 7, 4.3, 0);
@@ -554,7 +747,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   for (let i = 0; i < 6; i++) {
     const x = -HW + 4 + i * 2.3;
     box(1.6, 2.4, 1.6, mHead, x, RAIL_Y - 3.2, -HD + 3.2);
-    cyl(0.32, 0.9, mBrass, x, RAIL_Y - 4.8, -HD + 3.2, "y", scene, 12);
+    cyl(0.32, 0.9, mBrass, x, RAIL_Y - 4.8, -HD + 3.2, "y", legacy, 12);
   }
   box(14.5, 0.6, 2.4, mShellDark, -HW + 9.8, RAIL_Y - 1.8, -HD + 3.2);
 
@@ -596,7 +789,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   // PTFE-Schlauch AMS → Kopf
   const tubeMat = new THREE.MeshStandardMaterial({ color: 0xf2f2f2, metalness: 0, roughness: 0.5 });
   let tube = null;
-  const tubeStart = new THREE.Vector3(6, Y1 - 0.5, -HD + 2.5);
+  const tubeStart = new THREE.Vector3(6, Y1 - 1.2, -HD + 4);
   const curve = new THREE.QuadraticBezierCurve3(tubeStart, new THREE.Vector3(), new THREE.Vector3());
   let lastTubeKey = "";
   const updateTube = (hx, hz) => {
@@ -616,41 +809,52 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   };
 
   // ---------- Druckteil: Pfeilverzahntes Zahnrad ----------
-  const TEETH = 22;
+  // Feineres Profil: 30 Zähne mit runden Flanken (Evolventen-ähnlich), Nabe mit Passfedernut,
+  // sechs Erleichterungsbohrungen auf Lochkreis
+  const TEETH = 30;
   const R_TIP = 7.2;
-  const R_ROOT = 6.2;
+  const R_ROOT = 6.45;
   const shape = new THREE.Shape();
-  for (let i = 0; i < TEETH; i++) {
-    const a0 = (i / TEETH) * Math.PI * 2;
-    const s = (Math.PI * 2) / TEETH;
-    const pts = [
-      [R_ROOT, a0],
-      [R_TIP, a0 + s * 0.18],
-      [R_TIP, a0 + s * 0.42],
-      [R_ROOT, a0 + s * 0.6],
-    ];
-    pts.forEach(([r, a], j) => {
-      const x = Math.cos(a) * r;
-      const y = Math.sin(a) * r;
-      if (i === 0 && j === 0) shape.moveTo(x, y);
-      else shape.lineTo(x, y);
-    });
+  {
+    const SAMPLES = 9;
+    const sm = (a, b, v) => {
+      const t = clamp((v - a) / (b - a));
+      return t * t * (3 - 2 * t);
+    };
+    for (let i = 0; i < TEETH * SAMPLES; i++) {
+      const u = i / (TEETH * SAMPLES);
+      const ph = (u * TEETH) % 1;
+      const r = R_ROOT + (R_TIP - R_ROOT) * (sm(0.04, 0.34, ph) - sm(0.5, 0.8, ph));
+      const a = u * Math.PI * 2;
+      if (i === 0) shape.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+      else shape.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+    }
+    shape.closePath();
   }
-  shape.closePath();
-  const hub = new THREE.Path();
-  hub.absarc(0, 0, 1.6, 0, Math.PI * 2, true);
-  shape.holes.push(hub);
-  for (let i = 0; i < 5; i++) {
-    const a = (i / 5) * Math.PI * 2;
+  {
+    // Nabe: Bohrung mit Passfedernut
+    const hub = new THREE.Path();
+    const R_HUB = 1.5;
+    const k = 0.32; // halbe Nutbreite
+    const aK = Math.asin(k / R_HUB);
+    hub.moveTo(Math.cos(aK) * R_HUB, k);
+    hub.absarc(0, 0, R_HUB, aK, Math.PI * 2 - aK, false);
+    hub.lineTo(R_HUB + 0.45, -k);
+    hub.lineTo(R_HUB + 0.45, k);
+    hub.closePath();
+    shape.holes.push(hub);
+  }
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2 + Math.PI / 6;
     const h = new THREE.Path();
-    h.absarc(Math.cos(a) * 3.9, Math.sin(a) * 3.9, 1.05, 0, Math.PI * 2, true);
+    h.absarc(Math.cos(a) * 4.1, Math.sin(a) * 4.1, 0.95, 0, Math.PI * 2, true);
     shape.holes.push(h);
   }
 
   const TWIST = 0.05;
   const twistAt = (y) => TWIST * (y < PART_HEIGHT / 2 ? y : PART_HEIGHT - y);
 
-  const gearGeom = new THREE.ExtrudeGeometry(shape, { depth: PART_HEIGHT, steps: 110, bevelEnabled: false, curveSegments: 18 });
+  const gearGeom = new THREE.ExtrudeGeometry(shape, { depth: PART_HEIGHT, steps: 72, bevelEnabled: false, curveSegments: 20 });
   gearGeom.rotateX(-Math.PI / 2);
   const pos = gearGeom.attributes.position;
   // Unverdrehte Ausgangspunkte merken: daraus wird das Teil bei jeder Druckhöhe neu "gestaucht"
@@ -659,10 +863,9 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     const arr = pos.array;
     for (let i = 0; i < arr.length; i += 3) {
       const y = Math.min(base[i + 1], hLocal);
-      // Feine Rippen: sichtbare Druckschichten an den Flanken
-      const rib = 1 + 0.0042 * Math.sin(y * 30);
-      const x = base[i] * rib;
-      const z = base[i + 2] * rib;
+      // Schichtlinien kommen jetzt aus der Normal-Map (feiner und ohne Zusatzgeometrie)
+      const x = base[i];
+      const z = base[i + 2];
       const a = twistAt(y);
       const c = Math.cos(a);
       const sn = Math.sin(a);
@@ -681,11 +884,45 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   // Echtes, geschlossenes Teil statt Schnittebene + Rückseiten-Trick → kein GPU-abhängiges Flackern
   const clipHotBand = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 
-  const mPart = new THREE.MeshStandardMaterial({
-    color: 0xd4af37,
-    metalness: 0.3,
-    roughness: 0.38,
-  });
+  // Normal-Maps aus Canvas: Flanken = Schichtlinien, Deckfläche = diagonale Füllung (±45°)
+  const stripeNormalMap = (diagonal) => {
+    const N = 64;
+    const c = document.createElement("canvas");
+    c.width = c.height = N;
+    const g = c.getContext("2d");
+    const img = g.createImageData(N, N);
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const t = diagonal ? (x + y) / N : y / N;
+        // runde Wülste je Schicht: Ableitung einer Sinus-Höhe
+        const d = Math.cos(t * Math.PI * 2 * (diagonal ? 4 : 1)) * 0.55;
+        const nx = diagonal ? d * 0.7071 : 0;
+        const ny = diagonal ? d * 0.7071 : d;
+        const nz = Math.sqrt(Math.max(0, 1 - nx * nx - ny * ny));
+        const o = (y * N + x) * 4;
+        img.data[o] = (nx * 0.5 + 0.5) * 255;
+        img.data[o + 1] = (ny * 0.5 + 0.5) * 255;
+        img.data[o + 2] = (nz * 0.5 + 0.5) * 255;
+        img.data[o + 3] = 255;
+      }
+    }
+    g.putImageData(img, 0, 0);
+    const tex = new THREE.CanvasTexture(c);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    return tex;
+  };
+  const LAYER_LOCAL = 0.075; // sichtbare Schichthöhe in Teil-Einheiten (~120 Schichten)
+  const layerTex = stripeNormalMap(false);
+  layerTex.repeat.set(1, 1 / LAYER_LOCAL);
+  const infillTex = stripeNormalMap(true);
+  infillTex.repeat.set(0.9, 0.9);
+  const partBase = { color: 0xd4af37, metalness: 0.32, roughness: 0.4 };
+  // ExtrudeGeometry: Gruppe 0 = Deck-/Bodenfläche, Gruppe 1 = Flanken
+  const mPart = [
+    new THREE.MeshStandardMaterial({ ...partBase, normalMap: infillTex, normalScale: new THREE.Vector2(0.5, 0.5) }),
+    new THREE.MeshStandardMaterial({ ...partBase, normalMap: layerTex, normalScale: new THREE.Vector2(0.9, 0.9) }),
+  ];
   // Heißes Band an der Oberkante: gleiche Geometrie, gleiche Tiefe, leicht vorgezogen
   const mHot = new THREE.MeshBasicMaterial({
     color: 0xff9a3c,
@@ -702,7 +939,7 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   part.scale.setScalar(S);
   bed.add(part);
   part.add(new THREE.Mesh(gearGeom, mPart));
-  const hotMesh = new THREE.Mesh(gearGeom, mHot);
+  const hotMesh = new THREE.Mesh(gearGeom, [mHot, mHot]);
   hotMesh.renderOrder = 1;
   part.add(hotMesh);
   const PART_Z = -1;
@@ -723,6 +960,63 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   skirt.visible = false;
   bed.add(skirt);
 
+  // ---------- Detailliertes Blender-Modell (blender/drucker_modell.py → public/models/drucker.glb) ----------
+  // Gleiche Maße wie oben. Gantry/Druckkopf/Bett/Spulen stehen im Modell in Ruhelage und werden
+  // in die Gruppen dieser Szene umgehängt, damit die Animation unverändert weiterläuft.
+  let disposed = false;
+  const draco = new DRACOLoader();
+  draco.setDecoderPath("/draco/");
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.setDRACOLoader(draco);
+  gltfLoader.load(
+    "/models/drucker.glb",
+    (gltf) => {
+      if (disposed) return;
+      const root = gltf.scene;
+      const node = (n) => root.getObjectByName(n);
+      const gNode = node("Gantry");
+      const hNode = node("Druckkopf");
+      const bNode = node("Bett");
+      if (!gNode || !hNode || !bNode) {
+        onModelReady?.();
+        return;
+      }
+      // Blender-Materialien "Glas"/"Glas_AMS" (Tür, Seitenfenster, AMS-Hauben) → leichtes Web-Glas
+      root.traverse((o) => {
+        if (!o.isMesh) return;
+        if (o.material.name === "Glas" || o.material.name === "Glas_AMS") {
+          o.material = mGlass;
+          o.renderOrder = 5;
+          return;
+        }
+        o.castShadow = true;
+        o.receiveShadow = true;
+        // Transmission (z. B. PTFE) würde einen teuren Extra-Renderdurchgang auslösen
+        if (o.material.transmission) o.material.transmission = 0;
+      });
+
+      // Ersatzgeometrie raus, dynamische Teile (Druckteil, Glut, Kopf) bleiben
+      const keep = new Set([part, skirt, hotLight, tipGlow, head]);
+      for (const g of [gantry, head, bed]) for (const c of [...g.children]) if (!keep.has(c)) g.remove(c);
+      scene.remove(legacy);
+
+      [...hNode.children].forEach((c) => head.add(c));
+      [...gNode.children].forEach((c) => c !== hNode && gantry.add(c));
+      [...bNode.children].forEach((c) => bed.add(c));
+      const s = [0, 1, 2, 3, 4].map((i) => node(`Spule_${i}`));
+      if (s.slice(0, 4).every(Boolean)) spools = s;
+      scene.add(root);
+
+      legacy.traverse((o) => {
+        o.geometry?.dispose();
+      });
+      needsRender = true;
+      onModelReady?.();
+    },
+    undefined,
+    () => onModelReady?.()
+  );
+
   const outline = shape.getSpacedPoints(260).map((v) => new THREE.Vector2(v.x, -v.y));
   const pathPoint = (u, yLocal) => {
     const n = outline.length - 1;
@@ -739,11 +1033,11 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
 
   // ---------- Kamera-Keyframes ----------
   const keys = [
-    { p: 0.0, r: 150, az: -0.5, el: 0.14, ty: 27 },
-    { p: 0.22, r: 105, az: -0.28, el: 0.22, ty: 28 },
-    { p: 0.55, r: 78, az: 0.12, el: 0.36, ty: 28 },
-    { p: 0.8, r: 115, az: 0.36, el: 0.22, ty: 26 },
-    { p: 1.0, r: 125, az: 0.5, el: 0.16, ty: 25 },
+    { p: 0.0, r: 165, az: -0.5, el: 0.14, ty: 31 },
+    { p: 0.22, r: 112, az: -0.28, el: 0.22, ty: 30 },
+    { p: 0.55, r: 80, az: 0.12, el: 0.36, ty: 29 },
+    { p: 0.8, r: 122, az: 0.4, el: 0.22, ty: 29 },
+    { p: 1.0, r: 135, az: 0.55, el: 0.16, ty: 29 },
   ];
   const camAt = (p) => {
     let k = 0;
@@ -866,6 +1160,12 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     tipGlow.material.opacity = heat;
 
     spools[0].rotation.x = -f * Math.PI * 10;
+    if (spools[4]) spools[4].rotation.x = -f * Math.PI * 3;
+    // Staub treibt langsam (nur wenn ohnehin neu gezeichnet wird)
+    if (!reduceMotion) {
+      dust.rotation.y = t * 0.012;
+      dust.position.y = Math.sin(t * 0.25) * 1.2;
+    }
 
     // Kamera
     const cam = camAt(p);
@@ -907,6 +1207,8 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
   tick();
 
   return () => {
+    disposed = true;
+    draco.dispose();
     cancelAnimationFrame(raf);
     window.removeEventListener("scroll", readScroll);
     window.removeEventListener("resize", resize);
@@ -914,8 +1216,10 @@ function initScene(THREE, { RoomEnvironment, mount, stage, dimEl, hudEl, setHud,
     scene.traverse((o) => {
       o.geometry?.dispose();
       const m = o.material;
-      if (Array.isArray(m)) m.forEach((x) => x.dispose());
-      else m?.dispose();
+      (Array.isArray(m) ? m : m ? [m] : []).forEach((x) => {
+        x.map?.dispose();
+        x.dispose();
+      });
     });
     plateTex.dispose();
     screenTex.dispose();

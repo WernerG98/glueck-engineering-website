@@ -3,3 +3,6 @@ dist
 .vercel
 .env*
 .claude/settings.local.json
+blender/*.blend
+blender/*.blend1
+blender/renders/
