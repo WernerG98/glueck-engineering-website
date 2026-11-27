@@ -66,7 +66,7 @@ export default function ArtworksProcessSection() {
         <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60">
           <video
             ref={videoRef}
-            src="/Artwork_Ablauf_Video.mp4"
+            src="/Artwork_Ablauf_Video.mp4?v=2"
             poster="/Artwork_Ablauf_Video_Poster.webp"
             controls
             muted

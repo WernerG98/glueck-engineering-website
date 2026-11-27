@@ -91,7 +91,7 @@ function StaticPoster() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 bg-neutral-950">
       <img
-        src="/printer-poster.webp"
+        src="/printer-poster.webp?v=2"
         alt=""
         decoding="async"
         className="h-full w-full object-cover object-[70%_center] opacity-90"
