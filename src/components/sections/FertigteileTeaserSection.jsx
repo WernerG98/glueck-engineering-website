@@ -38,7 +38,9 @@ export default function FertigteileTeaserSection() {
                 className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/70 backdrop-blur-md transition hover:border-neutral-600"
               >
                 <div className="aspect-square overflow-hidden bg-neutral-950 transition duration-700 ease-out group-hover:scale-105">
-                  {item.model ? (
+                  {item.studio ? (
+                    <img src={item.studio.image} alt={item.name} loading="lazy" className="h-full w-full object-cover" />
+                  ) : item.model ? (
                     <ModelViewer src={item.model.src} format={item.model.format} interactive={false} />
                   ) : (
                     <img src={item.image} alt={item.name} loading="lazy" className="h-full w-full object-cover" />

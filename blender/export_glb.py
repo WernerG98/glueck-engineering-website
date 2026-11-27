@@ -63,6 +63,22 @@ for m in bpy.data.materials:
     if out and out.inputs["Surface"].is_linked and out.inputs["Surface"].links[0].from_node.type == "MIX_SHADER":
         nt.links.new(p.outputs["BSDF"], out.inputs["Surface"])
 
+# Viele Einzelteile = viele Zeichenaufrufe im Browser (bremst Laden und Scrollen).
+# Je Baugruppe (gleiches Eltern-Objekt) alle Meshes mit gleichem Material zu einem Mesh vereinen.
+groups = {}
+for ob in bpy.context.scene.objects:
+    if ob.type != "MESH" or not ob.data.materials:
+        continue
+    groups.setdefault((ob.parent.name if ob.parent else "", ob.data.materials[0].name), []).append(ob)
+vorher = sum(1 for o in bpy.context.scene.objects if o.type == "MESH")
+for (_parent, _mat), obs in groups.items():
+    if len(obs) < 2:
+        continue
+    with bpy.context.temp_override(active_object=obs[0], selected_editable_objects=obs, selected_objects=obs):
+        bpy.ops.object.join()
+nachher = sum(1 for o in bpy.context.scene.objects if o.type == "MESH")
+print(f"Meshes zusammengefasst: {vorher} → {nachher}")
+
 bpy.ops.object.select_all(action="DESELECT")
 for ob in bpy.context.scene.objects:
     ob.select_set(True)

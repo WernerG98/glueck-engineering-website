@@ -51,6 +51,17 @@ function PropertyRow({ label, value, property }) {
 function MaterialCard({ material, onRequest, isComparing, onToggleCompare, compareDisabled }) {
   return (
     <TiltCard className="flex h-full flex-col rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 transition hover:border-neutral-700 sm:p-6">
+      {/* Gerendertes Materialmuster (blender/materialmuster.py), gleich ausgeleuchtet für alle Werkstoffe */}
+      <div className="-mx-5 -mt-5 mb-5 overflow-hidden rounded-t-2xl border-b border-neutral-800 bg-neutral-950 sm:-mx-6 sm:-mt-6">
+        <img
+          src={`/materialien/${material.id}.webp`}
+          alt={`Materialmuster ${material.name}`}
+          loading="lazy"
+          width="960"
+          height="540"
+          className="aspect-video w-full object-cover"
+        />
+      </div>
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="text-xl font-semibold text-white sm:text-2xl">{material.name}</h3>
@@ -367,7 +378,7 @@ export default function MaterialienPage() {
                   </h2>
                 </Reveal>
 
-                <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                   {category.items.map((material, index) => (
                     <Reveal key={material.id} delay={index * 80} className="h-full">
                       <MaterialCard

@@ -1,6 +1,7 @@
 const fertigteile = [
   {
     id: "vw-t4-fuehrung-blende",
+    studio: { image: "/fertigteile/vw-t4-fuehrung-blende.webp", spin: "/fertigteile/vw-t4-fuehrung-blende.mp4" },
     name: "VW T4 Führung für Blende / unterer Kühlergrill R+L (langer Vorderwagen)",
     image: "/Fuehrung_Blende_T4.webp",
     price: "19,99 €",
@@ -10,6 +11,7 @@ const fertigteile = [
   },
   {
     id: "vw-t5-clip-kopfstuetze",
+    studio: { image: "/fertigteile/vw-t5-clip-kopfstuetze.webp", spin: "/fertigteile/vw-t5-clip-kopfstuetze.mp4" },
     name: "VW T5 Clip Verstellung Kopfstütze (8 Stück)",
     image: "/VW_T5_Clip_Verstellung_Kopfstuetze.webp",
     price: "9,99 €",
@@ -19,6 +21,7 @@ const fertigteile = [
   },
   {
     id: "honda-xrv750-spritzschutz",
+    studio: { image: "/fertigteile/honda-xrv750-spritzschutz.webp", spin: "/fertigteile/honda-xrv750-spritzschutz.mp4" },
     name: "Honda XRV750 RD07 Spritzschutz Schwinge hinten",
     image: "/Honda_XRV_RD07_Spritzschutz_Schwinge_hinten.webp",
     price: "24,99 €",
@@ -28,6 +31,7 @@ const fertigteile = [
   },
   {
     id: "vw-t4-t5-t6-heckklappenaussteller",
+    studio: { image: "/fertigteile/vw-t4-t5-t6-heckklappenaussteller.webp", spin: "/fertigteile/vw-t4-t5-t6-heckklappenaussteller.mp4" },
     name: "VW T4/T5/T6 Heckklappenaussteller",
     image: "/Heckklappenaussteller_T4_T5_T6.webp",
     price: "9,99 €",
@@ -37,6 +41,7 @@ const fertigteile = [
   },
   {
     id: "vw-t3-heckklappenaussteller",
+    studio: { image: "/fertigteile/vw-t3-heckklappenaussteller.webp", spin: "/fertigteile/vw-t3-heckklappenaussteller.mp4" },
     name: "VW T3 Heckklappenaussteller",
     image: "/Heckklappenaussteller_T3.webp",
     price: "9,99 €",

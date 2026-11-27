@@ -122,7 +122,8 @@ function initScene(THREE, { RoomEnvironment, GLTFLoader, DRACOLoader, mount, sta
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  // 1,5 statt 2: auf hochauflösenden Displays kaum sichtbar, spart aber fast die Hälfte der Pixel
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setClearColor(0x09090a, 1);
   renderer.localClippingEnabled = true;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -182,7 +183,8 @@ function initScene(THREE, { RoomEnvironment, GLTFLoader, DRACOLoader, mount, sta
   scene.add(rim2);
   // Innenbeleuchtung (LED-Leiste oben vorn)
   const chamber = new THREE.SpotLight(0xfff0dc, 900, 0, 0.85, 0.7, 2);
-  chamber.castShadow = true;
+  // kein eigener Schattenwurf: spart pro Bild einen kompletten Zusatz-Durchlauf der Szene
+  chamber.castShadow = false;
   chamber.shadow.mapSize.set(1024, 1024);
   chamber.shadow.bias = -0.0005;
   chamber.shadow.normalBias = 0.05;
@@ -816,7 +818,7 @@ function initScene(THREE, { RoomEnvironment, GLTFLoader, DRACOLoader, mount, sta
   const R_ROOT = 6.45;
   const shape = new THREE.Shape();
   {
-    const SAMPLES = 9;
+    const SAMPLES = 7;
     const sm = (a, b, v) => {
       const t = clamp((v - a) / (b - a));
       return t * t * (3 - 2 * t);
@@ -854,7 +856,7 @@ function initScene(THREE, { RoomEnvironment, GLTFLoader, DRACOLoader, mount, sta
   const TWIST = 0.05;
   const twistAt = (y) => TWIST * (y < PART_HEIGHT / 2 ? y : PART_HEIGHT - y);
 
-  const gearGeom = new THREE.ExtrudeGeometry(shape, { depth: PART_HEIGHT, steps: 72, bevelEnabled: false, curveSegments: 20 });
+  const gearGeom = new THREE.ExtrudeGeometry(shape, { depth: PART_HEIGHT, steps: 48, bevelEnabled: false, curveSegments: 12 });
   gearGeom.rotateX(-Math.PI / 2);
   const pos = gearGeom.attributes.position;
   // Unverdrehte Ausgangspunkte merken: daraus wird das Teil bei jeder Druckhöhe neu "gestaucht"
@@ -978,10 +980,38 @@ function initScene(THREE, { RoomEnvironment, GLTFLoader, DRACOLoader, mount, sta
       const hNode = node("Druckkopf");
       const bNode = node("Bett");
       if (!gNode || !hNode || !bNode) {
-        onModelReady?.();
+        startWithLegacy();
         return;
       }
-      // Blender-Materialien "Glas"/"Glas_AMS" (Tür, Seitenfenster, AMS-Hauben) → leichtes Web-Glas
+      // Blender-Materialien "Glas"/"Glas_AMS" (Tür, Seitenfenster, AMS-Hauben) → leichtes Web-Glas.
+      // Alle übrigen werden zu einfachen MeshStandardMaterials: Physical-Materialien (Klarlack, Transmission)
+      // erzeugen viele eigene, teure Shader – genau die haben beim ersten Laden den Browser blockiert.
+      const simplified = new Map();
+      const simplify = (m) => {
+        if (!m.isMeshPhysicalMaterial) return m;
+        if (!simplified.has(m.uuid)) {
+          simplified.set(
+            m.uuid,
+            new THREE.MeshStandardMaterial({
+              name: m.name,
+              color: m.color,
+              map: m.map,
+              roughness: m.roughness,
+              metalness: m.metalness,
+              emissive: m.emissive,
+              emissiveMap: m.emissiveMap,
+              emissiveIntensity: m.emissiveIntensity,
+              normalMap: m.normalMap,
+              transparent: m.transparent,
+              opacity: m.opacity,
+              alphaTest: m.alphaTest,
+              side: m.side,
+            })
+          );
+          m.dispose();
+        }
+        return simplified.get(m.uuid);
+      };
       root.traverse((o) => {
         if (!o.isMesh) return;
         if (o.material.name === "Glas" || o.material.name === "Glas_AMS") {
@@ -991,30 +1021,35 @@ function initScene(THREE, { RoomEnvironment, GLTFLoader, DRACOLoader, mount, sta
         }
         o.castShadow = true;
         o.receiveShadow = true;
-        // Transmission (z. B. PTFE) würde einen teuren Extra-Renderdurchgang auslösen
-        if (o.material.transmission) o.material.transmission = 0;
+        o.material = simplify(o.material);
       });
 
-      // Ersatzgeometrie raus, dynamische Teile (Druckteil, Glut, Kopf) bleiben
-      const keep = new Set([part, skirt, hotLight, tipGlow, head]);
-      for (const g of [gantry, head, bed]) for (const c of [...g.children]) if (!keep.has(c)) g.remove(c);
-      scene.remove(legacy);
+      const swapIn = () => {
+        if (disposed) return;
+        // Ersatzgeometrie raus, dynamische Teile (Druckteil, Glut, Kopf) bleiben
+        const keep = new Set([part, skirt, hotLight, tipGlow, head]);
+        for (const g of [gantry, head, bed]) for (const c of [...g.children]) if (!keep.has(c)) g.remove(c);
+        scene.remove(legacy);
 
-      [...hNode.children].forEach((c) => head.add(c));
-      [...gNode.children].forEach((c) => c !== hNode && gantry.add(c));
-      [...bNode.children].forEach((c) => bed.add(c));
-      const s = [0, 1, 2, 3, 4].map((i) => node(`Spule_${i}`));
-      if (s.slice(0, 4).every(Boolean)) spools = s;
-      scene.add(root);
+        [...hNode.children].forEach((c) => head.add(c));
+        [...gNode.children].forEach((c) => c !== hNode && gantry.add(c));
+        [...bNode.children].forEach((c) => bed.add(c));
+        const s = [0, 1, 2, 3, 4].map((i) => node(`Spule_${i}`));
+        if (s.slice(0, 4).every(Boolean)) spools = s;
+        scene.add(root);
 
-      legacy.traverse((o) => {
-        o.geometry?.dispose();
-      });
-      needsRender = true;
-      onModelReady?.();
+        legacy.traverse((o) => {
+          o.geometry?.dispose();
+        });
+        needsRender = true;
+        start();
+      };
+      // Shader im Hintergrund übersetzen (parallel, blockiert die Seite nicht), erst dann einhängen
+      root.updateMatrixWorld(true);
+      renderer.compileAsync(root, camera, scene).then(swapIn, swapIn);
     },
     undefined,
-    () => onModelReady?.()
+    () => startWithLegacy()
   );
 
   const outline = shape.getSpacedPoints(260).map((v) => new THREE.Vector2(v.x, -v.y));
@@ -1203,11 +1238,25 @@ function initScene(THREE, { RoomEnvironment, GLTFLoader, DRACOLoader, mount, sta
     }
   };
   resize();
-  frame();
-  tick();
+  // Erst zeichnen, wenn alles übersetzt ist: Mit dem Blender-Modell (Normalfall) wird die einfache
+  // Ersatzszene nie gezeichnet. Kommt das Modell nicht (Fehler oder > 4,5 s), startet die Ersatzszene.
+  let started = false;
+  function start() {
+    if (started || disposed) return;
+    started = true;
+    frame();
+    tick();
+    onModelReady?.();
+  }
+  function startWithLegacy() {
+    if (started || disposed) return;
+    renderer.compileAsync(scene, camera).then(start, start);
+  }
+  const legacyTimer = window.setTimeout(startWithLegacy, 4500);
 
   return () => {
     disposed = true;
+    window.clearTimeout(legacyTimer);
     draco.dispose();
     cancelAnimationFrame(raf);
     window.removeEventListener("scroll", readScroll);

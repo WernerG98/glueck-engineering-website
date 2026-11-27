@@ -1,13 +1,49 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Reveal from "../Reveal";
 import ModelViewer from "../ModelViewer";
 import TiltCard from "../TiltCard";
 import { useMerkzettel } from "../../context/MerkzettelContext";
 
+// Studio-Drehvideo (Blender, blender/fertigteile_render.py): läuft stumm, solange die Karte sichtbar ist
+function StudioSpin({ studio, name }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const video = ref.current;
+    if (!video || typeof IntersectionObserver === "undefined") return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) video.play().catch(() => {});
+        else video.pause();
+      },
+      { threshold: 0.35 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+  return (
+    <video
+      ref={ref}
+      src={studio.spin}
+      poster={studio.image}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-label={`${name} – Studioansicht, 360° gedreht`}
+      className="h-full w-full object-cover"
+    />
+  );
+}
+
+const VIEW_LABELS = { studio: "Studio", "3d": "3D", foto: "Foto" };
+
 function FertigteilCard({ item, onRequest }) {
   const hasModel = Boolean(item.model);
-  // 3D-Ansicht ist Standard, das Foto lässt sich per Button einblenden
-  const [show3D, setShow3D] = useState(hasModel);
+  const views = [item.studio && "studio", hasModel && "3d", item.image && "foto"].filter(Boolean);
+  // Studio-Ansicht ist Standard (lädt schnell), 3D-Modell und Foto per Umschalter
+  const [view, setView] = useState(views[0] || null);
+  const show3D = view === "3d";
   const { isSaved, toggleItem } = useMerkzettel();
   const saved = isSaved(item.id);
 
@@ -31,7 +67,9 @@ function FertigteilCard({ item, onRequest }) {
           </svg>
         </button>
 
-        {show3D && hasModel ? (
+        {view === "studio" ? (
+          <StudioSpin studio={item.studio} name={item.name} />
+        ) : show3D && hasModel ? (
           <ModelViewer src={item.model.src} format={item.model.format} />
         ) : item.image ? (
           <img
@@ -57,22 +95,26 @@ function FertigteilCard({ item, onRequest }) {
           </span>
         )}
 
-        {hasModel && item.image && (
-          <button
-            type="button"
-            onClick={() => setShow3D((v) => !v)}
-            aria-label={show3D ? "Foto ansehen" : "3D-Modell ansehen"}
-            className="absolute bottom-3 left-3 z-10 flex items-center gap-2 rounded-xl border border-neutral-700 bg-neutral-950/80 p-1 pr-3 text-xs font-medium text-white backdrop-blur-sm transition hover:border-accent"
+        {views.length > 1 && (
+          <div
+            role="group"
+            aria-label="Ansicht wählen"
+            className="absolute bottom-3 left-3 z-10 flex gap-1 rounded-xl border border-neutral-700 bg-neutral-950/80 p-1 backdrop-blur-sm"
           >
-            {show3D ? (
-              <img src={item.image} alt="" loading="lazy" className="h-10 w-10 rounded-lg object-cover" />
-            ) : (
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-800 font-mono text-[11px] text-accent">
-                3D
-              </span>
-            )}
-            {show3D ? "Foto" : "3D-Modell"}
-          </button>
+            {views.map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => setView(v)}
+                aria-pressed={view === v}
+                className={`rounded-lg px-2.5 py-1.5 text-xs font-medium transition ${
+                  view === v ? "bg-accent text-neutral-950" : "text-neutral-300 hover:bg-neutral-800 hover:text-white"
+                }`}
+              >
+                {VIEW_LABELS[v]}
+              </button>
+            ))}
+          </div>
         )}
       </div>
 

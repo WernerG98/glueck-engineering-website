@@ -6,3 +6,4 @@ dist
 blender/*.blend
 blender/*.blend1
 blender/renders/
+blender/__pycache__/
